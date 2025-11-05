@@ -11,6 +11,10 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.3",
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
+		"@ls-lint/ls-lint": "^2.3.1",
+		"lefthook": "^2.0.2",
 		"sherif": "^1.8.0",
 		"turbo": "^2.5.8",
 		"typescript": "5.9.2"

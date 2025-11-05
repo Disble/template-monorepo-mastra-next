@@ -1,0 +1,32 @@
+ls:
+  apps/web/src/pages/*:
+    .dir: kebab-case
+    .astro: kebab-case
+    .md: kebab-case
+  '{apps,packages}/*':
+    .dir: kebab-case
+  '{apps,packages}/*/src':
+    .dir: kebab-case
+    .js: kebab-case
+    .ts: kebab-case
+    .tsx: kebab-case
+    .d.ts: kebab-case
+  apps/*/src/*:
+    .dir: kebab-case
+    .js: kebab-case
+    .ts: kebab-case  | regex:^[a-z0-9]+(?:-[a-z0-9]+)*(?:\.[a-z0-9]+)?$
+    .tsx: kebab-case | regex:\[[a-z0-9]+\] | regex:\[\.\.\.[a-z0-9]+\]
+    .jsx: kebab-case | regex:\[[a-z0-9]+\] | regex:\[\.\.\.[a-z0-9]+\]
+    .d.ts: kebab-case
+  apps/*/src/app/*:
+    .dir: kebab-case | regex:\[[a-zA-Z0-9]+\] | regex:\[\.\.\.[a-zA-Z0-9]+\] | regex:\([a-zA-Z0-9]+\) | regex:\[[a-zA-Z0-9]+\]\/\[a-zA-Z0-9]+\]
+    .js: kebab-case
+    .ts: kebab-case | regex:\[[a-z0-9]+\] | regex:\[\.\.\.[a-z0-9]+\]
+    .d.ts: kebab-case
+  # packages/*/prisma/migrations:
+  #   .dir: snake_case
+  #   .sql: kebab-case
+ignore:
+  - .git
+  - node_modules
+  - '{apps,packages}/*/{node_modules,.expo,.turbo,.next,.swc,.astro,.vscode}'
