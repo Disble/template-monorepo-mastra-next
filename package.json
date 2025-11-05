@@ -7,7 +7,8 @@
 		"check-types": "turbo run check-types",
 		"format-and-lint": "biome check .",
 		"format-and-lint:fix": "biome check . --write",
-		"syncpackages": "sherif"
+		"syncpackages": "sherif",
+		"lefthook-sync": "lefthook install"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.3",
