@@ -1,0 +1,31 @@
+---
+alwaysApply: true
+description: Enforce conventional commits format for all Git commits
+---
+
+# Conventional Commits
+
+## Format
+```
+<type>[scope]: <description>
+```
+
+## Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes
+- `refactor`: Code restructuring
+- `test`: Adding/fixing tests
+- `chore`: Maintenance tasks
+
+## Examples
+```
+feat: add user login
+fix: resolve login bug
+docs: update README
+refactor(auth): simplify validation
+feat!: breaking API change
+
+BREAKING CHANGE: remove old endpoint
+```

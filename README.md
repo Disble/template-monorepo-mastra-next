@@ -1,127 +1,145 @@
-# Turborepo starter
+````markdown
+# HUS Analyzer
 
-This Turborepo starter is maintained by the Turborepo core team.
+Monorepo basado en Turborepo que incluye una API con agentes de Mastra y una aplicación web Next.js.
 
-## Using this example
+## Requisitos
 
-Run the following command:
+- Node.js >= 18
+- Bun 1.3.1 (gestor de paquetes)
+
+## Instalación
 
 ```sh
-npx create-turbo@latest
+bun install
 ```
 
-## What's inside?
+## Estructura del Proyecto
 
-This Turborepo includes the following packages/apps:
+Este monorepo incluye las siguientes aplicaciones y paquetes:
 
-### Apps and Packages
+### Apps
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `api`: API con agentes de IA usando [Mastra](https://mastra.com)
+  - Weather Agent: Agente para consultar información meteorológica
+  - Herramientas personalizadas para los agentes
+- `web`: Aplicación [Next.js](https://nextjs.org/) con App Router
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Packages
 
-### Utilities
+- `@repo/ui`: Biblioteca de componentes React compartidos (Button, Card, Code)
+- `@repo/typescript-config`: Configuraciones de TypeScript compartidas
 
-This Turborepo has some additional tools already setup for you:
+Cada paquete/app está 100% escrito en [TypeScript](https://www.typescriptlang.org/).
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## Herramientas de Desarrollo
+
+El proyecto incluye las siguientes herramientas configuradas:
+
+- [TypeScript](https://www.typescriptlang.org/) para tipado estático
+- [Biome](https://biomejs.dev/) para linting y formateo de código
+- [Commitlint](https://commitlint.js.org/) para mensajes de commit convencionales
+- [Lefthook](https://github.com/evilmartians/lefthook) para git hooks
+- [Sherif](https://github.com/QuiiBz/sherif) para sincronización de dependencias
+- [ls-lint](https://ls-lint.org/) para validación de nombres de archivos
+
+## Comandos Disponibles
+
+### Desarrollo
+
+Para ejecutar todas las apps en modo desarrollo:
+
+```sh
+bun run dev
+```
+
+Para ejecutar una app específica:
+
+```sh
+turbo dev --filter=web   # Solo la app web
+turbo dev --filter=api   # Solo la API
+```
 
 ### Build
 
-To build all apps and packages, run the following command:
+Para construir todas las apps:
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```sh
+bun run build
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Para construir una app específica:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+```sh
+turbo build --filter=web
+turbo build --filter=api
 ```
 
-### Develop
+### Verificación de Tipos
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```sh
+bun run check-types
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### Formateo y Linting
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```sh
+bun run format-and-lint        # Verificar
+bun run format-and-lint:fix    # Corregir automáticamente
 ```
 
-### Remote Caching
+### Sincronización de Dependencias
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
+```sh
+bun run syncpackages
 ```
-cd my-turborepo
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
+### Configurar Git Hooks
+
+```sh
+bun run lefthook-sync
+```
+
+## Mastra AI Agents
+
+El proyecto incluye agentes de IA construidos con Mastra en la aplicación `api`:
+
+### Weather Agent
+
+Agente especializado en proporcionar información meteorológica precisa. El agente:
+- Solicita ubicación si no se proporciona
+- Traduce nombres de ubicaciones al inglés si es necesario
+- Proporciona detalles como humedad, viento y precipitación
+- Usa Google Gemini 2.5 Pro como modelo de lenguaje
+
+## Caché Remoto (Remote Caching)
+
+Turborepo puede usar [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) para compartir artefactos de caché entre máquinas, lo que te permite compartir cachés de construcción con tu equipo y pipelines de CI/CD.
+
+Para habilitar Remote Caching con Vercel:
+
+```sh
 turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
 ```
+
+## Enlaces Útiles
+
+Aprende más sobre Turborepo:
+
+- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
+- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
+- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
+- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
+- [Configuration Options](https://turborepo.com/docs/reference/configuration)
+- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+
+Documentación de Mastra:
+- [Mastra Documentation](https://mastra.com/docs)
+- [Agents](https://mastra.com/docs/agents)
+- [Tools](https://mastra.com/docs/tools)
+
+````
 
 ## Useful Links
 

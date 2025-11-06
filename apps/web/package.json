@@ -3,6 +3,17 @@
 	"version": "0.1.0",
 	"type": "module",
 	"private": true,
+	"imports": {
+		"#*": [
+			"./src/*.ts",
+			"./src/*.tsx",
+			"./src/*.d.ts",
+			"./src/*/index.ts",
+			"./src/*/index.tsx",
+			"./src/index.d.ts",
+			"./src/*"
+		]
+	},
 	"scripts": {
 		"dev": "next dev --port 4000",
 		"build": "next build",
@@ -22,6 +33,7 @@
 		"@types/node": "^24.10.0",
 		"@types/react": "19.2.0",
 		"@types/react-dom": "19.2.0",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^9.38.0",
 		"typescript": "5.9.2"
 	}
