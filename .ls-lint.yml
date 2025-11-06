@@ -29,4 +29,4 @@ ls:
 ignore:
   - .git
   - node_modules
-  - '{apps,packages}/*/{node_modules,.expo,.turbo,.next,.swc,.astro,.vscode}'
+  - '{apps,packages}/*/{node_modules,.expo,.turbo,.next,.swc,.astro,.vscode,.mastra}'

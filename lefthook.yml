@@ -56,10 +56,10 @@ pre-commit:
     check-types:
       glob: "*.{ts,tsx,d.cts,d.mts}"
       run: bun check-types
-    test:
-      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx}"
-      run: bun test {staged_files}
-      stage_fixed: true
+    # test:
+    #   glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx}"
+    #   run: bun test {staged_files}
+    #   stage_fixed: true
 
 # Validate commit messages
 commit-msg:

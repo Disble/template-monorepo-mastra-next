@@ -4,7 +4,7 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"dev": "next dev --port 3000",
+		"dev": "next dev --port 4000",
 		"build": "next build",
 		"start": "next start",
 		"check-types": "next typegen && tsc --noEmit",
@@ -19,7 +19,7 @@
 	},
 	"devDependencies": {
 		"@repo/typescript-config": "*",
-		"@types/node": "^24.9.2",
+		"@types/node": "^24.10.0",
 		"@types/react": "19.2.0",
 		"@types/react-dom": "19.2.0",
 		"eslint": "^9.38.0",
