@@ -20,4 +20,7 @@ export const mastra = new Mastra({
     name: "Mastra",
     level: "info",
   }),
+  bundler: {
+    sourcemap: true,
+  },
 });

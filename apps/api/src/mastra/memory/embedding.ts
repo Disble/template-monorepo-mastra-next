@@ -1,5 +1,5 @@
 import { ollama } from "ollama-ai-provider-v2";
-import { VECTOR_STORE } from "#mastra/constants/memory.constant";
+import { VECTOR_STORE } from "../constants/memory.constant";
 
 // const embedder = ollama.embedding("embeddinggemma"); // no
 const embedder = ollama.embedding(VECTOR_STORE.EMBEDDING_NAME); // no
