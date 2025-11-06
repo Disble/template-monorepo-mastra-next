@@ -1,9 +1,9 @@
 {
-	"root": false,
-	"extends": "//",
-	"linter": {
-		"domains": {
-			"test": "recommended"
-		}
-	}
+  "root": false,
+  "extends": "//",
+  "linter": {
+    "domains": {
+      "test": "recommended"
+    }
+  }
 }

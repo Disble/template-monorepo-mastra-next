@@ -1,10 +1,10 @@
 {
-	"root": false,
-	"extends": "//",
-	"linter": {
-		"domains": {
-			"next": "recommended",
-			"test": "recommended"
-		}
-	}
+  "root": false,
+  "extends": "//",
+  "linter": {
+    "domains": {
+      "next": "recommended",
+      "test": "recommended"
+    }
+  }
 }
