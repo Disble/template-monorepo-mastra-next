@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
+    "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24.10.0",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
