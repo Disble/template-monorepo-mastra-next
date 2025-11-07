@@ -4,15 +4,7 @@
   "type": "module",
   "private": true,
   "imports": {
-    "#*": [
-      "./src/*.ts",
-      "./src/*.tsx",
-      "./src/*.d.ts",
-      "./src/*/index.ts",
-      "./src/*/index.tsx",
-      "./src/index.d.ts",
-      "./src/*"
-    ]
+    "#*": "./src/*"
   },
   "scripts": {
     "dev": "next dev --port 4000",
@@ -23,10 +15,16 @@
     "format-and-lint:fix": "biome check . --write"
   },
   "dependencies": {
+    "@electric-sql/react": "^1.0.18",
+    "@hookform/resolvers": "^5.2.2",
+    "@mastra/client-js": "^0.16.9",
     "@repo/ui": "*",
     "next": "^16.0.0",
+    "nuqs": "^2.7.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.66.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
