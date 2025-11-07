@@ -1,13 +1,32 @@
 "use server";
 
-export async function submitContentForm(data: {
+import { chaptersVideosWorkflow } from "#lib/mastra/workflows.js";
+
+export async function submitContentForm({
+  url,
+  contentType,
+}: {
   url: string;
   contentType: string;
 }) {
-  // Aquí puedes implementar la lógica de envío al servidor
-  console.log("Server received data:", data);
-
-  return {
-    runId: "A1F23V45",
-  };
+  try {
+    const run = await chaptersVideosWorkflow.createRunAsync();
+    const { message } = await run.start({
+      inputData: {
+        url,
+        type: contentType,
+      },
+    });
+    console.log("🥝 message: ", message);
+    return {
+      success: true,
+      runId: run.runId,
+    };
+  } catch (error) {
+    console.error("Server Action Error:", error);
+    return {
+      success: false,
+      error: "Internal server error",
+    };
+  }
 }
