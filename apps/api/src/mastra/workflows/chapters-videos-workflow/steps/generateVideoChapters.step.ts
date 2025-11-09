@@ -1,29 +1,27 @@
 import { createStep } from "@mastra/core/workflows";
-import { z } from "zod";
-import { captionsSchema } from "./chapters-videos-workflow.schema";
-
-const chaptersSchema = z.object({
-  chapters: z.array(
-    z.object({
-      timestamp: z.string().describe("The timestamp of the chapter"),
-      description: z.string().describe("The description of the chapter"),
-    }),
-  ),
-});
+import {
+  outputChapters,
+  youtubeCaptionsSchema,
+} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import type { YoutubeWorkflowType } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
+import { encode } from "@toon-format/toon";
 
 export const generateVideoChaptersStep = createStep({
   id: "generate-video-chapters",
-  inputSchema: captionsSchema,
-  outputSchema: chaptersSchema,
-  execute: async ({ inputData, mastra }) => {
+  inputSchema: youtubeCaptionsSchema,
+  outputSchema: outputChapters,
+  execute: async ({ inputData, mastra, state }) => {
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { captions, type } = inputData;
+    const { captions } = inputData;
     const agent = mastra?.getAgent("youtubeVideoChaptersAgent");
     if (!agent) {
       throw new Error("Video chapters agent not found");
     }
+
+    const type: YoutubeWorkflowType =
+      state?.type === "podcast" ? "podcast" : "reading";
 
     const example =
       type === "podcast"
@@ -65,8 +63,10 @@ export const generateVideoChaptersStep = createStep({
     - Usa timestamps reales de los subtítulos
 
     CONTENIDO A ANALIZAR:
-    \`\`\`json
-    ${JSON.stringify(captions, null, 2)}
+    Data is in TOON format (2-space indent, arrays show length and fields).
+
+    \`\`\`toon
+    ${encode(captions)}
     \`\`\`
 
     Genera los capítulos siguiendo el formato especificado.
@@ -81,7 +81,7 @@ export const generateVideoChaptersStep = createStep({
       ],
       {
         structuredOutput: {
-          schema: chaptersSchema,
+          schema: outputChapters,
           // model: 'google/gemini-2.0-flash-001',
           model: "google/gemini-2.5-flash",
         },

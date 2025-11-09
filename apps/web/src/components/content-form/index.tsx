@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { inputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import type { InputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import {
   Button,
   FieldError,
@@ -17,26 +19,39 @@ import { z } from "zod";
 import { runIdSearchParams } from "#app/search-params";
 import { submitContentForm } from "./content-form.action";
 
+/**
+ * UI configuration for content types
+ * Maps backend values ("reading") to user-friendly labels ("Lecturas")
+ */
 const contentTypes = [
-  { id: "podcast", label: "Podcast" },
-  { id: "lecturas", label: "Lecturas" },
+  { id: "podcast" as const, label: "Podcast" },
+  { id: "reading" as const, label: "Lecturas" },
 ] as const;
 
-const contentTypeIds = contentTypes.map((type) => type.id) as [
-  string,
-  ...string[],
-];
+/**
+ * UI configuration for level models
+ */
+const levelModels = [
+  { id: "light" as const, label: "Light" },
+  { id: "heavy" as const, label: "Heavy" },
+  { id: "high" as const, label: "High" },
+] as const;
 
-const formSchema = z.object({
-  url: z.url({ error: "Ingresa una URL válida" }).nonoptional(),
-  contentType: z
-    .enum(contentTypeIds, {
-      error: "Tipo de contenido no válido",
-    })
-    .nonoptional(),
+/**
+ * Form schema extending from shared-types schema
+ * Uses the same structure as inputYoutubeWorkflow but with better error messages for UI
+ */
+const formSchema = inputYoutubeWorkflow.extend({
+  url: z.url("Ingresa una URL válida"),
+  type: z.enum(["reading", "podcast"], {
+    message: "Tipo de contenido no válido",
+  }),
+  levelModel: z.enum(["light", "heavy", "high"], {
+    message: "Nivel de modelo no válido",
+  }),
 });
 
-type FormData = z.infer<typeof formSchema>;
+type FormData = InputYoutubeWorkflow;
 
 export function ContentForm() {
   const [query, setQuery] = useQueryStates(runIdSearchParams);
@@ -49,7 +64,8 @@ export function ContentForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       url: "",
-      contentType: "",
+      type: "podcast",
+      levelModel: "light",
     },
     mode: "onChange",
   });
@@ -58,7 +74,11 @@ export function ContentForm() {
     console.log("Form data:", data);
     // Aquí puedes implementar la lógica de envío
 
-    const response = await submitContentForm(data);
+    const response = await submitContentForm({
+      url: data.url,
+      type: data.type,
+      levelModel: data.levelModel,
+    });
     setQuery({
       runId: response.runId,
     });
@@ -91,7 +111,7 @@ export function ContentForm() {
 
       {/* Content Type Select */}
       <Controller
-        name="contentType"
+        name="type"
         control={control}
         render={({ field }) => (
           <Select
@@ -99,7 +119,7 @@ export function ContentForm() {
             isRequired
             className="w-full"
             placeholder="Selecciona un tipo"
-            isInvalid={!!errors.contentType}
+            isInvalid={!!errors.type}
             onChange={(value) => field.onChange(value)}
           >
             <Label>Tipo de Contenido</Label>
@@ -121,8 +141,45 @@ export function ContentForm() {
                 ))}
               </ListBox>
             </Select.Content>
-            {errors.contentType && (
-              <FieldError>{errors.contentType.message}</FieldError>
+            {errors.type && <FieldError>{errors.type.message}</FieldError>}
+          </Select>
+        )}
+      />
+
+      {/* Level Model Select */}
+      <Controller
+        name="levelModel"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            isRequired
+            className="w-full"
+            placeholder="Selecciona un nivel"
+            isInvalid={!!errors.levelModel}
+            onChange={(value) => field.onChange(value)}
+          >
+            <Label>Nivel del Modelo</Label>
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+            <Select.Content>
+              <ListBox>
+                {levelModels.map((level) => (
+                  <ListBox.Item
+                    key={level.id}
+                    id={level.id}
+                    textValue={level.label}
+                  >
+                    {level.label}
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Content>
+            {errors.levelModel && (
+              <FieldError>{errors.levelModel.message}</FieldError>
             )}
           </Select>
         )}

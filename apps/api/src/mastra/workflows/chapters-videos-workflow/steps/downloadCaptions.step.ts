@@ -1,7 +1,9 @@
 import { createStep } from "@mastra/core/workflows";
+import {
+  inputYoutubeWorkflow,
+  youtubeCaptionsSchema,
+} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
 import { getSubtitles, type Subtitle } from "youtube-caption-extractor";
-import { z } from "zod";
-import { captionsSchema, typeSchema } from "./chapters-videos-workflow.schema";
 
 function extractVideoID(url: string): string {
   const urlObj = new URL(url);
@@ -66,26 +68,23 @@ async function downloadCaptions(url: string): Promise<Subtitle[]> {
 
 export const downloadCaptionsStep = createStep({
   id: "download-captions",
-  inputSchema: z.object({
-    url: z.url().describe("The URL of the video to download the captions for"),
-    type: typeSchema,
-    levelModel: z
-      .enum(["light", "heavy", "high"])
-      .describe("The level of the model to use"),
-  }),
-  outputSchema: captionsSchema,
-  execute: async ({ inputData }) => {
+  inputSchema: inputYoutubeWorkflow,
+  outputSchema: youtubeCaptionsSchema,
+  execute: async ({ inputData, setState }) => {
     if (!inputData) {
       throw new Error("Input data not found");
     }
 
     const { url, type } = inputData;
     console.log("🎬 Downloading SRT captions for video:", url);
+
+    setState({ type });
+
     const captions = await downloadCaptions(url);
     console.log(
       "✅ SRT captions downloaded successfully, length:",
       captions.length,
     );
-    return { captions, type };
+    return { captions };
   },
 });

@@ -28,7 +28,16 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "outDir": "dist"
+    "outDir": "dist",
+
+    "paths": {
+      "@repo/shared-types/*": ["../../packages/shared-types/src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../packages/shared-types"
+    }
+  ]
 }

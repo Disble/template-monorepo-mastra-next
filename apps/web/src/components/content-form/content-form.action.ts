@@ -1,20 +1,20 @@
 "use server";
 
-import { chaptersVideosWorkflow } from "#lib/mastra/workflows.js";
+import type { InputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
+import { chaptersVideosWorkflow } from "#lib/mastra/workflows";
 
 export async function submitContentForm({
   url,
-  contentType,
-}: {
-  url: string;
-  contentType: string;
-}) {
+  type,
+  levelModel,
+}: InputYoutubeWorkflow) {
   try {
     const run = await chaptersVideosWorkflow.createRunAsync();
     const { message } = await run.start({
       inputData: {
         url,
-        type: contentType,
+        type,
+        levelModel,
       },
     });
     console.log("🥝 message: ", message);
