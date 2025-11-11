@@ -3,19 +3,26 @@
 import { useQueryStates } from "nuqs";
 import { runIdSearchParams } from "#app/search-params";
 import { ContentForm } from "#components/content-form";
+import { WorkflowMonitor } from "#components/workflow-monitor";
 import { YoutubeVideoChapters } from "#components/youtube-video-chapters";
 
 export function YoutubeChaptersGenerator() {
   const [query] = useQueryStates(runIdSearchParams);
   return (
-    <div>
+    <div className="space-y-6">
       <ContentForm />
       {query.runId.length > 0 && (
         <>
-          <div className="mt-4 text-green-600">
-            <p>✅ Workflow started successfully!</p>
-            <p>Run ID: {query.runId}</p>
+          {/* Real-time workflow status */}
+          <div className="mt-6">
+            <WorkflowMonitor
+              runId={query.runId}
+              loadingMessage="Generating video chapters..."
+              showStepDetails={true}
+            />
           </div>
+
+          {/* Final results */}
           <YoutubeVideoChapters />
         </>
       )}

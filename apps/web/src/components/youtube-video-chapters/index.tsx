@@ -1,59 +1,98 @@
-import { useShape } from "@electric-sql/react";
-import { youtubeWorkflowSchema } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.helper";
-import { useQueryStates } from "nuqs";
-import { useMemo } from "react";
-import { runIdSearchParams } from "#app/search-params";
+"use client";
 
-/**
- * Mastra workflow snapshot structure
- */
-export type MastraWorkflowSnapshot = {
-  snapshot: string;
-};
+import { Button, Card, Chip } from "@repo/ui/heroui";
+import {
+  calculateTotalDuration,
+  copyChaptersToClipboard,
+  formatDuration,
+} from "./youtube-video-chapters.helper";
+import { useYoutubeVideoChapters } from "./youtube-video-chapters.hook";
 
 export function YoutubeVideoChapters() {
-  const [query] = useQueryStates(runIdSearchParams);
-  const { isLoading: submitIsLoading, data: mastraWorkflowData } =
-    useShape<MastraWorkflowSnapshot>({
-      url: `http://localhost:3000/v1/shape`,
-      params: {
-        table: "mastra_workflow_snapshot",
-        where: `run_id = '${query.runId}'`,
-      },
-    });
-  console.log("⏩ submitIsLoading:", submitIsLoading);
+  const { submitIsLoading, chapterSnapshot, normalizedChapters } =
+    useYoutubeVideoChapters();
 
-  const chapterSnapshot = useMemo(() => {
-    if (mastraWorkflowData.length === 0) {
-      return null;
-    }
-
-    const [chapterSnapshotRaw] = mastraWorkflowData;
-
-    if (!chapterSnapshotRaw?.snapshot) {
-      return null;
-    }
-
-    const parsed = youtubeWorkflowSchema.safeParse(
-      JSON.parse(chapterSnapshotRaw.snapshot),
+  if (submitIsLoading) {
+    // Loading state
+    return (
+      <div className="text-center py-12">
+        <p className="text-foreground/60">Loading chapters...</p>
+      </div>
     );
+  }
 
-    if (!parsed.success) {
-      console.error("Validation errors:", parsed.error.issues);
-      // setError("Failed to parse YouTube workflow snapshot");
-      return null;
-    }
-
-    console.log("parsed", parsed);
-
-    return parsed.data;
-  }, [mastraWorkflowData]);
-
-  console.log("👑 chapterSnapshot", chapterSnapshot);
+  if (!chapterSnapshot?.result?.chapters) {
+    // No data available
+    return (
+      <div className="text-center py-12">
+        <h4 className="text-lg font-medium text-foreground/70 mb-2">
+          No chapters found
+        </h4>
+        <p className="text-foreground/60 max-w-md mx-auto">
+          No chapters were generated for this video.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <pre className="max-w-dvw overflow-auto">
-      {JSON.stringify(chapterSnapshot?.result, null, 2)}
-    </pre>
+    <div className="space-y-3">
+      {normalizedChapters.map((chapter, index) => (
+        <Card
+          key={`${chapter.timestamp}-${index}`}
+          className="bg-content1 border border-default-200 hover:bg-content2 transition-colors"
+        >
+          <div className="p-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <Chip
+                  variant="secondary"
+                  color="accent"
+                  className="min-w-20 justify-center font-mono"
+                >
+                  {chapter.timestamp}
+                </Chip>
+                <span className="font-medium text-foreground">
+                  {chapter.description}
+                </span>
+              </div>
+              <Chip
+                variant="secondary"
+                color="default"
+                className="self-start sm:self-auto"
+              >
+                {formatDuration(
+                  chapter.timestamp,
+                  normalizedChapters[index + 1]?.timestamp,
+                )}
+              </Chip>
+            </div>
+          </div>
+        </Card>
+      ))}
+
+      <div className="text-center pt-6 border-t border-default-200">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <Chip variant="secondary" color="accent" className="px-3 py-1">
+            {normalizedChapters.length} chapters found
+          </Chip>
+
+          {normalizedChapters.length > 1 && (
+            <Chip variant="secondary" color="default" className="px-3 py-1">
+              Total duration: ~{calculateTotalDuration(normalizedChapters)}{" "}
+              minutes
+            </Chip>
+          )}
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onPress={() => copyChaptersToClipboard(normalizedChapters)}
+          >
+            Copy chapters
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
