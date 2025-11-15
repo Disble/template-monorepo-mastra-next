@@ -3,8 +3,12 @@ import {
   outputChapters,
   youtubeCaptionsSchema,
 } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
-import type { YoutubeWorkflowType } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
+import type {
+  YoutubeLevelModel,
+  YoutubeWorkflowType,
+} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import { encode } from "@toon-format/toon";
+import { levelModelMap } from "../../../constants/shared.constant";
 
 export const generateVideoChaptersStep = createStep({
   id: "generate-video-chapters",
@@ -22,6 +26,13 @@ export const generateVideoChaptersStep = createStep({
 
     const type: YoutubeWorkflowType =
       state?.type === "podcast" ? "podcast" : "reading";
+
+    const levelModel = state?.levelModel as YoutubeLevelModel;
+
+    const getModelByLevel = (level: YoutubeLevelModel) => {
+      console.log("📄 levelModelMap[level]: ", levelModelMap[level]);
+      return levelModelMap[level];
+    };
 
     const example =
       type === "podcast"
@@ -82,8 +93,7 @@ export const generateVideoChaptersStep = createStep({
       {
         structuredOutput: {
           schema: outputChapters,
-          // model: 'google/gemini-2.0-flash-001',
-          model: "google/gemini-2.5-flash",
+          model: getModelByLevel(levelModel),
         },
       },
     );

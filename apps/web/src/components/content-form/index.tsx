@@ -33,8 +33,8 @@ const contentTypes = [
  */
 const levelModels = [
   { id: "light" as const, label: "Light" },
-  { id: "heavy" as const, label: "Heavy" },
   { id: "high" as const, label: "High" },
+  { id: "heavy" as const, label: "Heavy" },
 ] as const;
 
 /**
@@ -65,7 +65,7 @@ export function ContentForm() {
     defaultValues: {
       url: "",
       type: "podcast",
-      levelModel: "light",
+      levelModel: "high",
     },
     mode: "onChange",
   });

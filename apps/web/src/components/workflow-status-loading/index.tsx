@@ -41,7 +41,7 @@ export function WorkflowStatusLoading({
                 {!isComplete && !isFailed && (
                   <Spinner size="sm" color="accent" />
                 )}
-                <span>
+                <span className="wrap-anywhere min-w-0">
                   {isComplete
                     ? "All steps completed successfully"
                     : isFailed

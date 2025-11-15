@@ -6,6 +6,30 @@ import { z } from "zod";
  */
 
 /**
+ * Processing intensity levels for YouTube workflow models.
+ *
+ * Defines the computational complexity and resource allocation
+ * for video processing operations:
+ *
+ * - `light`: Minimal processing, fastest execution, lower accuracy
+ * - `heavy`: Moderate processing, balanced performance and accuracy
+ * - `high`: Maximum processing, highest accuracy, slower execution
+ */
+export const levelModel = ["light", "heavy", "high"] as const;
+
+/**
+ * Zod validation schema for model processing levels.
+ *
+ * Validates that the selected processing level is one of the
+ * supported intensity levels defined in `levelModel`.
+ *
+ * @see levelModel - For available processing levels
+ */
+export const levelModelSchema = z
+  .enum(levelModel)
+  .describe("The level of the model to use");
+
+/**
  * Chapter data structure
  */
 export const chapterDataSchema = z.object({
@@ -29,9 +53,7 @@ export const youtubeWorkflowType = z
 export const inputYoutubeWorkflow = z.object({
   url: z.url().describe("The URL of the video to download the captions for"),
   type: youtubeWorkflowType,
-  levelModel: z
-    .enum(["light", "heavy", "high"])
-    .describe("The level of the model to use"),
+  levelModel: levelModelSchema,
 });
 
 export const youtubeCaptionsSchema = z.object({

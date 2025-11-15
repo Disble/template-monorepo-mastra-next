@@ -75,16 +75,21 @@ export const downloadCaptionsStep = createStep({
       throw new Error("Input data not found");
     }
 
-    const { url, type } = inputData;
+    const { url, type, levelModel } = inputData;
     console.log("🎬 Downloading SRT captions for video:", url);
 
-    setState({ type });
+    setState({ type, levelModel });
 
     const captions = await downloadCaptions(url);
     console.log(
       "✅ SRT captions downloaded successfully, length:",
       captions.length,
     );
+
+    if (captions.length === 0) {
+      throw new Error("No captions found for the provided video URL");
+    }
+
     return { captions };
   },
 });
