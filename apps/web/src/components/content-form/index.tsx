@@ -1,7 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import {
+  inputYoutubeWorkflow,
+  levelModel,
+} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
 import type { InputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import {
   Button,
@@ -46,7 +49,7 @@ const formSchema = inputYoutubeWorkflow.extend({
   type: z.enum(["reading", "podcast"], {
     message: "Tipo de contenido no válido",
   }),
-  levelModel: z.enum(["light", "heavy", "high"], {
+  levelModel: z.enum(levelModel, {
     message: "Nivel de modelo no válido",
   }),
 });
