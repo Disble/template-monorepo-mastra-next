@@ -1,6 +1,6 @@
 "use client";
 
-import { Alert, Spinner } from "@heroui/react";
+import { Alert, Spinner } from "@repo/ui/heroui";
 import {
   calculateDuration,
   formatStepLabel,
