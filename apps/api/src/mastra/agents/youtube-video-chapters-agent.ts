@@ -1,9 +1,6 @@
 import { Agent } from "@mastra/core/agent";
+import { levelModelMap } from "../constants/shared.constant";
 import { memory } from "../memory/memory";
-
-// const modelLight = "google/gemini-2.0-flash-001"; // NOTE: videos cortos
-const modelHeavy = "google/gemini-2.5-pro"; // NOTE: directos no muy largos
-// const modelHigh = "google/gemini-2.5-flash"; // NOTE: directos largos
 
 export const youtubeVideoChaptersAgent = new Agent({
   name: "Youtube Video Chapters Agent",
@@ -23,7 +20,7 @@ export const youtubeVideoChaptersAgent = new Agent({
       - Prioriza la precisión y relevancia del contenido
       - Mantén las descripciones breves pero descriptivas
 `,
-  model: modelHeavy,
+  model: levelModelMap.high,
   memory,
   // evals: {
   //   answerRelevancy: new AnswerRelevancyMetric(modelLight),

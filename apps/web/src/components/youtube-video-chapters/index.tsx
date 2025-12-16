@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Card, Chip } from "@repo/ui/heroui";
+import { ValidationErrorAlert } from "#components/validation-error-alert";
 import {
   calculateTotalDuration,
   copyChaptersToClipboard,
@@ -9,8 +10,12 @@ import {
 import { useYoutubeVideoChapters } from "./youtube-video-chapters.hook";
 
 export function YoutubeVideoChapters() {
-  const { submitIsLoading, chapterSnapshot, normalizedChapters } =
-    useYoutubeVideoChapters();
+  const {
+    submitIsLoading,
+    validationError,
+    chapterSnapshot,
+    normalizedChapters,
+  } = useYoutubeVideoChapters();
 
   if (submitIsLoading) {
     // Loading state
@@ -19,6 +24,11 @@ export function YoutubeVideoChapters() {
         <p className="text-foreground/60">Loading chapters...</p>
       </div>
     );
+  }
+
+  // Show validation error if present
+  if (validationError) {
+    return <ValidationErrorAlert validationError={validationError} />;
   }
 
   if (!chapterSnapshot?.result?.chapters) {

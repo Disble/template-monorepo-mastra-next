@@ -4,7 +4,10 @@ import type { WorkflowStatusLoadingProps } from "./workflow-status-loading.type"
 export function useWorkflowStatusLoading({
   workflowState,
 }: Pick<WorkflowStatusLoadingProps, "workflowState">) {
-  const steps = getStepStatus(workflowState.context);
+  const steps = getStepStatus(
+    workflowState.context,
+    workflowState.serializedStepGraph,
+  );
   const totalSteps = workflowState.serializedStepGraph.filter(
     (item) => item.type === "step",
   ).length;

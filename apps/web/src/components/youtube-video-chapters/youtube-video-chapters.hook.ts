@@ -20,15 +20,15 @@ export function useYoutubeVideoChapters() {
       },
     });
 
-  const chapterSnapshot = useMemo(() => {
+  const { chapterSnapshot, validationError } = useMemo(() => {
     if (mastraWorkflowData.length === 0) {
-      return null;
+      return { chapterSnapshot: null, validationError: null };
     }
 
     const [chapterSnapshotRaw] = mastraWorkflowData;
 
     if (!chapterSnapshotRaw?.snapshot) {
-      return null;
+      return { chapterSnapshot: null, validationError: null };
     }
 
     const parsed = youtubeWorkflowSchema.safeParse(
@@ -37,10 +37,13 @@ export function useYoutubeVideoChapters() {
 
     if (!parsed.success) {
       console.error("Validation errors:", parsed.error.issues);
-      return null;
+      return {
+        chapterSnapshot: null,
+        validationError: parsed.error.issues,
+      };
     }
 
-    return parsed.data;
+    return { chapterSnapshot: parsed.data, validationError: null };
   }, [mastraWorkflowData]);
 
   const normalizedChapters: NormalizedChapter[] = useMemo(() => {
@@ -57,6 +60,7 @@ export function useYoutubeVideoChapters() {
   return {
     submitIsLoading,
     chapterSnapshot,
+    validationError,
     normalizedChapters,
   };
 }

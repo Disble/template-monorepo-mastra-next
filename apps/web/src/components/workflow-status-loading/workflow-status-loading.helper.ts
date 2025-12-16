@@ -6,26 +6,43 @@ import type {
 
 /**
  * Extracts step information from the workflow context
+ * Returns all steps from serializedStepGraph with their current status
  */
 export function getStepStatus(
   context: WorkflowRunState["context"],
+  serializedStepGraph: WorkflowRunState["serializedStepGraph"],
 ): StepInfo[] {
   const steps: StepInfo[] = [];
 
-  for (const [key, value] of Object.entries(context)) {
-    if (
-      key !== "input" &&
-      typeof value === "object" &&
-      value !== null &&
-      "status" in value
-    ) {
-      steps.push({
-        id: key,
-        status: value.status as string,
-        startedAt:
-          "startedAt" in value ? (value.startedAt as number) : undefined,
-        endedAt: "endedAt" in value ? (value.endedAt as number) : undefined,
-      });
+  for (const item of serializedStepGraph) {
+    if (item.type === "step") {
+      const stepId = item.step.id;
+      const stepContext = context[stepId];
+
+      if (
+        stepContext &&
+        typeof stepContext === "object" &&
+        "status" in stepContext
+      ) {
+        steps.push({
+          id: stepId,
+          status: stepContext.status as string,
+          startedAt:
+            "startedAt" in stepContext
+              ? (stepContext.startedAt as number)
+              : undefined,
+          endedAt:
+            "endedAt" in stepContext
+              ? (stepContext.endedAt as number)
+              : undefined,
+        });
+      } else {
+        // Step hasn't started yet
+        steps.push({
+          id: stepId,
+          status: "pending",
+        });
+      }
     }
   }
 

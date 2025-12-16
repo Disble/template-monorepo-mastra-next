@@ -8,7 +8,8 @@
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
     "syncpackages": "sherif",
-    "lefthook-sync": "lefthook install"
+    "lefthook-sync": "lefthook install",
+    "postinstall": "lefthook install"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.3",
@@ -20,6 +21,9 @@
     "turbo": "^2.5.8",
     "typescript": "5.9.2"
   },
+  "trustedDependencies": [
+    "lefthook"
+  ],
   "engines": {
     "node": ">=18"
   },

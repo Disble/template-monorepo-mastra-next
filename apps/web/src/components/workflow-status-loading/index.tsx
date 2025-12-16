@@ -1,8 +1,8 @@
 "use client";
 
 import { Alert, Spinner } from "@repo/ui/heroui";
+import { WorkflowStepDuration } from "#components/workflow-step-duration";
 import {
-  calculateDuration,
   formatStepLabel,
   getStatusDisplay,
   getWorkflowStatusColor,
@@ -37,11 +37,11 @@ export function WorkflowStatusLoading({
           </Alert.Title>
           <Alert.Description>
             <div className="space-y-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-start gap-2">
                 {!isComplete && !isFailed && (
-                  <Spinner size="sm" color="accent" />
+                  <Spinner size="sm" color="accent" className="mt-1 shrink-0" />
                 )}
-                <span className="wrap-anywhere min-w-0">
+                <span className="min-w-0 whitespace-pre-wrap wrap-anywhere">
                   {isComplete
                     ? "All steps completed successfully"
                     : isFailed
@@ -68,7 +68,6 @@ export function WorkflowStatusLoading({
 
           {steps.map((step) => {
             const { icon, color, bgColor } = getStatusDisplay(step.status);
-            const duration = calculateDuration(step.startedAt, step.endedAt);
 
             return (
               <div
@@ -98,11 +97,10 @@ export function WorkflowStatusLoading({
                   </div>
 
                   {/* Duration */}
-                  {duration && (
-                    <div className="text-xs text-foreground/60 font-mono">
-                      {duration}
-                    </div>
-                  )}
+                  <WorkflowStepDuration
+                    startedAt={step.startedAt}
+                    endedAt={step.endedAt}
+                  />
                 </div>
               </div>
             );
