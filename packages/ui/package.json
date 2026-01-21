@@ -18,19 +18,19 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.9",
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   },
   "dependencies": {
-    "@heroui/react": "^3.0.0-beta.1",
-    "@heroui/styles": "^3.0.0-beta.1",
+    "@heroui/react": "3.0.0-beta.3",
+    "@heroui/styles": "3.0.0-beta.3",
     "@tailwindcss/cli": "^4.1.17",
     "@tailwindcss/postcss": "^4.1.17",
     "postcss": "^8.5.6",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "tailwindcss": "^4.1.17"
   }
 }

@@ -9,7 +9,7 @@ export async function submitContentForm({
   levelModel,
 }: InputYoutubeWorkflow) {
   try {
-    const run = await chaptersVideosWorkflow.createRunAsync();
+    const run = await chaptersVideosWorkflow.createRun();
     const { message } = await run.start({
       inputData: {
         url,

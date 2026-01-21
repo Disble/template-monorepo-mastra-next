@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.8",
-    "zod": "^4.1.13"
+    "zod": "4.1.13"
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "@types/node": "^24.10.0"
+    "@types/node": "^24.10.9"
   }
 }

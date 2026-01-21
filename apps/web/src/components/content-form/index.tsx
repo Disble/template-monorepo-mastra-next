@@ -18,7 +18,7 @@ import {
 } from "@repo/ui/heroui";
 import { useQueryStates } from "nuqs";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import * as z from "zod";
 import { runIdSearchParams } from "#app/search-params";
 import { submitContentForm } from "./content-form.action";
 
@@ -130,7 +130,7 @@ export function ContentForm() {
               <Select.Value />
               <Select.Indicator />
             </Select.Trigger>
-            <Select.Content>
+            <Select.Popover>
               <ListBox>
                 {contentTypes.map((type) => (
                   <ListBox.Item
@@ -143,7 +143,7 @@ export function ContentForm() {
                   </ListBox.Item>
                 ))}
               </ListBox>
-            </Select.Content>
+            </Select.Popover>
             {errors.type && <FieldError>{errors.type.message}</FieldError>}
           </Select>
         )}
@@ -167,7 +167,7 @@ export function ContentForm() {
               <Select.Value />
               <Select.Indicator />
             </Select.Trigger>
-            <Select.Content>
+            <Select.Popover>
               <ListBox>
                 {levelModels.map((level) => (
                   <ListBox.Item
@@ -180,7 +180,7 @@ export function ContentForm() {
                   </ListBox.Item>
                 ))}
               </ListBox>
-            </Select.Content>
+            </Select.Popover>
             {errors.levelModel && (
               <FieldError>{errors.levelModel.message}</FieldError>
             )}

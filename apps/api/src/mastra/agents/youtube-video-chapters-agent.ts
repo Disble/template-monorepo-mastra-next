@@ -3,6 +3,7 @@ import { levelModelMap } from "../constants/shared.constant";
 import { memory } from "../memory/memory";
 
 export const youtubeVideoChaptersAgent = new Agent({
+  id: "youtube-video-chapters-agent",
   name: "Youtube Video Chapters Agent",
   instructions: `
       Eres un asistente especializado en analizar transcripciones de videos de YouTube y generar capítulos significativos en español.
