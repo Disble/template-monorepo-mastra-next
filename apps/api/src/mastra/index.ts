@@ -5,11 +5,16 @@ import { env } from "@repo/envs/node";
 import { youtubeVideoChaptersAgent } from "./agents";
 import { weatherAgent } from "./agents/weather-agent";
 import { VECTOR_STORE } from "./constants/memory.constant";
+import { disbleMcpServer } from "./mcp/claude-mcp";
 import { pgVector } from "./memory/vector";
+import { getContentPageTool } from "./tools/get-content-page/get-content-page-tool";
 import { chaptersVideosWorkflow } from "./workflows/chapters-videos-workflow";
 
 export const mastra = new Mastra({
   agents: { weatherAgent, youtubeVideoChaptersAgent },
+  mcpServers: {
+    disbleMcpServer,
+  },
   workflows: {
     chaptersVideosWorkflow,
   },
@@ -24,6 +29,9 @@ export const mastra = new Mastra({
     name: "Mastra",
     level: "info",
   }),
+  tools: {
+    getContentPageTool,
+  },
   bundler: {
     sourcemap: true,
   },
