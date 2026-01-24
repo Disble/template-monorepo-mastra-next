@@ -43,13 +43,13 @@ async function downloadCaptions(url: string): Promise<Subtitle[]> {
       .map((caption, index) => {
         const startTime = new Date(parseFloat(caption.start) * 1000)
           .toISOString()
-          .substr(11, 12)
+          .substring(11, 23)
           .replace(".", ",");
         const endTime = new Date(
           (parseFloat(caption.start) + parseFloat(caption.dur)) * 1000,
         )
           .toISOString()
-          .substr(11, 12)
+          .substring(11, 23)
           .replace(".", ",");
         return `${index + 1}\n${startTime} --> ${endTime}\n${caption.text}\n`;
       })

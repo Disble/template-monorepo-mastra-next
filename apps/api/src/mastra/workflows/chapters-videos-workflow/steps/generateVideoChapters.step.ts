@@ -3,12 +3,10 @@ import {
   outputChapters,
   youtubeCaptionsSchema,
 } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
-import type {
-  YoutubeLevelModel,
-  YoutubeWorkflowType,
-} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
+import type { YoutubeLevelModel } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import { encode } from "@toon-format/toon";
 import { levelModelMap } from "../../../constants/shared.constant";
+import { stateStepsSchema } from "../schemas/state-steps.schema";
 
 export const generateVideoChaptersStep = createStep({
   id: "generate-video-chapters",
@@ -24,10 +22,7 @@ export const generateVideoChaptersStep = createStep({
       throw new Error("Video chapters agent not found");
     }
 
-    const type: YoutubeWorkflowType =
-      state?.type === "podcast" ? "podcast" : "reading";
-
-    const levelModel = state?.levelModel as YoutubeLevelModel;
+    const { type, levelModel } = stateStepsSchema.parse(state);
 
     const getModelByLevel = (level: YoutubeLevelModel) => {
       console.log("📄 levelModelMap[level]: ", levelModelMap[level]);

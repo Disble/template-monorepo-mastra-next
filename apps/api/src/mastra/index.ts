@@ -9,6 +9,7 @@ import { disbleMcpServer } from "./mcp/claude-mcp";
 import { pgVector } from "./memory/vector";
 import { getContentPageTool } from "./tools/get-content-page/get-content-page-tool";
 import { chaptersVideosWorkflow } from "./workflows/chapters-videos-workflow";
+import { wattpadChapterDownloadWorkflow } from "./workflows/download-wattpad-chapters-workflow";
 
 export const mastra = new Mastra({
   agents: { weatherAgent, youtubeVideoChaptersAgent },
@@ -17,6 +18,7 @@ export const mastra = new Mastra({
   },
   workflows: {
     chaptersVideosWorkflow,
+    wattpadChapterDownloadWorkflow,
   },
   storage: new PostgresStore({
     id: "mastra_pg_store",
