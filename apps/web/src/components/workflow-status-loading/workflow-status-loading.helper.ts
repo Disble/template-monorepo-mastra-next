@@ -149,3 +149,24 @@ export function getWorkflowStatusColor(
       return "accent";
   }
 }
+
+/**
+ * Formats an error for display
+ * Handles string, Error instance, or serialized error object
+ */
+export function formatError(
+  error: string | Error | { message: string; name?: string } | unknown,
+): string {
+  if (!error) return "Unknown error";
+
+  // String error
+  if (typeof error === "string") return error;
+
+  // Error instance or serialized error object with message
+  if (typeof error === "object" && error !== null && "message" in error) {
+    return String((error as { message: unknown }).message);
+  }
+
+  // Fallback
+  return String(error);
+}

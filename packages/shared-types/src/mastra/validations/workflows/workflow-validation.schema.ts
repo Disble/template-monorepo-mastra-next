@@ -22,6 +22,26 @@ export const workflowRunStatusSchema = z.enum([
   "canceled",
 ]);
 
+/**
+ * Serialized error object schema
+ * When errors are serialized to JSON, they become plain objects with message and name
+ */
+export const serializedErrorSchema = z.object({
+  message: z.string(),
+  name: z.string().optional(),
+  stack: z.string().optional(),
+  cause: z.unknown().optional(),
+});
+
+/**
+ * Error schema that accepts string, Error instance, or serialized error object
+ */
+export const errorSchema = z.union([
+  z.string(),
+  z.instanceof(Error),
+  serializedErrorSchema,
+]);
+
 // ============================================================================
 // Step Result Schemas
 // ============================================================================
@@ -59,7 +79,7 @@ export const stepSuccessSchema = stepResultBaseSchema.extend({
  */
 export const stepFailureSchema = stepResultBaseSchema.extend({
   status: z.literal("failed"),
-  error: z.union([z.string(), z.instanceof(Error)]),
+  error: errorSchema,
   endedAt: z.number(),
   suspendedAt: z.number().optional(),
   resumedAt: z.number().optional(),
@@ -203,7 +223,7 @@ export const workflowRunStateSchema = z.object({
   runId: z.uuid(),
   status: workflowRunStatusSchema,
   timestamp: z.number(),
-  error: z.union([z.string(), z.instanceof(Error)]).optional(),
+  error: errorSchema.optional(),
   runtimeContext: z.record(z.string(), z.any()).optional(),
   value: z.record(z.string(), z.any()),
   context: z

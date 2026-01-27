@@ -1,5 +1,7 @@
 export { createWorkflowSchema } from "./workflow-validation.helper";
 export {
+  errorSchema,
+  serializedErrorSchema,
   serializedStepFlowEntrySchema,
   serializedStepSchema,
   stepFailureSchema,
@@ -14,6 +16,7 @@ export {
 export type {
   BuildTypedContext,
   InferStepOutput,
+  SerializedError,
   StepFailure,
   StepResult,
   StepRunning,
@@ -23,6 +26,7 @@ export type {
   StepWaiting,
   TypedStepResult,
   TypedWorkflowState,
+  WorkflowError,
   WorkflowRunState,
   WorkflowRunStatus,
 } from "./workflow-validation.type";

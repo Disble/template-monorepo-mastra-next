@@ -3,6 +3,7 @@
 import { Alert, Spinner } from "@repo/ui/heroui";
 import { WorkflowStepDuration } from "#components/workflow-step-duration";
 import {
+  formatError,
   formatStepLabel,
   getStatusDisplay,
   getWorkflowStatusColor,
@@ -46,7 +47,7 @@ export function WorkflowStatusLoading({
                     ? "All steps completed successfully"
                     : isFailed
                       ? workflowState.error
-                        ? String(workflowState.error)
+                        ? formatError(workflowState.error)
                         : "Workflow execution failed"
                       : loadingMessage}
                 </span>

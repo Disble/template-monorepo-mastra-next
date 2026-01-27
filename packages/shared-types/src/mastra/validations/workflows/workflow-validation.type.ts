@@ -1,5 +1,7 @@
 import type { z } from "zod";
 import type {
+  errorSchema,
+  serializedErrorSchema,
   stepFailureSchema,
   stepResultSchema,
   stepRunningSchema,
@@ -18,6 +20,16 @@ import type {
 // ============================================================================
 // Base Types (Inferred from Schemas)
 // ============================================================================
+
+/**
+ * Serialized error object (when Error is converted to JSON)
+ */
+export type SerializedError = z.infer<typeof serializedErrorSchema>;
+
+/**
+ * Workflow error type (string, Error instance, or serialized error)
+ */
+export type WorkflowError = z.infer<typeof errorSchema>;
 
 /**
  * Workflow run status
