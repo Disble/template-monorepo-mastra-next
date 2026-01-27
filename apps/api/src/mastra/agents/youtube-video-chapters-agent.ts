@@ -21,7 +21,7 @@ export const youtubeVideoChaptersAgent = new Agent({
       - Prioriza la precisión y relevancia del contenido
       - Mantén las descripciones breves pero descriptivas
 `,
-  model: levelModelMap.high,
+  model: levelModelMap.heavy,
   memory,
   // evals: {
   //   answerRelevancy: new AnswerRelevancyMetric(modelLight),
