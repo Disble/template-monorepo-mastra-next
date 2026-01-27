@@ -81,7 +81,7 @@ export type StepSchemas = {
  * @internal
  */
 export type InferStepOutput<T extends z.ZodTypeAny | undefined> =
-  T extends z.ZodTypeAny ? z.infer<T> : Record<string, unknown>;
+  T extends z.ZodTypeAny ? z.infer<T> | z.infer<T>[] : Record<string, unknown>;
 
 /**
  * Step result with discriminated union preserved and custom output/payload types.

@@ -1,3 +1,4 @@
+import * as z from "zod";
 import { workflowRunStateSchema } from "./workflow-validation.schema";
 import type {
   StepSchemas,
@@ -36,6 +37,35 @@ import type {
  * }
  * ```
  */
+/**
+ * Deeply flattens an array or object to its core elements.
+ * Useful for validating Mastra data that might be wrapped in multiple array layers
+ * due to parallel or foreach blocks.
+ */
+// biome-ignore lint/suspicious/noExplicitAny: Recursive flattening utility returns mixed types
+function deepFlat(data: unknown): any {
+  // Handle Arrays
+  if (Array.isArray(data)) {
+    const flattened = data.flat(10);
+    return (flattened as unknown[]).map((item) => deepFlat(item));
+  }
+
+  // Handle Objects (plain objects, not null, not Date/Error etc.)
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    Object.getPrototypeOf(data) === Object.prototype
+  ) {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(data)) {
+      result[key] = deepFlat(value);
+    }
+    return result;
+  }
+
+  return data;
+}
+
 export function createWorkflowSchema<
   TSteps extends Record<string, StepSchemas>,
   TResultStep extends keyof TSteps,
@@ -49,11 +79,16 @@ export function createWorkflowSchema<
 
         // Validate input/payload
         if (schemas.input && "payload" in stepData && stepData.payload) {
-          const payloadResult = schemas.input.safeParse(stepData.payload);
+          const processedPayload = deepFlat(stepData.payload);
+          const isArray = Array.isArray(processedPayload);
+          const validationSchema = isArray
+            ? z.array(schemas.input)
+            : schemas.input;
+          const payloadResult = validationSchema.safeParse(processedPayload);
           if (!payloadResult.success) {
             ctx.addIssue({
               code: "custom",
-              message: `Invalid payload for step "${stepId}"`,
+              message: `Invalid payload for step "${stepId}": ${JSON.stringify(payloadResult.error.issues, null, 2)}`,
               path: ["context", stepId, "payload"],
             });
           }
@@ -67,11 +102,16 @@ export function createWorkflowSchema<
           "output" in stepData &&
           stepData.output
         ) {
-          const outputResult = schemas.output.safeParse(stepData.output);
+          const processedOutput = deepFlat(stepData.output);
+          const isArray = Array.isArray(processedOutput);
+          const validationSchema = isArray
+            ? z.array(schemas.output)
+            : schemas.output;
+          const outputResult = validationSchema.safeParse(processedOutput);
           if (!outputResult.success) {
             ctx.addIssue({
               code: "custom",
-              message: `Invalid output for step "${stepId}": ${outputResult.error.message}`,
+              message: `Invalid output for step "${stepId}": ${JSON.stringify(outputResult.error.issues, null, 2)}`,
               path: ["context", stepId, "output"],
             });
           }
@@ -81,11 +121,15 @@ export function createWorkflowSchema<
       // Validate result field if present
       const resultSchema = stepSchemas[resultStep as string]?.output;
       if (resultSchema && data.result) {
-        const resultValidation = resultSchema.safeParse(data.result);
+        const processedResult = deepFlat(data.result);
+        const isArray = Array.isArray(processedResult);
+        const validationSchema = isArray ? z.array(resultSchema) : resultSchema;
+
+        const resultValidation = validationSchema.safeParse(processedResult);
         if (!resultValidation.success) {
           ctx.addIssue({
             code: "custom",
-            message: `Invalid workflow result: ${resultValidation.error.message}`,
+            message: `Invalid workflow result: ${JSON.stringify(resultValidation.error.issues, null, 2)}`,
             path: ["result"],
           });
         }

@@ -30,9 +30,15 @@ export const workflowRunStatusSchema = z.enum([
  * Base step result with common fields
  */
 const stepResultBaseSchema = z.object({
-  payload: z.record(z.string(), z.any()).optional(),
-  resumePayload: z.record(z.string(), z.any()).optional(),
-  suspendPayload: z.record(z.string(), z.any()).optional(),
+  payload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
+  resumePayload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
+  suspendPayload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
   startedAt: z.number(),
   metadata: z.record(z.string(), z.any()).optional(),
 });
@@ -42,7 +48,7 @@ const stepResultBaseSchema = z.object({
  */
 export const stepSuccessSchema = stepResultBaseSchema.extend({
   status: z.literal("success"),
-  output: z.record(z.string(), z.any()).optional(),
+  output: z.any().optional(),
   endedAt: z.number(),
   suspendedAt: z.number().optional(),
   resumedAt: z.number().optional(),
@@ -64,8 +70,12 @@ export const stepFailureSchema = stepResultBaseSchema.extend({
  */
 export const stepSuspendedSchema = z.object({
   status: z.literal("suspended"),
-  payload: z.record(z.string(), z.any()).optional(),
-  suspendPayload: z.record(z.string(), z.any()).optional(),
+  payload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
+  suspendPayload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
   startedAt: z.number(),
   suspendedAt: z.number(),
   metadata: z.record(z.string(), z.any()).optional(),
@@ -85,9 +95,15 @@ export const stepRunningSchema = stepResultBaseSchema.extend({
  */
 export const stepWaitingSchema = z.object({
   status: z.literal("waiting"),
-  payload: z.record(z.string(), z.any()).optional(),
-  suspendPayload: z.record(z.string(), z.any()).optional(),
-  resumePayload: z.record(z.string(), z.any()).optional(),
+  payload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
+  suspendPayload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
+  resumePayload: z
+    .union([z.record(z.string(), z.any()), z.array(z.any())])
+    .optional(),
   startedAt: z.number(),
   metadata: z.record(z.string(), z.any()).optional(),
 });
@@ -189,7 +205,7 @@ export const workflowRunStateSchema = z.object({
   timestamp: z.number(),
   error: z.union([z.string(), z.instanceof(Error)]).optional(),
   runtimeContext: z.record(z.string(), z.any()).optional(),
-  value: z.record(z.string(), z.string()),
+  value: z.record(z.string(), z.any()),
   context: z
     .object({
       input: z.record(z.string(), z.any()).optional(),
@@ -199,5 +215,5 @@ export const workflowRunStateSchema = z.object({
   activePaths: z.array(z.unknown()),
   suspendedPaths: z.record(z.string(), z.array(z.number())),
   waitingPaths: z.record(z.string(), z.array(z.number())),
-  result: z.record(z.string(), z.any()).optional(),
+  result: z.union([z.record(z.string(), z.any()), z.array(z.any())]).optional(),
 });

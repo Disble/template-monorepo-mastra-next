@@ -31,7 +31,11 @@ export function YoutubeVideoChapters() {
     return <ValidationErrorAlert validationError={validationError} />;
   }
 
-  if (!chapterSnapshot?.result?.chapters) {
+  const result = chapterSnapshot?.result;
+  const hasChapters =
+    result && !Array.isArray(result) && "chapters" in result && result.chapters;
+
+  if (!hasChapters) {
     // No data available
     return (
       <div className="text-center py-12">

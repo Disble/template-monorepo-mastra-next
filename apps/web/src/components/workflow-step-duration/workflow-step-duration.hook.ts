@@ -19,10 +19,9 @@ export function useWorkflowStepDuration({
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  if (!startedAt) return { duration: null };
-
-  const end = endedAt || currentTime;
-  const duration = (end - startedAt) / 1000;
+  if (typeof startedAt !== "number") return { duration: null };
+  const end = typeof endedAt === "number" ? endedAt : currentTime;
+  const duration = Math.max(0, (end - startedAt) / 1000);
 
   return { duration };
 }

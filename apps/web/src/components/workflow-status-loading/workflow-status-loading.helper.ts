@@ -14,37 +14,73 @@ export function getStepStatus(
 ): StepInfo[] {
   const steps: StepInfo[] = [];
 
-  for (const item of serializedStepGraph) {
-    if (item.type === "step") {
-      const stepId = item.step.id;
-      const stepContext = context[stepId];
+  // Recursive function to traverse the graph
+  function traverse(graph: WorkflowRunState["serializedStepGraph"]) {
+    if (!graph || !Array.isArray(graph)) return;
 
-      if (
-        stepContext &&
-        typeof stepContext === "object" &&
-        "status" in stepContext
-      ) {
-        steps.push({
-          id: stepId,
-          status: stepContext.status as string,
-          startedAt:
-            "startedAt" in stepContext
-              ? (stepContext.startedAt as number)
-              : undefined,
-          endedAt:
-            "endedAt" in stepContext
-              ? (stepContext.endedAt as number)
-              : undefined,
-        });
-      } else {
-        // Step hasn't started yet
-        steps.push({
-          id: stepId,
-          status: "pending",
-        });
+    for (const item of graph) {
+      if (item.type === "step") {
+        addStep(item.step);
+        // Process nested step flow if it exists
+        if (item.step.serializedStepFlow) {
+          traverse(item.step.serializedStepFlow);
+        }
+      } else if (item.type === "parallel") {
+        traverse(item.steps);
+      } else if (item.type === "conditional") {
+        traverse(item.steps);
+      } else if (item.type === "loop" || item.type === "foreach") {
+        addStep(item.step);
+        if (item.step.serializedStepFlow) {
+          traverse(item.step.serializedStepFlow);
+        }
       }
     }
   }
+
+  function addStep(
+    step: Extract<
+      WorkflowRunState["serializedStepGraph"][number],
+      { step: unknown }
+    >["step"],
+  ) {
+    if (!step?.id) return;
+
+    const stepId = step.id as string;
+    const stepContext = context[stepId];
+
+    if (
+      stepContext &&
+      typeof stepContext === "object" &&
+      "status" in stepContext
+    ) {
+      // Use type narrowing instead of any
+      const startedAt =
+        "startedAt" in stepContext && typeof stepContext.startedAt === "number"
+          ? stepContext.startedAt
+          : undefined;
+
+      const endedAt =
+        "endedAt" in stepContext && typeof stepContext.endedAt === "number"
+          ? stepContext.endedAt
+          : undefined;
+
+      steps.push({
+        id: stepId,
+        status: stepContext.status as string,
+        startedAt,
+        endedAt,
+      });
+    } else {
+      // Step hasn't started yet
+      steps.push({
+        id: stepId,
+        status: "pending",
+      });
+    }
+  }
+
+  traverse(serializedStepGraph);
 
   return steps;
 }
@@ -66,9 +102,9 @@ export function calculateDuration(
   startedAt?: number,
   endedAt?: number,
 ): string {
-  if (!startedAt) return "";
-  const end = endedAt || Date.now();
-  const duration = (end - startedAt) / 1000;
+  if (typeof startedAt !== "number") return "";
+  const end = typeof endedAt === "number" ? endedAt : Date.now();
+  const duration = Math.max(0, (end - startedAt) / 1000);
   return `${duration.toFixed(1)}s`;
 }
 

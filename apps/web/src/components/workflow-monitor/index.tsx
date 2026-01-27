@@ -12,8 +12,9 @@ export function WorkflowMonitor({
   runId,
   loadingMessage,
   showStepDetails,
+  workflowName,
 }: WorkflowMonitorProps) {
-  const { isLoading, workflowState } = useWorkflowMonitor(runId);
+  const { isLoading, workflowState } = useWorkflowMonitor(runId, workflowName);
 
   if (isLoading || !workflowState) {
     return (

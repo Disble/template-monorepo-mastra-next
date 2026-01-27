@@ -47,14 +47,22 @@ export function useYoutubeVideoChapters() {
   }, [mastraWorkflowData]);
 
   const normalizedChapters: NormalizedChapter[] = useMemo(() => {
-    if (!chapterSnapshot?.result?.chapters) {
+    const result = chapterSnapshot?.result;
+    if (
+      !result ||
+      Array.isArray(result) ||
+      !("chapters" in result) ||
+      !result.chapters
+    ) {
       return [];
     }
 
-    return chapterSnapshot.result.chapters.map((chapter) => ({
-      ...chapter,
-      timestamp: normalizeTimestamp(chapter.timestamp),
-    }));
+    return result.chapters.map(
+      (chapter: { timestamp: string; description: string }) => ({
+        ...chapter,
+        timestamp: normalizeTimestamp(chapter.timestamp),
+      }),
+    );
   }, [chapterSnapshot]);
 
   return {
