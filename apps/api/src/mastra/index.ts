@@ -36,5 +36,6 @@ export const mastra = new Mastra({
   },
   bundler: {
     sourcemap: true,
+    externals: true,
   },
 });

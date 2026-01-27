@@ -8,6 +8,7 @@
     ],
     "paths": {
       "#*": ["./src/*"],
+      "#mastra/*": ["../../packages/shared-types/src/mastra/*"],
       "@repo/shared-types/*": ["../../packages/shared-types/src/*"]
     }
   },
