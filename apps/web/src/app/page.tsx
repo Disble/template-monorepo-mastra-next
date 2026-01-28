@@ -1,6 +1,6 @@
 import type { SearchParams } from "nuqs/server";
 import { loadSearchParams } from "#app/search-params";
-import { YoutubeChaptersGenerator } from "#components/youtube-chapters-generator";
+import { YoutubeChaptersGenerator } from "#components/youtube-srt/youtube-chapters-generator";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;

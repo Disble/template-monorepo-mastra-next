@@ -23,7 +23,8 @@
     "format-and-lint:fix": "biome check . --write",
     "syncpackages": "sherif",
     "lefthook-sync": "lefthook install",
-    "postinstall": "lefthook install"
+    "patch-deps": "node scripts/patch-deps.js",
+    "postinstall": "lefthook install && node scripts/patch-deps.js"
   },
   "trustedDependencies": [
     "lefthook"

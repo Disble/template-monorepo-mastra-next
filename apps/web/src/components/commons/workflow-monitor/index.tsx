@@ -1,6 +1,6 @@
 "use client";
 
-import { WorkflowStatusLoading } from "#components/workflow-status-loading";
+import { WorkflowStatusLoading } from "#components/commons/workflow-status-loading";
 import { useWorkflowMonitor } from "./workflow-monitor.hook";
 import type { WorkflowMonitorProps } from "./workflow-monitor.type";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Card, Chip } from "@repo/ui/heroui";
-import { ValidationErrorAlert } from "#components/validation-error-alert";
+import { ValidationErrorAlert } from "#components/commons/validation-error-alert";
 import {
   calculateTotalDuration,
   copyChaptersToClipboard,

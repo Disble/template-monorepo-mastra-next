@@ -1,7 +1,7 @@
 "use client";
 
 import { Alert, Spinner } from "@repo/ui/heroui";
-import { WorkflowStepDuration } from "#components/workflow-step-duration";
+import { WorkflowStepDuration } from "#components/commons/workflow-step-duration";
 import {
   formatError,
   formatStepLabel,

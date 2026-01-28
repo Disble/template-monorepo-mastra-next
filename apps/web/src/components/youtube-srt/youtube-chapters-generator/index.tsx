@@ -2,9 +2,9 @@
 
 import { useQueryStates } from "nuqs";
 import { runIdSearchParams } from "#app/search-params";
-import { ContentForm } from "#components/content-form";
-import { WorkflowMonitor } from "#components/workflow-monitor";
-import { YoutubeVideoChapters } from "#components/youtube-video-chapters";
+import { WorkflowMonitor } from "#components/commons/workflow-monitor";
+import { ContentForm } from "#components/youtube-srt/content-form";
+import { YoutubeVideoChapters } from "#components/youtube-srt/youtube-video-chapters";
 
 export function YoutubeChaptersGenerator() {
   const [query] = useQueryStates(runIdSearchParams);
