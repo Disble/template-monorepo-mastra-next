@@ -9,7 +9,14 @@ const wattpadChapterDownloadWorkflow = createWorkflow({
   id: "wattpad-chapter-download-workflow",
   inputSchema: inputDownloadWattpadChapterSchema,
   outputSchema: outputDownloadWattpadChapterSchema,
-}).then(downloadWattpadChapterStep);
+})
+  .then(downloadWattpadChapterStep)
+  .parallel([
+    // TODO: Add more steps here
+    // For example:
+    // analizar-structura-step,
+    // video-lorena-amkie,
+  ]);
 
 wattpadChapterDownloadWorkflow.commit();
 

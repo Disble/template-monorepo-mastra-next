@@ -1,5 +1,31 @@
 import { Stagehand } from "@browserbasehq/stagehand";
 
+/**
+ * Extracts the page number from a Wattpad URL
+ * @param url URL to analyze
+ * @returns Page number or null if invalid
+ */
+function extractPageNumber(url: string): number | null {
+  const regex = /\/page\/(\d+)$/;
+  const match = url.match(regex);
+  return match?.[1] ? parseInt(match[1], 10) : null;
+}
+
+/**
+ * Retrieves and extracts content from a Wattpad story page
+ *
+ * This function uses Stagehand to navigate to a Wattpad URL, scroll to the specified page,
+ * and extract the post content in markdown format using an AI model.
+ *
+ * @param url - The Wattpad story URL to fetch content from
+ * @param pages - The target page number to scroll to and extract content from
+ * @returns Promise resolving to an object containing the extracted content string
+ * @throws Logs errors to console if extraction or navigation fails
+ *
+ * @example
+ * const result = await getContentPage('https://www.wattpad.com/story/123456/page/1', 5);
+ * console.log(result.content); // Extracted markdown content
+ */
 export async function getContentPage(url: string, pages: number) {
   try {
     console.log("👋👋👋 Reset mastra tool 👋👋👋");
@@ -8,7 +34,7 @@ export async function getContentPage(url: string, pages: number) {
       model: {
         // modelName: "google/gemini-2.0-flash",
         // apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-        modelName: "ollama/qwen3:14b",
+        modelName: "ollama/maternion/fara:latest",
       },
     });
 
@@ -26,8 +52,23 @@ export async function getContentPage(url: string, pages: number) {
 
     console.log(`🧡 Navigated to ${url}`);
 
-    for (let i = 0; i < pages; i += 3) {
-      await stagehand.act("scroll to bottom of the page");
+    // Scroll hasta llegar a la página deseada
+    let currentPage = extractPageNumber(url);
+    let scrollAttempts = 0;
+    const maxScrollAttempts = 50;
+
+    while (currentPage !== pages && scrollAttempts < maxScrollAttempts) {
+      await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
+      await page.waitForTimeout(500);
+
+      const currentUrl = page.url();
+      currentPage = extractPageNumber(currentUrl);
+
+      console.log(
+        `📍 Intento ${scrollAttempts + 1}: Página actual = ${currentPage}, Página destino = ${pages}`,
+      );
+
+      scrollAttempts++;
     }
 
     const contentPage = await stagehand.extract(
@@ -35,7 +76,6 @@ export async function getContentPage(url: string, pages: number) {
       {
         model: {
           modelName: "ollama/qwen3:8b",
-          // modelName: "ollama/qwen3:14b",
         },
         // selector: "div.row.part-content",
         selector: `//*[@id="sticky-end"]/div`,

@@ -1,10 +1,18 @@
 import { createStep } from "@mastra/core/workflows";
+import {
+  createDbClient,
+  createStory,
+  findStoryByUrl,
+  updateStory,
+} from "@repo/db";
+import { env } from "@repo/envs/node";
 import * as z from "zod";
 import { getContentPage } from "../../../tools/get-content-page/get-content-page-wattpad";
 
 export const inputDownloadWattpadChapterSchema = z.object({
   url: z.url(),
   pages: z.number().min(1).max(100).default(1),
+  redownload: z.boolean().default(false),
 });
 
 export const outputDownloadWattpadChapterSchema = z.object({
@@ -19,8 +27,38 @@ export const downloadWattpadChapterStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { url, pages } = inputData;
+    const { url, pages, redownload } = inputData;
+
+    const db = createDbClient(env.DATABASE_URL);
+
+    const story = await findStoryByUrl(db, url);
+
+    if (story && !redownload) {
+      return { content: story.text };
+    }
+
+    console.log("🔴 Story not found, downloading content...");
+
     const responseContentPage = await getContentPage(url, pages);
+
+    if (story?.id && responseContentPage.content && redownload) {
+      updateStory(db, story?.id || 0, {
+        authorName: story?.authorName || "Unknown",
+        text: responseContentPage.content,
+        title: story?.title || `Wattpad Chapter from ${url}`,
+        url,
+      });
+    } else {
+      await createStory(db, {
+        authorName: "Unknown",
+        text: responseContentPage.content,
+        title: `Wattpad Chapter from ${url}`,
+        url,
+      });
+    }
+
+    console.log("✅ Content downloaded successfully");
+
     return responseContentPage;
   },
 });

@@ -24,6 +24,7 @@
     "@mastra/mcp": "^1.0.0",
     "@mastra/memory": "^1.0.0",
     "@mastra/pg": "^1.0.0",
+    "@repo/db": "*",
     "@repo/envs": "*",
     "@repo/shared-types": "*",
     "@toon-format/toon": "^2.1.0",
