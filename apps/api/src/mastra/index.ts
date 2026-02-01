@@ -2,7 +2,15 @@ import { Mastra } from "@mastra/core/mastra";
 import { PinoLogger } from "@mastra/loggers";
 import { PostgresStore } from "@mastra/pg";
 import { env } from "@repo/envs/node";
-import { youtubeVideoChaptersAgent } from "./agents";
+import {
+  characterDepthAnalyzerAgent,
+  continuityErrorDetectorAgent,
+  emotionalResonanceAnalyzerAgent,
+  narrativeStructureAnalyzerAgent,
+  openingHookAnalyzerAgent,
+  proseDisciplineAnalyzerAgent,
+  youtubeVideoChaptersAgent,
+} from "./agents";
 import { weatherAgent } from "./agents/weather-agent";
 import { VECTOR_STORE } from "./constants/memory.constant";
 import { disbleMcpServer } from "./mcp/claude-mcp";
@@ -12,7 +20,16 @@ import { chaptersVideosWorkflow } from "./workflows/chapters-videos-workflow";
 import { wattpadChapterDownloadWorkflow } from "./workflows/download-wattpad-chapters-workflow";
 
 export const mastra = new Mastra({
-  agents: { weatherAgent, youtubeVideoChaptersAgent },
+  agents: {
+    weatherAgent,
+    youtubeVideoChaptersAgent,
+    openingHookAnalyzerAgent,
+    narrativeStructureAnalyzerAgent,
+    continuityErrorDetectorAgent,
+    emotionalResonanceAnalyzerAgent,
+    characterDepthAnalyzerAgent,
+    proseDisciplineAnalyzerAgent,
+  },
   mcpServers: {
     disbleMcpServer,
   },

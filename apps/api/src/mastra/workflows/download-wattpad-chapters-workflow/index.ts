@@ -1,22 +1,37 @@
 import { createWorkflow } from "@mastra/core/workflows";
+import { characterDepthAnalyzerStep } from "./steps/character-depth-analyzer.step";
+import {
+  outputConglomerateReportSchema,
+  sendReportToUserStep,
+} from "./steps/conglomerate-report.step";
+import { continuityErrorDetectorStep } from "./steps/continuity-error-detector.step";
 import {
   downloadWattpadChapterStep,
   inputDownloadWattpadChapterSchema,
-  outputDownloadWattpadChapterSchema,
 } from "./steps/download-chapter-wattpad.step";
+import { emotionalResonanceAnalyzerStep } from "./steps/emotional-resonance-analyzer.step";
+import { engagementStoryAdvisorStep } from "./steps/engagement-story-advisor.step";
+import { narrativeStructureAdvisorStep } from "./steps/narrative-structure-advisor.step";
+import { proseDisciplineAnalyzerStep } from "./steps/prose-discipline-analyzer.step";
 
 const wattpadChapterDownloadWorkflow = createWorkflow({
   id: "wattpad-chapter-download-workflow",
   inputSchema: inputDownloadWattpadChapterSchema,
-  outputSchema: outputDownloadWattpadChapterSchema,
+  outputSchema: outputConglomerateReportSchema,
 })
   .then(downloadWattpadChapterStep)
   .parallel([
     // TODO: Add more steps here
     // For example:
-    // analizar-structura-step,
     // video-lorena-amkie,
-  ]);
+    engagementStoryAdvisorStep,
+    narrativeStructureAdvisorStep,
+    continuityErrorDetectorStep,
+    emotionalResonanceAnalyzerStep,
+    characterDepthAnalyzerStep,
+    proseDisciplineAnalyzerStep,
+  ])
+  .then(sendReportToUserStep);
 
 wattpadChapterDownloadWorkflow.commit();
 
