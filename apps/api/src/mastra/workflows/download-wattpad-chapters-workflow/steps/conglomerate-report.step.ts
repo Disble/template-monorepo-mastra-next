@@ -17,12 +17,12 @@ const parallelOutputSchema = z.object({
 });
 
 export const outputConglomerateReportSchema = z.object({
-  engagementStoryAdvisor: z.string().optional(),
-  narrativeStructureAnalyzer: z.string().optional(),
-  continuityErrorDetector: z.string().optional(),
-  emotionalResonanceAnalyzer: z.string().optional(),
-  characterDepthAnalyzer: z.string().optional(),
-  proseDisciplineAnalyzer: z.string().optional(),
+  engagementStoryAdvisor: outputEngamentStoryAdvisorSchema.optional(),
+  narrativeStructureAnalyzer: outputNarrativeStructureAdvisorSchema.optional(),
+  continuityErrorDetector: outputContinuityErrorDetectorSchema.optional(),
+  emotionalResonanceAnalyzer: outputEmotionalResonanceAnalyzerSchema.optional(),
+  characterDepthAnalyzer: outputCharacterDepthAnalyzerSchema.optional(),
+  proseDisciplineAnalyzer: outputProseDisciplineAnalyzerSchema.optional(),
 });
 
 export const sendReportToUserStep = createStep({
@@ -38,12 +38,12 @@ export const sendReportToUserStep = createStep({
     const proseDiscipline = inputData["prose-discipline-analyzer"];
 
     return {
-      engagementStoryAdvisor: engagement?.report,
-      narrativeStructureAnalyzer: narrativeStructure?.report,
-      continuityErrorDetector: continuityErrors?.report,
-      emotionalResonanceAnalyzer: emotionalResonance?.report,
-      characterDepthAnalyzer: characterDepth?.report,
-      proseDisciplineAnalyzer: proseDiscipline?.report,
+      engagementStoryAdvisor: engagement,
+      narrativeStructureAnalyzer: narrativeStructure,
+      continuityErrorDetector: continuityErrors,
+      emotionalResonanceAnalyzer: emotionalResonance,
+      characterDepthAnalyzer: characterDepth,
+      proseDisciplineAnalyzer: proseDiscipline,
     };
   },
 });

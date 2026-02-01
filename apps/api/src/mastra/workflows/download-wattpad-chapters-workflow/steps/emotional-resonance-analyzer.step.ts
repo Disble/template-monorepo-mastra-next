@@ -2,8 +2,67 @@ import { createStep } from "@mastra/core/workflows";
 import * as z from "zod";
 import { outputDownloadWattpadChapterSchema } from "./download-chapter-wattpad.step";
 
+const criterioEmocionalSchema = z.object({
+  nombre: z.string().describe("Nombre del criterio evaluado"),
+  score: z.number().min(0).max(10).describe("Puntuación de 0 a 10"),
+  explicacion: z
+    .string()
+    .describe("Explicación con evidencia textual específica"),
+});
+
+const momentoEmocionalSchema = z.object({
+  tipo: z
+    .enum(["FUNCIONA", "FALLA"])
+    .describe("Si el momento funciona o falla emocionalmente"),
+  cita: z.string().describe("Cita breve del momento"),
+  analisis: z.string().describe("Por qué genera o no genera emoción"),
+  emocion: z
+    .string()
+    .describe("Qué emoción genera o qué oportunidad emocional se pierde"),
+});
+
 export const outputEmotionalResonanceAnalyzerSchema = z.object({
-  report: z.string(),
+  diagnosticoEmocional: z.object({
+    categoriaLectura: z
+      .enum(["VISCERAL", "RESONANTE", "PRESENTE", "INFORMATIVA", "INERTE"])
+      .describe("Categoría de lectura emocional"),
+    descripcion: z
+      .string()
+      .describe(
+        "Qué se siente al leer este texto, experiencia emocional dominante",
+      ),
+  }),
+  criterios: z
+    .array(criterioEmocionalSchema)
+    .length(4)
+    .describe(
+      "Los 4 criterios: Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional",
+    ),
+  momentosEmocionalesClave: z
+    .array(momentoEmocionalSchema)
+    .min(2)
+    .max(6)
+    .describe("Momentos donde la emoción funciona o falla"),
+  patronesEmocionales: z
+    .array(z.string())
+    .min(1)
+    .max(5)
+    .describe("Patrones generales identificados en el manejo emocional"),
+  veredicto: z
+    .enum([
+      "EMOCIONALMENTE EFECTIVO",
+      "NECESITA PROFUNDIZAR",
+      "EMOCIONALMENTE PLANO",
+    ])
+    .describe("Veredicto editorial"),
+  recomendaciones: z
+    .array(z.string())
+    .min(0)
+    .max(3)
+    .describe("Acciones específicas para incrementar resonancia emocional"),
+  notaClave: z
+    .string()
+    .describe("La observación más importante sobre la emocionalidad del texto"),
 });
 
 export const emotionalResonanceAnalyzerStep = createStep({
@@ -31,11 +90,14 @@ ${content}
 \`\`\`
 </story_text>
 
-Proporciona tu análisis siguiendo tu formato estructurado, siendo específico sobre qué emociones se generan (o no) y por qué técnicamente funciona o falla.`;
+Proporciona tu análisis estructurado evaluando los 4 criterios (Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional), siendo específico sobre qué emociones se generan (o no) y por qué técnicamente funciona o falla.`;
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
         temperature: 0.7,
+      },
+      structuredOutput: {
+        schema: outputEmotionalResonanceAnalyzerSchema,
       },
     });
 
@@ -44,9 +106,13 @@ Proporciona tu análisis siguiendo tu formato estructurado, siendo específico s
       console.log(chunk);
     }
 
-    // Get full text after streaming
-    const text = await stream.text;
+    // Get structured object from stream
+    const object = await stream.object;
 
-    return { report: text };
+    if (!object) {
+      throw new Error("No analysis generated");
+    }
+
+    return object;
   },
 });
