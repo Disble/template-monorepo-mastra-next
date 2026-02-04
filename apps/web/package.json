@@ -15,14 +15,14 @@
     "format-and-lint:fix": "biome check . --write"
   },
   "dependencies": {
-    "@electric-sql/react": "^1.0.18",
+    "@electric-sql/react": "^1.0.30",
     "@hookform/resolvers": "^5.2.2",
-    "@mastra/client-js": "^1.0.1",
+    "@mastra/client-js": "^1.1.0",
     "@repo/envs": "*",
     "@repo/shared-types": "*",
     "@repo/ui": "*",
     "next": "^16.1.4",
-    "nuqs": "^2.8.6",
+    "nuqs": "^2.8.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.71.1",
