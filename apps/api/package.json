@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@browserbasehq/stagehand": "^3.0.8",
+    "@googleapis/youtube": "^31.0.0",
     "@mastra/core": "^1.1.0",
     "@mastra/loggers": "^1.0.1",
     "@mastra/mcp": "^1.0.0",
@@ -28,6 +29,7 @@
     "@repo/envs": "*",
     "@repo/shared-types": "*",
     "@toon-format/toon": "^2.1.0",
+    "googleapis": "^171.2.0",
     "ollama-ai-provider-v2": "^3.0.3",
     "youtube-caption-extractor": "^1.9.1",
     "zod": "4.1.13"
