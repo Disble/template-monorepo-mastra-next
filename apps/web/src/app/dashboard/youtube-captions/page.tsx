@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="grid place-items-center space-y-8">
+    <div className="w-full px-4 py-8">
       <YoutubeChaptersGenerator />
     </div>
   );

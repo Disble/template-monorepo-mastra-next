@@ -56,7 +56,11 @@ const formSchema = inputYoutubeWorkflow.extend({
 
 type FormData = InputYoutubeWorkflow;
 
-export function ContentForm() {
+interface ContentFormProps {
+  onSubmitSuccess?: () => void;
+}
+
+export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
   const [query, setQuery] = useQueryStates(runIdSearchParams);
   console.log("🥒 runId:", query.runId);
   const {
@@ -85,6 +89,7 @@ export function ContentForm() {
     setQuery({
       runId: response.runId,
     });
+    onSubmitSuccess?.();
   };
 
   return (
