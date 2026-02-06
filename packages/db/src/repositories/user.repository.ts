@@ -1,16 +1,16 @@
 import { eq } from "drizzle-orm";
 import type { DbClient } from "../client";
-import { users } from "../schema/users";
+import { user } from "../schema/users";
 
-export const findUserById = async (db: DbClient, id: number) => {
-  return db.query.users.findFirst({
-    where: eq(users.id, id),
+export const findUserById = async (db: DbClient, id: string) => {
+  return db.query.user.findFirst({
+    where: eq(user.id, id),
   });
 };
 
 export const createUser = async (
   db: DbClient,
-  newUser: typeof users.$inferInsert,
+  newUser: typeof user.$inferInsert,
 ) => {
-  return db.insert(users).values(newUser).returning();
+  return db.insert(user).values(newUser).returning();
 };
