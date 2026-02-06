@@ -8,6 +8,20 @@
       "when": 1769639424068,
       "tag": "0000_breezy_blacklash",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770242165824,
+      "tag": "0001_funny_black_tarantula",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770243067182,
+      "tag": "0002_sleepy_xavin",
+      "breakpoints": true
     }
   ]
 }
