@@ -1,4 +1,3 @@
-````markdown
 # HUS Analyzer
 
 Monorepo basado en Turborepo que incluye una API con agentes de Mastra y una aplicación web Next.js.
@@ -138,8 +137,6 @@ Documentación de Mastra:
 - [Mastra Documentation](https://mastra.com/docs)
 - [Agents](https://mastra.com/docs/agents)
 - [Tools](https://mastra.com/docs/tools)
-
-````
 
 ## Useful Links
 
