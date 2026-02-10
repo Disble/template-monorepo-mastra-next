@@ -9,7 +9,8 @@ import {
 import { useYoutubeVideoCaptions } from "./youtube-video-captions.hook";
 
 export function YoutubeVideoCaptions() {
-  const { isLoading, captions, validationError } = useYoutubeVideoCaptions();
+  const { isLoading, captions, srtRaw, validationError } =
+    useYoutubeVideoCaptions();
 
   if (isLoading) {
     return (
@@ -79,7 +80,7 @@ export function YoutubeVideoCaptions() {
         <Button
           variant="secondary"
           size="sm"
-          onPress={() => copyCaptionsToClipboard(captions)}
+          onPress={() => copyCaptionsToClipboard(srtRaw)}
         >
           Copy text
         </Button>

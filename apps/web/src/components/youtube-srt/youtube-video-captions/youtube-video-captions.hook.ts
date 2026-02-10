@@ -3,10 +3,8 @@ import { youtubeWorkflowSchema } from "@repo/shared-types/mastra/validations/you
 import { useQueryStates } from "nuqs";
 import { useMemo } from "react";
 import { runIdSearchParams } from "#app/search-params";
-import type {
-  Caption,
-  MastraWorkflowSnapshot,
-} from "./youtube-video-captions.type";
+import { parseSRT } from "./youtube-video-captions.helper";
+import type { MastraWorkflowSnapshot } from "./youtube-video-captions.type";
 
 export function useYoutubeVideoCaptions() {
   const [query] = useQueryStates(runIdSearchParams);
@@ -19,15 +17,15 @@ export function useYoutubeVideoCaptions() {
       },
     });
 
-  const { captions, validationError } = useMemo(() => {
+  const { captions, srtRaw, validationError } = useMemo(() => {
     if (mastraWorkflowData.length === 0) {
-      return { captions: null, validationError: null };
+      return { captions: null, srtRaw: null, validationError: null };
     }
 
     const [snapshotRaw] = mastraWorkflowData;
 
     if (!snapshotRaw?.snapshot) {
-      return { captions: null, validationError: null };
+      return { captions: null, srtRaw: null, validationError: null };
     }
 
     const parsed = youtubeWorkflowSchema.safeParse(
@@ -38,32 +36,46 @@ export function useYoutubeVideoCaptions() {
       console.error("Captions validation errors:", parsed.error.issues);
       return {
         captions: null,
+        srtRaw: null,
         validationError: parsed.error.issues,
       };
     }
 
     // Extract captions from the download-captions step context
     const downloadCaptionsStep = parsed.data.context["download-captions"];
+    console.log("downloadStep:", downloadCaptionsStep);
+
     if (
-      downloadCaptionsStep &&
-      "status" in downloadCaptionsStep &&
-      downloadCaptionsStep.status === "success" &&
-      "output" in downloadCaptionsStep &&
+      downloadCaptionsStep?.status === "success" &&
       downloadCaptionsStep.output
     ) {
-      const output = downloadCaptionsStep.output as { captions?: Caption[] };
-      return {
-        captions: output.captions ?? null,
-        validationError: null,
-      };
+      const { srt } = downloadCaptionsStep.output;
+
+      if (!srt) {
+        return { captions: null, srtRaw: null, validationError: null };
+      }
+
+      try {
+        const parsedCaptions = parseSRT(srt);
+        console.log("Parsed captions count:", parsedCaptions.length);
+        return {
+          captions: parsedCaptions,
+          srtRaw: srt,
+          validationError: null,
+        };
+      } catch (error) {
+        console.error("Error parsing SRT:", error);
+        return { captions: null, srtRaw: null, validationError: null };
+      }
     }
 
-    return { captions: null, validationError: null };
+    return { captions: null, srtRaw: null, validationError: null };
   }, [mastraWorkflowData]);
 
   return {
     isLoading,
     captions,
+    srtRaw,
     validationError,
   };
 }
