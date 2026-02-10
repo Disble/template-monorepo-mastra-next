@@ -14,11 +14,10 @@ export const downloadCaptionsStep = createStep({
       throw new Error("Input data not found");
     }
 
-    const { url, userId, type, levelModel } = inputData;
+    const { url, userId, type } = inputData;
     console.log("🎬 Downloading captions for video:", url);
-    console.log("userId:", userId);
 
-    setState({ type, levelModel });
+    setState({ type });
 
     const srt = await downloadCaptionsWithYouTubeAPI(url, userId);
     console.log(

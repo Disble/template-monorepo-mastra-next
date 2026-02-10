@@ -1,4 +1,3 @@
-import type { YoutubeLevelModel } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import { ollama } from "ollama-ai-provider-v2";
 
 export const levelModelMap = {
@@ -6,4 +5,4 @@ export const levelModelMap = {
   // high: "lmstudio/openai/gpt-oss-20b",
   high: "google/gemini-2.5-flash-lite",
   heavy: "google/gemini-3-flash-preview",
-} as const satisfies Record<YoutubeLevelModel, unknown>;
+} as const;

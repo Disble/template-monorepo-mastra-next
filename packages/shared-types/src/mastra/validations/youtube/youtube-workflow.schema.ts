@@ -6,30 +6,6 @@ import { z } from "zod";
  */
 
 /**
- * Processing intensity levels for YouTube workflow models.
- *
- * Defines the computational complexity and resource allocation
- * for video processing operations:
- *
- * - `light`: Minimal processing, fastest execution, lower accuracy
- * - `heavy`: Moderate processing, balanced performance and accuracy
- * - `high`: Maximum processing, highest accuracy, slower execution
- */
-export const levelModel = ["light", "heavy", "high"] as const;
-
-/**
- * Zod validation schema for model processing levels.
- *
- * Validates that the selected processing level is one of the
- * supported intensity levels defined in `levelModel`.
- *
- * @see levelModel - For available processing levels
- */
-export const levelModelSchema = z
-  .enum(levelModel)
-  .describe("The level of the model to use");
-
-/**
  * Chapter data structure
  */
 export const chapterDataSchema = z.object({
@@ -58,7 +34,6 @@ export const inputYoutubeWorkflow = z.object({
       "The ID of the user whose Google tokens will be used for API authentication",
     ),
   type: youtubeWorkflowType,
-  levelModel: levelModelSchema,
 });
 
 export const youtubeCaptionsSchema = z.object({

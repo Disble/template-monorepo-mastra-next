@@ -8,7 +8,6 @@ import { chaptersVideosWorkflow } from "#lib/mastra/workflows";
 export async function submitContentForm({
   url,
   type,
-  levelModel,
 }: Omit<InputYoutubeWorkflow, "userId">) {
   try {
     const session = await auth.api.getSession({
@@ -26,7 +25,6 @@ export async function submitContentForm({
       inputData: {
         url,
         type,
-        levelModel,
         userId,
       },
     });

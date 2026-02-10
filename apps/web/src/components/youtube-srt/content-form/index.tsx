@@ -1,10 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  inputYoutubeWorkflow,
-  levelModel,
-} from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import { inputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
 import type { InputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import {
   Button,
@@ -32,15 +29,6 @@ const contentTypes = [
 ] as const;
 
 /**
- * UI configuration for level models
- */
-const levelModels = [
-  { id: "light" as const, label: "Light" },
-  { id: "high" as const, label: "High" },
-  { id: "heavy" as const, label: "Heavy" },
-] as const;
-
-/**
  * Form schema extending from shared-types schema
  * Uses the same structure as inputYoutubeWorkflow but with better error messages for UI
  */
@@ -48,9 +36,6 @@ const formSchema = inputYoutubeWorkflow.omit({ userId: true }).extend({
   url: z.url("Ingresa una URL válida"),
   type: z.enum(["reading", "podcast"], {
     message: "Tipo de contenido no válido",
-  }),
-  levelModel: z.enum(levelModel, {
-    message: "Nivel de modelo no válido",
   }),
 });
 
@@ -72,7 +57,6 @@ export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
     defaultValues: {
       url: "",
       type: "podcast",
-      levelModel: "high",
     },
     mode: "onChange",
   });
@@ -84,7 +68,6 @@ export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
     const response = await submitContentForm({
       url: data.url,
       type: data.type,
-      levelModel: data.levelModel,
     });
     setQuery({
       runId: response.runId,
@@ -148,45 +131,6 @@ export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
               </ListBox>
             </Select.Popover>
             {errors.type && <FieldError>{errors.type.message}</FieldError>}
-          </Select>
-        )}
-      />
-
-      {/* Level Model Select */}
-      <Controller
-        name="levelModel"
-        control={control}
-        render={({ field }) => (
-          <Select
-            {...field}
-            isRequired
-            className="w-full"
-            placeholder="Selecciona un nivel"
-            isInvalid={!!errors.levelModel}
-            onChange={(value) => field.onChange(value)}
-          >
-            <Label>Nivel del Modelo</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {levelModels.map((level) => (
-                  <ListBox.Item
-                    key={level.id}
-                    id={level.id}
-                    textValue={level.label}
-                  >
-                    {level.label}
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </Select.Popover>
-            {errors.levelModel && (
-              <FieldError>{errors.levelModel.message}</FieldError>
-            )}
           </Select>
         )}
       />
