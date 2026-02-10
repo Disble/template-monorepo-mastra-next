@@ -3,7 +3,6 @@ import {
   outputChapters,
   youtubeCaptionsSchema,
 } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
-import { encode } from "@toon-format/toon";
 import { levelModelMap } from "../../../constants/shared.constant";
 import { stateStepsSchema } from "../schemas/state-steps.schema";
 
@@ -15,7 +14,7 @@ export const generateVideoChaptersStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { captions } = inputData;
+    const { srt } = inputData;
     const agent = mastra?.getAgent("youtubeVideoChaptersAgent");
     if (!agent) {
       throw new Error("Video chapters agent not found");
@@ -63,37 +62,82 @@ export const generateVideoChaptersStep = createStep({
     - Usa timestamps reales de los subtítulos
 
     CONTENIDO A ANALIZAR:
-    Data is in TOON format (2-space indent, arrays show length and fields).
+    Aquí están los subtítulos en formato SRT:
 
-    \`\`\`toon
-    ${encode(captions)}
+    \`\`\`srt
+    ${srt}
     \`\`\`
 
     Genera los capítulos siguiendo el formato especificado.
     `;
 
-    const { object, usage } = await agent.generate(
-      [
+    // const { object, usage } = await agent.generate(
+    //   [
+    //     {
+    //       role: "user",
+    //       content: prompt,
+    //     },
+    //   ],
+    //   {
+    //     structuredOutput: {
+    //       schema: outputChapters,
+    //       model: levelModelMap.heavy,
+    //     },
+    //   },
+    // );
+
+    // console.log("🔴 Token usage", usage);
+    // console.log("🔍 Texto generado:", object);
+
+    // if (!object) {
+    //   throw new Error("No chapters generated");
+    // }
+
+    // return object;
+
+    // haz un mock de la respuesta
+    return {
+      chapters: [
+        { timestamp: "00:00:00", description: "Iniciando" },
         {
-          role: "user",
-          content: prompt,
+          timestamp: "00:08:51",
+          description: "Bienvenida a la autora Roma Damned",
         },
+        {
+          timestamp: "00:12:34",
+          description: "Pregunta de la invitada anterior",
+        },
+        {
+          timestamp: "00:18:26",
+          description: "El comienzo de Roma como autora en Wattpad",
+        },
+        {
+          timestamp: "00:24:43",
+          description:
+            "La creación de Queen Editorial y críticas al mundo editorial",
+        },
+        {
+          timestamp: "00:45:02",
+          description: "Consejos: ¿Qué NO hacer al presentar un manuscrito?",
+        },
+        {
+          timestamp: "00:55:10",
+          description: "Cómo lidiar con las malas reseñas y los trolls",
+        },
+        {
+          timestamp: "01:05:29",
+          description: "El mayor desafío de publicar por primera vez",
+        },
+        {
+          timestamp: "01:22:40",
+          description: "Su primer contrato editorial: ¿Cómo fue?",
+        },
+        {
+          timestamp: "01:28:17",
+          description: "Consejo final para escritores novatos",
+        },
+        { timestamp: "01:35:40", description: "Despedida y cierre" },
       ],
-      {
-        structuredOutput: {
-          schema: outputChapters,
-          model: levelModelMap.heavy,
-        },
-      },
-    );
-
-    console.log("🔴 Token usage", usage);
-    console.log("🔍 Texto generado:", object);
-
-    if (!object) {
-      throw new Error("No chapters generated");
-    }
-
-    return object;
+    };
   },
 });

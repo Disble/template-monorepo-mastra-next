@@ -44,7 +44,7 @@ const levelModels = [
  * Form schema extending from shared-types schema
  * Uses the same structure as inputYoutubeWorkflow but with better error messages for UI
  */
-const formSchema = inputYoutubeWorkflow.extend({
+const formSchema = inputYoutubeWorkflow.omit({ userId: true }).extend({
   url: z.url("Ingresa una URL válida"),
   type: z.enum(["reading", "podcast"], {
     message: "Tipo de contenido no válido",
@@ -54,7 +54,7 @@ const formSchema = inputYoutubeWorkflow.extend({
   }),
 });
 
-type FormData = InputYoutubeWorkflow;
+type FormData = Omit<InputYoutubeWorkflow, "userId">;
 
 interface ContentFormProps {
   onSubmitSuccess?: () => void;

@@ -52,20 +52,17 @@ export const youtubeWorkflowType = z
  */
 export const inputYoutubeWorkflow = z.object({
   url: z.url().describe("The URL of the video to download the captions for"),
+  userId: z
+    .string()
+    .describe(
+      "The ID of the user whose Google tokens will be used for API authentication",
+    ),
   type: youtubeWorkflowType,
   levelModel: levelModelSchema,
 });
 
 export const youtubeCaptionsSchema = z.object({
-  captions: z
-    .array(
-      z.object({
-        start: z.string().describe("The start time of the caption"),
-        dur: z.string().describe("The duration of the caption"),
-        text: z.string().describe("The text of the caption"),
-      }),
-    )
-    .describe("The captions of the video"),
+  srt: z.string().describe("The SRT captions content as string"),
 });
 
 export const outputChapters = z.object({
