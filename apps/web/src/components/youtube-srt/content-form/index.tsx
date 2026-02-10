@@ -94,11 +94,9 @@ export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
 
   return (
     <Form
-      className="flex w-full max-w-md flex-col gap-6"
+      className="flex w-full flex-col gap-5"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h1 className="text-2xl font-bold">Formulario de Contenido</h1>
-
       {/* URL Input */}
       <Controller
         name="url"

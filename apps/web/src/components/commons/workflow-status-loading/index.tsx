@@ -110,14 +110,14 @@ export function WorkflowStatusLoading({
       )}
 
       {/* Progress Bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+      <div className="w-full bg-default-200 rounded-full h-2 overflow-hidden">
         <div
           className={`h-full transition-all duration-500 ${
             isComplete
-              ? "bg-green-600"
+              ? "bg-success"
               : isFailed
-                ? "bg-red-600"
-                : "bg-blue-600 animate-pulse"
+                ? "bg-danger"
+                : "bg-primary animate-pulse"
           }`}
           style={{
             width: `${totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0}%`,
@@ -126,7 +126,7 @@ export function WorkflowStatusLoading({
       </div>
 
       {/* Run ID */}
-      <div className="text-xs text-foreground/40 text-center font-mono">
+      <div className="text-xs text-foreground/30 text-center font-mono">
         Run ID: {workflowState.runId}
       </div>
     </div>

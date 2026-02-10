@@ -1,6 +1,6 @@
 "use client";
 
-import { Accordion, Button, Card, Chip } from "@repo/ui/heroui";
+import { Button, Chip, Spinner } from "@repo/ui/heroui";
 import { ValidationErrorAlert } from "#components/commons/validation-error-alert";
 import {
   calculateTotalDuration,
@@ -19,8 +19,9 @@ export function YoutubeVideoChapters() {
 
   if (submitIsLoading) {
     return (
-      <div className="text-center py-12">
-        <p className="text-foreground/60">Loading chapters...</p>
+      <div className="flex flex-col items-center justify-center py-16">
+        <Spinner size="sm" color="current" className="mb-2" />
+        <p className="text-sm text-foreground/50">Cargando capítulos...</p>
       </div>
     );
   }
@@ -35,76 +36,78 @@ export function YoutubeVideoChapters() {
 
   if (!hasChapters) {
     return (
-      <div className="text-center py-12">
-        <h4 className="text-lg font-medium text-foreground/70 mb-2">
-          No chapters found
-        </h4>
-        <p className="text-foreground/60 max-w-md mx-auto">
-          No chapters were generated for this video.
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <div className="w-10 h-10 rounded-full bg-default-100 flex items-center justify-center mb-3">
+          <svg
+            className="w-5 h-5 text-foreground/30"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <title>Sin capítulos</title>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M4 6h16M4 10h16M4 14h16M4 18h16"
+            />
+          </svg>
+        </div>
+        <p className="text-sm font-medium text-foreground/60 mb-1">
+          Sin capítulos
+        </p>
+        <p className="text-xs text-foreground/40">
+          No se generaron capítulos para este video.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      <Accordion allowsMultipleExpanded defaultExpandedKeys={["chapters-list"]}>
-        <Accordion.Item id="chapters-list">
-          <Accordion.Heading>
-            <Accordion.Trigger>
-              Chapters
-              <Accordion.Indicator />
-            </Accordion.Trigger>
-          </Accordion.Heading>
-          <Accordion.Panel>
-            <Accordion.Body>
-              <div className="space-y-3 max-h-[60vh] overflow-y-auto">
-                {normalizedChapters.map((chapter, index) => (
-                  <Card
-                    key={`${chapter.timestamp}-${index}`}
-                    className="bg-content1 border border-default-200 hover:bg-content2 transition-colors"
-                  >
-                    <div className="p-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                          <Chip
-                            variant="secondary"
-                            color="accent"
-                            className="min-w-20 justify-center font-mono"
-                          >
-                            {chapter.timestamp}
-                          </Chip>
-                          <span className="font-medium text-foreground">
-                            {chapter.description}
-                          </span>
-                        </div>
-                        <Chip
-                          variant="secondary"
-                          color="default"
-                          className="self-start sm:self-auto"
-                        >
-                          {formatDuration(
-                            chapter.timestamp,
-                            normalizedChapters[index + 1]?.timestamp,
-                          )}
-                        </Chip>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+    <div className="flex flex-col h-full">
+      {/* Scrollable chapter list */}
+      <div className="flex-1 space-y-2 max-h-[55vh] overflow-y-auto pr-1 -mr-1">
+        {normalizedChapters.map((chapter, index) => (
+          <div
+            key={`${chapter.timestamp}-${index}`}
+            className="rounded-lg border border-default-200 p-3 hover:bg-content2 transition-colors"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Chip
+                  variant="secondary"
+                  color="accent"
+                  className="min-w-[4.5rem] justify-center font-mono text-xs shrink-0"
+                >
+                  {chapter.timestamp}
+                </Chip>
+                <span className="text-sm font-medium text-foreground truncate">
+                  {chapter.description}
+                </span>
               </div>
-            </Accordion.Body>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
+              <Chip
+                variant="secondary"
+                color="default"
+                className="shrink-0 text-xs"
+              >
+                {formatDuration(
+                  chapter.timestamp,
+                  normalizedChapters[index + 1]?.timestamp,
+                )}
+              </Chip>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      <div className="flex justify-between items-center pt-3 border-t border-default-200">
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-3 mt-3 border-t border-default-200">
         <div className="flex items-center gap-2">
-          <Chip variant="secondary" color="accent" className="px-3 py-1">
-            {normalizedChapters.length} chapters
+          <Chip variant="secondary" color="accent" className="text-xs">
+            {normalizedChapters.length} capítulos
           </Chip>
           {normalizedChapters.length > 1 && (
-            <Chip variant="secondary" color="default" className="px-3 py-1">
+            <Chip variant="secondary" color="default" className="text-xs">
               ~{calculateTotalDuration(normalizedChapters)} min
             </Chip>
           )}
@@ -112,9 +115,10 @@ export function YoutubeVideoChapters() {
         <Button
           variant="secondary"
           size="sm"
+          className="text-xs"
           onPress={() => copyChaptersToClipboard(normalizedChapters)}
         >
-          Copy chapters
+          Copiar capítulos
         </Button>
       </div>
     </div>

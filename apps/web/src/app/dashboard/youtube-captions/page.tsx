@@ -13,7 +13,13 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="w-full px-4 py-8">
+    <div className="w-full space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">YouTube Tool</h1>
+        <p className="text-sm text-foreground/60 mt-1">
+          Genera capítulos y extrae subtítulos de videos de YouTube.
+        </p>
+      </div>
       <YoutubeChaptersGenerator />
     </div>
   );
