@@ -52,8 +52,8 @@ export async function getContentPage(url: string, pages: number) {
 
     console.log(`🧡 Navigated to ${url}`);
 
-    // Scroll hasta llegar a la página deseada
-    let currentPage = extractPageNumber(url);
+    let currentPage = extractPageNumber(url) ?? 1;
+
     let scrollAttempts = 0;
     const maxScrollAttempts = 50;
 
@@ -62,7 +62,7 @@ export async function getContentPage(url: string, pages: number) {
       await page.waitForTimeout(500);
 
       const currentUrl = page.url();
-      currentPage = extractPageNumber(currentUrl);
+      currentPage = extractPageNumber(currentUrl) ?? 1;
 
       console.log(
         `📍 Intento ${scrollAttempts + 1}: Página actual = ${currentPage}, Página destino = ${pages}`,
