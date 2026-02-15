@@ -1,48 +1,10 @@
 import { createStep } from "@mastra/core/workflows";
-import * as z from "zod";
-import { outputDownloadWattpadChapterSchema } from "./download-chapter-wattpad.step";
+import {
+  outputDownloadWattpadChapterSchema,
+  outputEngamentStoryAdvisorSchema,
+} from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 
-const criterioSchema = z.object({
-  nombre: z.string().describe("Nombre del criterio evaluado"),
-  score: z.number().min(0).max(10).describe("Puntuación de 0 a 10"),
-  explicacion: z
-    .string()
-    .describe("Explicación específica con citas del texto"),
-});
-
-export const outputEngamentStoryAdvisorSchema = z.object({
-  diagnostico: z
-    .string()
-    .describe("Párrafo explicando si funciona o no la apertura y por qué"),
-  criterios: z
-    .array(criterioSchema)
-    .length(4)
-    .describe(
-      "Los 4 criterios evaluados: Anclaje Emocional, Pregunta Implícita, Ritmo de Inversión, Especificidad Emocional",
-    ),
-  momentoCritico: z
-    .object({
-      cita: z.string().describe("Cita textual del momento crítico"),
-      analisis: z
-        .string()
-        .describe(
-          "Análisis de por qué este momento es el punto de inflexión emocional",
-        ),
-    })
-    .describe(
-      "El momento específico donde el lector decide seguir leyendo o abandonar",
-    ),
-  veredicto: z
-    .enum(["PASA", "NECESITA REVISIÓN", "NO PASA"])
-    .describe("Veredicto editorial"),
-  recomendaciones: z
-    .array(z.string())
-    .min(0)
-    .max(3)
-    .describe(
-      "2-3 acciones concretas y específicas para fortalecer la apertura (solo si necesita revisión o no pasa)",
-    ),
-});
+export { outputEngamentStoryAdvisorSchema };
 
 export const engagementStoryAdvisorStep = createStep({
   id: "engagement-story-advisor",

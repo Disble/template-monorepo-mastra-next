@@ -1,73 +1,10 @@
 import { createStep } from "@mastra/core/workflows";
-import * as z from "zod";
-import { outputDownloadWattpadChapterSchema } from "./download-chapter-wattpad.step";
+import {
+  outputContinuityErrorDetectorSchema,
+  outputDownloadWattpadChapterSchema,
+} from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 
-const errorContinuidadSchema = z.object({
-  numero: z.number().describe("Número del error"),
-  categoria: z
-    .enum([
-      "CRONOLOGÍA",
-      "CARACTERÍSTICAS FÍSICAS",
-      "DETALLES FACTUALES",
-      "OBJETOS Y ESPACIOS",
-      "REGLAS DEL MUNDO",
-      "ACCIONES Y EVENTOS",
-      "NARRADOR Y PUNTO DE VISTA",
-      "TIEMPOS VERBALES",
-    ])
-    .describe("Categoría del error"),
-  severidad: z
-    .enum(["CRÍTICO", "MODERADO", "MENOR", "AMBIGUO"])
-    .describe("Nivel de severidad"),
-  instancia1: z.object({
-    cita: z.string().describe("Cita textual exacta"),
-    ubicacion: z.string().describe("Ubicación en el texto"),
-  }),
-  instancia2: z.object({
-    cita: z.string().describe("Cita textual exacta"),
-    ubicacion: z.string().describe("Ubicación en el texto"),
-  }),
-  analisis: z.string().describe("Explicación de por qué es una contradicción"),
-  impactoEnLectura: z
-    .string()
-    .describe("¿Rompe inmersión? ¿Es detectable fácilmente?"),
-  solucionSugerida: z
-    .string()
-    .describe("Cuál versión mantener o cómo armonizarlas"),
-});
-
-export const outputContinuityErrorDetectorSchema = z.object({
-  resumenEjecutivo: z.object({
-    totalErrores: z.number().describe("Total de errores detectados"),
-    criticos: z.number().describe("Número de errores críticos"),
-    moderados: z.number().describe("Número de errores moderados"),
-    menores: z.number().describe("Número de errores menores"),
-    ambiguos: z.number().describe("Número de errores ambiguos"),
-    resumen: z.string().describe("Párrafo resumen del estado de continuidad"),
-  }),
-  erroresDetectados: z
-    .array(errorContinuidadSchema)
-    .describe("Lista de errores detectados"),
-  elementosRastreadosCorrectamente: z
-    .array(z.string())
-    .describe("Elementos que SÍ mantienen continuidad consistente"),
-  veredicto: z
-    .enum([
-      "CONTINUIDAD SÓLIDA",
-      "ERRORES MENORES CORREGIBLES",
-      "REQUIERE REVISIÓN PROFUNDA",
-    ])
-    .describe("Veredicto editorial"),
-  prioridadesCorreccion: z
-    .array(z.string())
-    .min(0)
-    .max(5)
-    .describe("Errores prioritarios a resolver"),
-  notasAdicionales: z
-    .string()
-    .optional()
-    .describe("Patrones detectados o notas adicionales"),
-});
+export { outputContinuityErrorDetectorSchema };
 
 export const continuityErrorDetectorStep = createStep({
   id: "continuity-error-detector",

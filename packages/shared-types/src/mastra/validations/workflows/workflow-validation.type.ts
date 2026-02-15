@@ -185,4 +185,4 @@ export type TypedWorkflowState<
  * };
  * ```
  */
-export type WorkflowSteps = Record<string, Required<StepSchemas>>;
+export type WorkflowSteps = Record<string, StepSchemas>;

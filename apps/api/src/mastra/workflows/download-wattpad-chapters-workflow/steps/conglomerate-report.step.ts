@@ -1,12 +1,18 @@
 import { createStep } from "@mastra/core/workflows";
-import * as z from "zod";
-import { outputCharacterDepthAnalyzerSchema } from "./character-depth-analyzer.step";
-import { outputContinuityErrorDetectorSchema } from "./continuity-error-detector.step";
-import { outputEmotionalResonanceAnalyzerSchema } from "./emotional-resonance-analyzer.step";
-import { outputEngamentStoryAdvisorSchema } from "./engagement-story-advisor.step";
-import { outputNarrativeStructureAdvisorSchema } from "./narrative-structure-advisor.step";
-import { outputPacingTensionAnalyzerSchema } from "./pacing-tension-analyzer.step";
-import { outputProseDisciplineAnalyzerSchema } from "./prose-discipline-analyzer.step";
+import {
+  outputCharacterDepthAnalyzerSchema,
+  outputConglomerateReportSchema,
+  outputContinuityErrorDetectorSchema,
+  outputEmotionalResonanceAnalyzerSchema,
+  outputEngamentStoryAdvisorSchema,
+  outputNarrativeStructureAdvisorSchema,
+  outputPacingTensionAnalyzerSchema,
+  outputProseDisciplineAnalyzerSchema,
+  synthesisSchema,
+} from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { z } from "zod";
+
+export { outputConglomerateReportSchema };
 
 const parallelOutputSchema = z.object({
   "engagement-story-advisor": outputEngamentStoryAdvisorSchema,
@@ -16,96 +22,6 @@ const parallelOutputSchema = z.object({
   "character-depth-analyzer": outputCharacterDepthAnalyzerSchema,
   "prose-discipline-analyzer": outputProseDisciplineAnalyzerSchema,
   "pacing-tension-analyzer": outputPacingTensionAnalyzerSchema,
-});
-
-const resumenDimensionSchema = z.object({
-  dimension: z.string().describe("Nombre de la dimension analizada"),
-  veredicto: z.string().describe("Veredicto del analisis individual"),
-  scorePromedio: z
-    .number()
-    .min(0)
-    .max(10)
-    .describe("Score promedio de los criterios de esta dimension"),
-  hallazgoPrincipal: z
-    .string()
-    .describe("Hallazgo mas importante de esta dimension"),
-});
-
-const patronTransversalSchema = z.object({
-  patron: z.string().describe("Descripcion del patron identificado"),
-  dimensionesAfectadas: z
-    .array(z.string())
-    .describe("Dimensiones que participan en este patron"),
-  impacto: z
-    .enum(["ALTO", "MEDIO", "BAJO"])
-    .describe("Nivel de impacto del patron"),
-  explicacion: z
-    .string()
-    .describe("Explicacion de la conexion causal entre dimensiones"),
-});
-
-const itemMejoraSchema = z.object({
-  prioridad: z.number().min(1).max(10).describe("Prioridad del 1 al 10"),
-  area: z.string().describe("Area de mejora"),
-  recomendacion: z.string().describe("Recomendacion especifica"),
-  impactoEsperado: z
-    .string()
-    .describe("Que otras areas mejoran si se implementa esta recomendacion"),
-});
-
-const synthesisSchema = z.object({
-  evaluacionGlobal: z.object({
-    scoreGlobal: z
-      .number()
-      .min(0)
-      .max(10)
-      .describe("Score global ponderado inteligente"),
-    categoria: z.string().describe("Categoria de la obra"),
-    resumenEjecutivo: z
-      .string()
-      .describe("Resumen ejecutivo que captura la esencia del texto"),
-  }),
-  resumenPorDimension: z
-    .array(resumenDimensionSchema)
-    .describe("Resumen de cada una de las 7 dimensiones analizadas"),
-  patronesTransversales: z
-    .array(patronTransversalSchema)
-    .min(2)
-    .max(7)
-    .describe("Patrones que conectan multiples dimensiones"),
-  fortalezasPrincipales: z
-    .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Fortalezas principales de la obra"),
-  debilidadesPrincipales: z
-    .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Debilidades principales de la obra"),
-  planDeMejora: z
-    .array(itemMejoraSchema)
-    .min(3)
-    .max(10)
-    .describe("Plan de mejora priorizado por impacto"),
-  veredictoEditorial: z
-    .string()
-    .describe("Veredicto editorial final, honesto y constructivo"),
-});
-
-export const outputConglomerateReportSchema = z.object({
-  analisisIndividuales: z.object({
-    engagementStoryAdvisor: outputEngamentStoryAdvisorSchema.optional(),
-    narrativeStructureAnalyzer:
-      outputNarrativeStructureAdvisorSchema.optional(),
-    continuityErrorDetector: outputContinuityErrorDetectorSchema.optional(),
-    emotionalResonanceAnalyzer:
-      outputEmotionalResonanceAnalyzerSchema.optional(),
-    characterDepthAnalyzer: outputCharacterDepthAnalyzerSchema.optional(),
-    proseDisciplineAnalyzer: outputProseDisciplineAnalyzerSchema.optional(),
-    pacingTensionAnalyzer: outputPacingTensionAnalyzerSchema.optional(),
-  }),
-  sintesis: synthesisSchema,
 });
 
 export const sendReportToUserStep = createStep({

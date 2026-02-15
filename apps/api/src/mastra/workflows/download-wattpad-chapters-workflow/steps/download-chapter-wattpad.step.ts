@@ -6,18 +6,16 @@ import {
   updateStory,
 } from "@repo/db";
 import { env } from "@repo/envs/node";
-import * as z from "zod";
+import {
+  inputDownloadWattpadChapterSchema,
+  outputDownloadWattpadChapterSchema,
+} from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 import { getContentPage } from "../../../tools/get-content-page/get-content-page-wattpad";
 
-export const inputDownloadWattpadChapterSchema = z.object({
-  url: z.url(),
-  pages: z.number().min(1).max(100).default(1),
-  redownload: z.boolean().default(false),
-});
-
-export const outputDownloadWattpadChapterSchema = z.object({
-  content: z.string(),
-});
+export {
+  inputDownloadWattpadChapterSchema,
+  outputDownloadWattpadChapterSchema,
+};
 
 export const downloadWattpadChapterStep = createStep({
   id: "download-wattpad-chapter",

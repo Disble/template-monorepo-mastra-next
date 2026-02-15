@@ -1,88 +1,10 @@
 import { createStep } from "@mastra/core/workflows";
-import * as z from "zod";
-import { outputDownloadWattpadChapterSchema } from "./download-chapter-wattpad.step";
+import {
+  outputDownloadWattpadChapterSchema,
+  outputNarrativeStructureAdvisorSchema,
+} from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 
-const criterioEstructuralSchema = z.object({
-  nombre: z.string().describe("Nombre del criterio evaluado"),
-  score: z.number().min(0).max(10).describe("Puntuación de 0 a 10"),
-  explicacion: z.string().describe("Explicación con evidencia textual"),
-});
-
-const identificacionNivelSchema = z.object({
-  nivel: z.enum(["Macro", "Meso", "Micro"]).describe("Nivel estructural"),
-  estructura: z.string().describe("Estructura identificada"),
-  justificacion: z.string().describe("Breve justificación"),
-});
-
-const puntoEstructuralSchema = z.object({
-  tipo: z
-    .string()
-    .describe(
-      "Tipo de punto estructural (inciting incident, punto de giro, clímax, etc.)",
-    ),
-  cita: z.string().describe("Cita textual del momento"),
-  posicionamiento: z
-    .string()
-    .describe("Análisis de si está bien posicionado o hay problemas de timing"),
-});
-
-const tematicaSchema = z.object({
-  temaCentral: z
-    .string()
-    .describe("Cuál es el tema principal que el texto explora"),
-  originalidad: z
-    .string()
-    .describe(
-      "¿El enfoque temático es original o convencional? ¿Aporta algo nuevo?",
-    ),
-  relevancia: z
-    .string()
-    .describe(
-      "¿El tema conecta con preocupaciones humanas universales o de su público?",
-    ),
-});
-
-export const outputNarrativeStructureAdvisorSchema = z.object({
-  identificacionEstructural: z.object({
-    niveles: z
-      .array(identificacionNivelSchema)
-      .length(3)
-      .describe("Los 3 niveles: Macro, Meso, Micro"),
-    descripcion: z
-      .string()
-      .describe("Descripción de cómo operan estas estructuras en el texto"),
-  }),
-  criterios: z
-    .array(criterioEstructuralSchema)
-    .length(4)
-    .describe(
-      "Los 4 criterios: Identificación Estructural, Implementación Técnica, Efectividad Narrativa, Complejidad Justificada",
-    ),
-  puntosEstructuralesClave: z
-    .array(puntoEstructuralSchema)
-    .min(1)
-    .max(5)
-    .describe("Momentos estructurales clave identificados"),
-  tematica: tematicaSchema.describe(
-    "Análisis del tema central, su originalidad y relevancia",
-  ),
-  diagnostico: z.object({
-    aportaOResta: z
-      .enum(["APORTA", "NEUTRAL", "RESTA"])
-      .describe("¿La estructura aporta o resta?"),
-    explicacion: z
-      .string()
-      .describe("Explicación de por qué la estructura funciona o no"),
-  }),
-  veredicto: z
-    .enum(["ESTRUCTURA SÓLIDA", "NECESITA AJUSTES", "NECESITA REPLANTEAMIENTO"])
-    .describe("Veredicto editorial"),
-  recomendaciones: z
-    .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Recomendaciones específicas"),
-});
+export { outputNarrativeStructureAdvisorSchema };
 
 export const narrativeStructureAdvisorStep = createStep({
   id: "narrative-structure-advisor",
