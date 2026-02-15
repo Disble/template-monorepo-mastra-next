@@ -21,6 +21,20 @@ const momentoEmocionalSchema = z.object({
     .describe("Qué emoción genera o qué oportunidad emocional se pierde"),
 });
 
+const presenciaSensorialSchema = z.object({
+  sentidosPresentes: z
+    .array(z.string())
+    .describe("Sentidos que el texto activa efectivamente"),
+  sentidosAusentes: z
+    .array(z.string())
+    .describe("Sentidos ausentes que enriquecerían la experiencia"),
+  analisis: z
+    .string()
+    .describe(
+      "Cómo la presencia/ausencia sensorial afecta la inmersión emocional",
+    ),
+});
+
 export const outputEmotionalResonanceAnalyzerSchema = z.object({
   diagnosticoEmocional: z.object({
     categoriaLectura: z
@@ -43,6 +57,14 @@ export const outputEmotionalResonanceAnalyzerSchema = z.object({
     .min(2)
     .max(6)
     .describe("Momentos donde la emoción funciona o falla"),
+  presenciaSensorial: presenciaSensorialSchema.describe(
+    "Evaluación de qué sentidos activa el texto y cuáles están ausentes",
+  ),
+  lectorIdeal: z
+    .string()
+    .describe(
+      "Perfil breve del lector que más conectaría con este texto (emocional/experiencial, no comercial)",
+    ),
   patronesEmocionales: z
     .array(z.string())
     .min(1)

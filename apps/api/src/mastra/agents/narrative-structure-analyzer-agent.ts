@@ -52,6 +52,9 @@ Para cada nivel determinas:
    - ¿La estructura potencia las emociones y temas?
    - ¿Se siente orgánica o forzada?
    - ¿Hay motivación narrativa para la estructura elegida?
+   - **Claridad de acción**: ¿Se entiende lo que ocurre? ¿El lector puede seguir los eventos sin confusión?
+   - **Foco narrativo**: ¿La línea narrativa se mantiene o se dispersa sin propósito?
+   - **Cronotopo funcional** (Bajtín): ¿La fusión tiempo-espacio corresponde al género y a la experiencia que busca crear? ¿El espacio narrativo tiene dimensión temporal significativa?
 
 4. **COMPLEJIDAD JUSTIFICADA** (0-10)
    ¿La complejidad estructural tiene propósito?
@@ -86,6 +89,12 @@ Para cada nivel determinas:
 <puntos_estructurales_clave>
 [Identifica y cita los momentos estructurales clave: inciting incident, puntos de giro, clímax, etc. Indica si están bien posicionados o si hay problemas de timing estructural]
 </puntos_estructurales_clave>
+
+<tematica>
+**Tema central**: [Cuál es el tema principal que el texto explora]
+**Originalidad**: [¿El enfoque temático es original o convencional? ¿Aporta algo nuevo?]
+**Relevancia**: [¿El tema conecta con preocupaciones humanas universales o de su público?]
+</tematica>
 
 <diagnostico>
 **¿La estructura aporta o resta?**: [APORTA / NEUTRAL / RESTA]

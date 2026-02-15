@@ -56,13 +56,25 @@ const personajeSecundarioSchema = z.object({
     .describe("Si tiene dimensionalidad propia o es puramente funcional"),
 });
 
+const analisisDialogoSchema = z.object({
+  aportanAlTexto: z
+    .enum(["SÍ", "PARCIALMENTE", "NO"])
+    .describe("¿Los diálogos aportan al texto?"),
+  credibilidad: z
+    .string()
+    .describe("¿Los diálogos suenan naturales para los personajes?"),
+  observacionPrincipal: z
+    .string()
+    .describe("El hallazgo más relevante sobre los diálogos"),
+});
+
 export const outputCharacterDepthAnalyzerSchema = z.object({
   perfilPersonaje: perfilPersonajeSchema,
   criterios: z
     .array(criterioPersonajeSchema)
     .length(4)
     .describe(
-      "Los 4 criterios: Tridimensionalidad, Diseño de Arco, Evidencia de Transformación, Especificidad",
+      "Los 4 criterios: Tridimensionalidad, Diseño de Arco, Evidencia de Transformación, Voz Diálogo y Especificidad",
     ),
   momentosReveladores: z
     .array(momentoReveladorSchema)
@@ -70,6 +82,9 @@ export const outputCharacterDepthAnalyzerSchema = z.object({
     .max(6)
     .describe("Momentos que revelan profundidad o falta de ella"),
   analisisArco: analisisArcoSchema,
+  analisisDialogo: analisisDialogoSchema.describe(
+    "Evaluación breve de la calidad y función de los diálogos",
+  ),
   personajesSecundarios: z
     .array(personajeSecundarioSchema)
     .optional()

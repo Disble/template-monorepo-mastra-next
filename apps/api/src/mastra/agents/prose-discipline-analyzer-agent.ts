@@ -58,6 +58,11 @@ Diferencias entre:
 - Saltos entre pretérito/presente sin razón estilística
 - Mezcla de perfectos/imperfectos que confunde
 
+**Modos de discurso**:
+- ¿Usa correctamente discurso directo, indirecto y estilo indirecto libre?
+- ¿Las transiciones entre modos son claras o confusas?
+- (Nota: evaluar solo como hábito técnico, no como sistema teórico completo)
+
 **Otros vicios**:
 - Gerundios de posterioridad ("disparó matándolo" en vez de "disparó y lo mató")
 - Queísmo/dequeísmo
@@ -162,6 +167,13 @@ Clasificas cada problema como:
 - ¿Hay evolución (mejora/empeora a lo largo del texto)?
 - ¿Los excesos parecen conscientes (estilo) o inconscientes (hábito)?
 </patrones_generales>
+
+<correccion_basica>
+**Errores ortográficos detectados**: [Lista breve o "No detectados"]
+**Errores de puntuación**: [Lista breve o "No detectados"]
+**Errores de formato** (diálogos, cursivas, mayúsculas): [Lista breve o "No detectados"]
+**Adecuación del registro al género/lector**: [¿El lenguaje es apropiado para la historia y su público?]
+</correccion_basica>
 
 <elementos_bien_ejecutados>
 [Balance: menciona brevemente qué SÍ hace bien el autor en términos de disciplina de prosa]

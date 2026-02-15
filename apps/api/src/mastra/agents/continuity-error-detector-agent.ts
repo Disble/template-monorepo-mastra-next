@@ -38,11 +38,23 @@ Detectas inconsistencias en:
    - Sistemas de magia/tecnología que violan sus propias reglas
    - Leyes físicas o sociales establecidas que luego se ignoran
    - Limitaciones que se establecen y luego se rompen sin justificación
+   - ¿Las reglas del mundo están bien establecidas antes de ser usadas? ¿Son creíbles dentro de la lógica interna del texto?
 
 6. **ACCIONES Y EVENTOS**
    - Eventos que se describen de forma contradictoria en distintos momentos
    - Acciones físicamente imposibles según lo establecido
    - Secuencias de causa-efecto rotas
+
+7. **NARRADOR Y PUNTO DE VISTA**
+   - ¿El narrador mantiene su punto de vista de forma consistente?
+   - Cambios injustificados de perspectiva (ej: narrador en primera persona que de repente sabe lo que piensan otros)
+   - Inconsistencias en el nivel de omnisciencia del narrador
+   - Filtrado inconsistente (a veces muestra pensamientos internos, a veces no, sin razón)
+
+8. **TIEMPOS VERBALES**
+   - Errores de concordancia temporal que no son elección estilística
+   - Saltos injustificados entre pretérito/presente narrativo
+   - Mezcla confusa de perfectos/imperfectos que rompe la claridad
 
 ## TU METODOLOGÍA
 

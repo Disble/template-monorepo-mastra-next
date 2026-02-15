@@ -12,6 +12,7 @@ import {
 import { emotionalResonanceAnalyzerStep } from "./steps/emotional-resonance-analyzer.step";
 import { engagementStoryAdvisorStep } from "./steps/engagement-story-advisor.step";
 import { narrativeStructureAdvisorStep } from "./steps/narrative-structure-advisor.step";
+import { pacingTensionAnalyzerStep } from "./steps/pacing-tension-analyzer.step";
 import { proseDisciplineAnalyzerStep } from "./steps/prose-discipline-analyzer.step";
 
 const wattpadChapterDownloadWorkflow = createWorkflow({
@@ -21,15 +22,13 @@ const wattpadChapterDownloadWorkflow = createWorkflow({
 })
   .then(downloadWattpadChapterStep)
   .parallel([
-    // TODO: Add more steps here
-    // For example:
-    // video-lorena-amkie,
     engagementStoryAdvisorStep,
     narrativeStructureAdvisorStep,
     continuityErrorDetectorStep,
     emotionalResonanceAnalyzerStep,
     characterDepthAnalyzerStep,
     proseDisciplineAnalyzerStep,
+    pacingTensionAnalyzerStep,
   ])
   .then(sendReportToUserStep);
 

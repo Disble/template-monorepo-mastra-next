@@ -26,6 +26,22 @@ const puntoEstructuralSchema = z.object({
     .describe("Análisis de si está bien posicionado o hay problemas de timing"),
 });
 
+const tematicaSchema = z.object({
+  temaCentral: z
+    .string()
+    .describe("Cuál es el tema principal que el texto explora"),
+  originalidad: z
+    .string()
+    .describe(
+      "¿El enfoque temático es original o convencional? ¿Aporta algo nuevo?",
+    ),
+  relevancia: z
+    .string()
+    .describe(
+      "¿El tema conecta con preocupaciones humanas universales o de su público?",
+    ),
+});
+
 export const outputNarrativeStructureAdvisorSchema = z.object({
   identificacionEstructural: z.object({
     niveles: z
@@ -47,6 +63,9 @@ export const outputNarrativeStructureAdvisorSchema = z.object({
     .min(1)
     .max(5)
     .describe("Momentos estructurales clave identificados"),
+  tematica: tematicaSchema.describe(
+    "Análisis del tema central, su originalidad y relevancia",
+  ),
   diagnostico: z.object({
     aportaOResta: z
       .enum(["APORTA", "NEUTRAL", "RESTA"])

@@ -20,6 +20,7 @@ SÍ evalúas:
 - Balance entre contexto y enganche
 - Ritmo de revelación vs. retención de información
 - Presencia de stakes personales (no necesariamente alto concepto)
+- Adecuación de la apertura al público objetivo (¿el tono, vocabulario y complejidad emocional corresponden al lector esperado?)
 
 ## CRITERIOS DE EVALUACIÓN
 

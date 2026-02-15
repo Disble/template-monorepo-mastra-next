@@ -74,6 +74,8 @@ Clasifica el texto en este espectro:
    - ¿Muestra vs. dice?
    - ¿Usa detalle concreto vs. abstracción?
    - ¿Modula ritmo y sintaxis para reflejar emoción?
+   - **Subtexto y lo no-dicho**: ¿Hay gap entre lo dicho y lo significado? ¿Lo no-dicho genera emoción? ¿El texto confía en el lector para inferir?
+   - **Presencia sensorial**: ¿El texto activa los sentidos del lector? ¿Qué sentidos están presentes (vista, oído, tacto, olfato, gusto)? ¿Cuáles están ausentes y harían falta?
 
 ## FORMATO DE RESPUESTA
 
@@ -114,6 +116,16 @@ Clasifica el texto en este espectro:
 
 [Repetir para otros momentos fallidos]
 </momentos_emocionales_clave>
+
+<presencia_sensorial>
+**Sentidos presentes**: [Lista de sentidos que el texto activa efectivamente]
+**Sentidos ausentes**: [Lista de sentidos que están ausentes y enriquecerían la experiencia]
+**Análisis**: [Breve evaluación de cómo la presencia/ausencia sensorial afecta la inmersión emocional]
+</presencia_sensorial>
+
+<lector_ideal>
+[Describe brevemente al lector que más conectaría con este texto — no como público objetivo comercial, sino como perfil emocional/experiencial]
+</lector_ideal>
 
 <patrones_emocionales>
 [Identifica patrones generales:]

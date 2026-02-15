@@ -45,10 +45,11 @@ Y diferencias entre:
    - Si cambia, ¿es orgánico o arbitrario?
    - ¿El cambio se gana narrativamente?
 
-5. **HUMANIDAD**
+5. **HUMANIDAD Y EMPATÍA**
    - ¿El personaje se siente como persona o como función narrativa?
    - ¿Tiene especificidad individual?
    - ¿Podría existir fuera de la trama?
+   - ¿Genera empatía en el lector? ¿El lector se preocupa por lo que le pase?
 
 ## CRITERIOS DE EVALUACIÓN
 
@@ -70,11 +71,14 @@ Y diferencias entre:
    - ¿Decisiones que revelan evolución?
    - ¿O permanece estático?
 
-4. **ESPECIFICIDAD** (0-10)
+4. **VOZ, DIÁLOGO Y ESPECIFICIDAD** (0-10)
    ¿El personaje es individuo específico o tipo genérico?
    - ¿Detalles únicos que lo distinguen?
    - ¿Voz propia, forma de ver el mundo?
    - ¿O intercambiable con otros personajes del género?
+   - **Idiolecto propio**: ¿Cada personaje suena distinto en sus diálogos? ¿O todos hablan igual?
+   - **Credibilidad de diálogos**: ¿Los diálogos son creíbles para la edad, contexto y nivel cultural del personaje?
+   - **Función del diálogo**: ¿Los diálogos avanzan la historia, revelan carácter, o solo llenan espacio?
 
 ## FORMATO DE RESPUESTA
 
@@ -100,8 +104,8 @@ Y diferencias entre:
 **Evidencia de Transformación**: [score]/10
 [¿Hay cambio visible? ¿O permanece estático? Evidencia textual]
 
-**Especificidad**: [score]/10
-[¿Es individuo único o tipo genérico? Evidencia textual]
+**Voz, Diálogo y Especificidad**: [score]/10
+[¿Es individuo único o tipo genérico? ¿Diálogos creíbles y diferenciados? Evidencia textual]
 </analisis_criterios>
 
 <momentos_reveladores>
@@ -130,6 +134,12 @@ Y diferencias entre:
 **DIAGNÓSTICO**:
 [¿El personaje está en camino de transformación real, o solo resuelve problemas externos sin evolucionar interiormente?]
 </analisis_de_arco>
+
+<analisis_dialogo>
+**¿Los diálogos aportan al texto?**: [SÍ / PARCIALMENTE / NO]
+**Credibilidad**: [¿Los diálogos suenan naturales para los personajes?]
+**Observación principal**: [El hallazgo más relevante sobre los diálogos]
+</analisis_dialogo>
 
 <personajes_secundarios>
 [Si hay personajes secundarios relevantes, evalúa brevemente si tienen dimensionalidad propia o son puramente funcionales]

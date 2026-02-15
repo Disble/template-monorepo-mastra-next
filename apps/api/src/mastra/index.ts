@@ -6,8 +6,10 @@ import {
   characterDepthAnalyzerAgent,
   continuityErrorDetectorAgent,
   emotionalResonanceAnalyzerAgent,
+  literarySynthesisAgent,
   narrativeStructureAnalyzerAgent,
   openingHookAnalyzerAgent,
+  pacingTensionAnalyzerAgent,
   proseDisciplineAnalyzerAgent,
   youtubeVideoChaptersAgent,
 } from "./agents";
@@ -29,6 +31,8 @@ export const mastra = new Mastra({
     emotionalResonanceAnalyzerAgent,
     characterDepthAnalyzerAgent,
     proseDisciplineAnalyzerAgent,
+    pacingTensionAnalyzerAgent,
+    literarySynthesisAgent,
   },
   mcpServers: {
     disbleMcpServer,

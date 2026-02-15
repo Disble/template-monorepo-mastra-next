@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:mastra.ai)",
+      "WebSearch",
+      "WebFetch(domain:khaledgarbaya.net)",
+      "Bash(bun run:*)",
+      "Bash(turbo build:*)",
+      "Bash(bunx turbo build:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": ["mastra"]
+}

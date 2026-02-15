@@ -12,6 +12,8 @@ const errorContinuidadSchema = z.object({
       "OBJETOS Y ESPACIOS",
       "REGLAS DEL MUNDO",
       "ACCIONES Y EVENTOS",
+      "NARRADOR Y PUNTO DE VISTA",
+      "TIEMPOS VERBALES",
     ])
     .describe("Categoría del error"),
   severidad: z

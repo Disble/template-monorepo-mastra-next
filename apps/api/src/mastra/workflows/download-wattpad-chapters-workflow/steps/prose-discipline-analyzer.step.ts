@@ -83,6 +83,28 @@ export const outputProseDisciplineAnalyzerSchema = z.object({
     .min(0)
     .max(3)
     .describe("Qué hace bien el autor en disciplina de prosa"),
+  correccionBasica: z
+    .object({
+      erroresOrtograficos: z
+        .array(z.string())
+        .describe("Errores ortográficos detectados"),
+      erroresPuntuacion: z
+        .array(z.string())
+        .describe("Errores de puntuación detectados"),
+      erroresFormato: z
+        .array(z.string())
+        .describe(
+          "Errores de formato de diálogos, cursivas, mayúsculas detectados",
+        ),
+      adecuacionRegistro: z
+        .string()
+        .describe(
+          "¿El lenguaje es apropiado para la historia y su público objetivo?",
+        ),
+    })
+    .describe(
+      "Check rápido de corrección básica: ortografía, puntuación, formato y registro",
+    ),
   veredicto: z
     .enum([
       "PROSA DISCIPLINADA",
