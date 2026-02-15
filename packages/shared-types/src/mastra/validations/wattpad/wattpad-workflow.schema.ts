@@ -32,7 +32,6 @@ export const outputEngamentStoryAdvisorSchema = z.object({
     .describe("Párrafo explicando si funciona o no la apertura y por qué"),
   criterios: z
     .array(criterioSchema)
-    .length(4)
     .describe(
       "Los 4 criterios evaluados: Anclaje Emocional, Pregunta Implícita, Ritmo de Inversión, Especificidad Emocional",
     ),
@@ -53,8 +52,6 @@ export const outputEngamentStoryAdvisorSchema = z.object({
     .describe("Veredicto editorial"),
   recomendaciones: z
     .array(z.string())
-    .min(0)
-    .max(3)
     .describe(
       "2-3 acciones concretas y específicas para fortalecer la apertura (solo si necesita revisión o no pasa)",
     ),
@@ -108,7 +105,6 @@ export const outputNarrativeStructureAdvisorSchema = z.object({
   identificacionEstructural: z.object({
     niveles: z
       .array(identificacionNivelSchema)
-      .length(3)
       .describe("Los 3 niveles: Macro, Meso, Micro"),
     descripcion: z
       .string()
@@ -116,15 +112,12 @@ export const outputNarrativeStructureAdvisorSchema = z.object({
   }),
   criterios: z
     .array(criterioEstructuralSchema)
-    .length(4)
     .describe(
       "Los 4 criterios: Identificación Estructural, Implementación Técnica, Efectividad Narrativa, Complejidad Justificada",
     ),
   puntosEstructuralesClave: z
     .array(puntoEstructuralSchema)
-    .min(1)
-    .max(5)
-    .describe("Momentos estructurales clave identificados"),
+    .describe("1-5 momentos estructurales clave identificados"),
   tematica: tematicaSchema.describe(
     "Análisis del tema central, su originalidad y relevancia",
   ),
@@ -141,9 +134,7 @@ export const outputNarrativeStructureAdvisorSchema = z.object({
     .describe("Veredicto editorial"),
   recomendaciones: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Recomendaciones específicas"),
+    .describe("2-3 recomendaciones específicas"),
 });
 
 // ============================================================================
@@ -208,9 +199,7 @@ export const outputContinuityErrorDetectorSchema = z.object({
     .describe("Veredicto editorial"),
   prioridadesCorreccion: z
     .array(z.string())
-    .min(0)
-    .max(5)
-    .describe("Errores prioritarios a resolver"),
+    .describe("Errores prioritarios a resolver (hasta 5)"),
   notasAdicionales: z
     .string()
     .optional()
@@ -267,15 +256,12 @@ export const outputEmotionalResonanceAnalyzerSchema = z.object({
   }),
   criterios: z
     .array(criterioEmocionalSchema)
-    .length(4)
     .describe(
       "Los 4 criterios: Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional",
     ),
   momentosEmocionalesClave: z
     .array(momentoEmocionalSchema)
-    .min(2)
-    .max(6)
-    .describe("Momentos donde la emoción funciona o falla"),
+    .describe("2-6 momentos donde la emoción funciona o falla"),
   presenciaSensorial: presenciaSensorialSchema.describe(
     "Evaluación de qué sentidos activa el texto y cuáles están ausentes",
   ),
@@ -286,9 +272,7 @@ export const outputEmotionalResonanceAnalyzerSchema = z.object({
     ),
   patronesEmocionales: z
     .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Patrones generales identificados en el manejo emocional"),
+    .describe("1-5 patrones generales identificados en el manejo emocional"),
   veredicto: z
     .enum([
       "EMOCIONALMENTE EFECTIVO",
@@ -298,9 +282,7 @@ export const outputEmotionalResonanceAnalyzerSchema = z.object({
     .describe("Veredicto editorial"),
   recomendaciones: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Acciones específicas para incrementar resonancia emocional"),
+    .describe("2-3 acciones específicas para incrementar resonancia emocional"),
   notaClave: z
     .string()
     .describe("La observación más importante sobre la emocionalidad del texto"),
@@ -380,15 +362,12 @@ export const outputCharacterDepthAnalyzerSchema = z.object({
   perfilPersonaje: perfilPersonajeSchema,
   criterios: z
     .array(criterioPersonajeSchema)
-    .length(4)
     .describe(
       "Los 4 criterios: Tridimensionalidad, Diseño de Arco, Evidencia de Transformación, Voz Diálogo y Especificidad",
     ),
   momentosReveladores: z
     .array(momentoReveladorSchema)
-    .min(1)
-    .max(6)
-    .describe("Momentos que revelan profundidad o falta de ella"),
+    .describe("1-6 momentos que revelan profundidad o falta de ella"),
   analisisArco: analisisArcoSchema,
   analisisDialogo: analisisDialogoSchema.describe(
     "Evaluación breve de la calidad y función de los diálogos",
@@ -406,14 +385,10 @@ export const outputCharacterDepthAnalyzerSchema = z.object({
     .describe("Veredicto editorial"),
   recomendacionesProfundidad: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Recomendaciones para incrementar profundidad"),
+    .describe("2-3 recomendaciones para incrementar profundidad"),
   recomendacionesArco: z
     .array(z.string())
-    .min(0)
-    .max(2)
-    .describe("Recomendaciones para potenciar el arco"),
+    .describe("1-2 recomendaciones para potenciar el arco"),
   notaCritica: z
     .string()
     .describe("La observación más importante sobre este personaje"),
@@ -496,14 +471,10 @@ export const outputProseDisciplineAnalyzerSchema = z.object({
   }),
   patronesGenerales: z
     .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Patrones sistemáticos identificados"),
+    .describe("1-5 patrones sistemáticos identificados"),
   elementosBienEjecutados: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Qué hace bien el autor en disciplina de prosa"),
+    .describe("Qué hace bien el autor en disciplina de prosa (hasta 3)"),
   correccionBasica: z
     .object({
       erroresOrtograficos: z
@@ -535,14 +506,10 @@ export const outputProseDisciplineAnalyzerSchema = z.object({
     .describe("Veredicto editorial"),
   prioridadesCorreccion: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Problemas prioritarios a resolver"),
+    .describe("Problemas prioritarios a resolver (hasta 3)"),
   recomendacionesGenerales: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Consejos generales"),
+    .describe("2-3 consejos generales"),
   notaSobreEstilo: z
     .string()
     .optional()
@@ -617,7 +584,6 @@ export const outputPacingTensionAnalyzerSchema = z.object({
     .describe("Evaluacion general del sistema ritmico y de tension del texto"),
   criterios: z
     .array(criterioRitmoSchema)
-    .length(3)
     .describe(
       "Los 3 criterios: Distribucion de Modalidades Temporales, Gestion de Intereses Narrativos, Curva de Tension y Ritmo",
     ),
@@ -629,8 +595,7 @@ export const outputPacingTensionAnalyzerSchema = z.object({
   ),
   curvaDeTension: z
     .array(puntoTensionSchema)
-    .min(3)
-    .describe("Puntos de la curva de tension a lo largo del texto"),
+    .describe("3+ puntos de la curva de tension a lo largo del texto"),
   veredicto: z
     .enum([
       "RITMO Y TENSION EFECTIVOS",
@@ -640,9 +605,7 @@ export const outputPacingTensionAnalyzerSchema = z.object({
     .describe("Veredicto editorial"),
   recomendaciones: z
     .array(z.string())
-    .min(0)
-    .max(3)
-    .describe("Recomendaciones especificas para mejorar ritmo y tension"),
+    .describe("2-3 recomendaciones especificas para mejorar ritmo y tension"),
   notaCritica: z
     .string()
     .describe(
@@ -706,24 +669,16 @@ export const synthesisSchema = z.object({
     .describe("Resumen de cada una de las 7 dimensiones analizadas"),
   patronesTransversales: z
     .array(patronTransversalSchema)
-    .min(2)
-    .max(7)
-    .describe("Patrones que conectan multiples dimensiones"),
+    .describe("2-7 patrones que conectan multiples dimensiones"),
   fortalezasPrincipales: z
     .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Fortalezas principales de la obra"),
+    .describe("1-5 fortalezas principales de la obra"),
   debilidadesPrincipales: z
     .array(z.string())
-    .min(1)
-    .max(5)
-    .describe("Debilidades principales de la obra"),
+    .describe("1-5 debilidades principales de la obra"),
   planDeMejora: z
     .array(itemMejoraSchema)
-    .min(3)
-    .max(10)
-    .describe("Plan de mejora priorizado por impacto"),
+    .describe("3-10 items del plan de mejora priorizado por impacto"),
   veredictoEditorial: z
     .string()
     .describe("Veredicto editorial final, honesto y constructivo"),
