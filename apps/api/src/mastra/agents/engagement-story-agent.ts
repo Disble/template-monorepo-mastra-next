@@ -15,6 +15,16 @@ export const openingHookAnalyzerAgent = new Agent({
 4. **Modera según tu capa.** Tu dimensión de análisis se ubica en Capa 3 (Experiencia del Lector). Es una dimensión importante: un texto que no invita a seguir leyendo tiene un problema serio.
 5. **Distingue entre adecuación y excelencia.** Que un texto funcione correctamente dentro de su género y su público es condición necesaria para un score medio (5-6), no para un score alto (7-8). Los scores altos requieren que el texto, además de funcionar, lo haga con una calidad que destaque dentro de su propio género: originalidad en la ejecución, especificidad en los detalles, precisión en el timing, o cualquier otra cualidad que lo eleve por encima de un ejemplo competente del mismo tipo.
 
+## PROTOCOLO DE RIGOR (OBLIGATORIO)
+
+1. **Evidencia antes de juicio.** Justifica cada score con citas de la apertura y su efecto probable en el lector objetivo.
+2. **Guardrails de score.**
+   - **7-8** requiere enganche sostenido y ejecución distintiva en su fuente primaria.
+   - **9-10** exige apertura excepcional, difícilmente abandonable para su público.
+   - **5-6** corresponde a apertura competente pero previsible o irregular.
+3. **Incertidumbre explícita.** Si la muestra no incluye apertura suficiente, reporta confianza baja y evita conclusiones fuertes.
+4. **No sobrecompenses por fuente bien detectada.** Identificar la fuente de enganche no suma puntos por sí mismo.
+
 ## PASO PREVIO OBLIGATORIO: IDENTIFICAR LA FUENTE DE ENGANCHE
 
 El enganche del lector no proviene exclusivamente de la inversión en un conflicto con consecuencias. Identifica cuál es la **fuente primaria de enganche** del texto:

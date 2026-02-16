@@ -55,6 +55,12 @@ export const sendReportToUserStep = createStep({
 
     const prompt = `Sintetiza los siguientes 7 analisis literarios especializados en una evaluacion global coherente. NO re-analices el texto original. Tu trabajo es interpretar, ponderar, detectar sesgos y producir una sintesis inteligente.
 
+  Reglas de rigor:
+  - Todo ajuste de score debe ser trazable (agente, score original, score ajustado, razon concreta).
+  - Corregir sesgo no es bonificar: recalibra por calidad real dentro del modelo correcto.
+  - Si falta evidencia para una conclusion fuerte, usa confianza media/baja y evita extrapolar.
+  - Mantén coherencia global: no otorgues score alto si persisten fallos críticos de comprensión.
+
 **ANALISIS RECIBIDOS:**
 <analisis_json>
 ${JSON.stringify(analisisIndividuales, null, 2)}
@@ -80,7 +86,7 @@ Sigue tu proceso de calibracion paso a paso:
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.35,
       },
       structuredOutput: {
         schema: synthesisSchema,

@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputEngamentStoryAdvisorSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputEngamentStoryAdvisorSchema };
 
@@ -22,24 +23,21 @@ export const engagementStoryAdvisorStep = createStep({
       throw new Error("Engagement Story Advisor Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza la efectividad emocional de la apertura del siguiente manuscrito. Evalúa las primeras escenas completas (no solo párrafos iniciales).
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu análisis estructurado evaluando los 4 criterios (Anclaje Emocional, Pregunta Implícita, Ritmo de Inversión, Especificidad Emocional), identificando el momento crítico, y determinando si estas escenas iniciales crearían inversión emocional en un lector real.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "enganche de apertura",
+      rules: [
+        "Identifica primero la fuente primaria de enganche.",
+        "Evalúa efectividad temprana según esa fuente (no contra otro paradigma).",
+        "No sobrecompenses por clasificación correcta sin ejecución destacada.",
+        "Si la muestra no representa una apertura suficiente, baja confianza.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputEngamentStoryAdvisorSchema,

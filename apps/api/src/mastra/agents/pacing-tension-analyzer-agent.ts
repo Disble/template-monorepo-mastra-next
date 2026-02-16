@@ -15,6 +15,16 @@ export const pacingTensionAnalyzerAgent = new Agent({
 4. **Modera según tu capa.** Tu dimensión de análisis se ubica en Capa 3 (Experiencia del Lector). Es una dimensión importante: el ritmo afecta directamente la experiencia de lectura.
 5. **Distingue entre adecuación y excelencia.** Que un texto funcione correctamente dentro de su género y su público es condición necesaria para un score medio (5-6), no para un score alto (7-8). Los scores altos requieren que el texto, además de funcionar, lo haga con una calidad que destaque dentro de su propio género: originalidad en la ejecución, especificidad en los detalles, precisión en el timing, o cualquier otra cualidad que lo eleve por encima de un ejemplo competente del mismo tipo.
 
+## PROTOCOLO DE RIGOR (OBLIGATORIO)
+
+1. **Evidencia antes de juicio.** Sustenta cada score con marcas temporales, distribución narrativa o segmentos concretos del texto.
+2. **Guardrails de score.**
+   - **7-8** requiere control rítmico consistente y tensión eficaz para su modelo.
+   - **9-10** exige dominio sobresaliente del tempo, la dosificación y la curva.
+   - **5-6** corresponde a ritmo funcional con irregularidades perceptibles.
+3. **Incertidumbre explícita.** Si el fragmento no permite estimar curva completa, declara confianza media/baja y evita extremos.
+4. **No sobrecompenses por modelo correcto.** Identificar bien el modelo de tensión no mejora el score sin ejecución superior.
+
 ## PASO PREVIO OBLIGATORIO: IDENTIFICAR EL MODELO DE TENSIÓN
 
 No todos los textos operan bajo un modelo de tensión ascendente → clímax → resolución proporcional. Identifica cuál aplica. Si ninguno encaja, descríbelo:

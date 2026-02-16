@@ -3,6 +3,7 @@ import {
   outputCharacterDepthAnalyzerSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputCharacterDepthAnalyzerSchema };
 
@@ -22,24 +23,21 @@ export const characterDepthAnalyzerStep = createStep({
       throw new Error("Character Depth Analyzer Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza la profundidad y capacidad de transformación de los personajes en el siguiente texto. Evalúa si son tridimensionales, tienen capas, y si están en situaciones que permitan cambio interior genuino.
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu análisis estructurado evaluando los 4 criterios (Tridimensionalidad, Diseño de Arco, Evidencia de Transformación, Especificidad), siendo específico sobre qué capas tiene el personaje (o le faltan) y si la situación narrativa permite transformación interior real.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "profundidad de personaje",
+      rules: [
+        "Prioriza evidencia textual concreta sobre inferencias.",
+        "No fuerces modelo de personaje si la evidencia es parcial.",
+        "No sobrecompenses: identificar el modelo correcto no otorga score alto por sí solo.",
+        "Si la muestra no permite concluir algo con seguridad, marca confianza media/baja.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputCharacterDepthAnalyzerSchema,

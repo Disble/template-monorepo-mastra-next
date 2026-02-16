@@ -3,6 +3,7 @@ import {
   outputContinuityErrorDetectorSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputContinuityErrorDetectorSchema };
 
@@ -22,24 +23,21 @@ export const continuityErrorDetectorStep = createStep({
       throw new Error("Continuity Error Detector Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza el siguiente texto en busca de errores de continuidad, contradicciones internas e inconsistencias. Rastrea todos los elementos establecidos y verifica que se mantengan coherentes a lo largo del texto.
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu análisis estructurado, citando textualmente cada contradicción detectada con su categoría, severidad, y solución sugerida.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "continuidad",
+      rules: [
+        "Clasifica cada hallazgo como ERROR DE CRAFT, RASGO DEL MODO o AMBIGUO.",
+        "Usa test de intencionalidad e impacto antes de penalizar.",
+        "Cita textualmente toda contradicción relevante.",
+        "Si falta contexto para confirmar, usa AMBIGUO y confianza baja.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputContinuityErrorDetectorSchema,

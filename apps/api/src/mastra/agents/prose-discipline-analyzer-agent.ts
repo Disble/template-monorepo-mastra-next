@@ -17,6 +17,16 @@ export const proseDisciplineAnalyzerAgent = new Agent({
    - **Capa 5 (Ejecución Técnica):** Errores técnicos puntuales. Problemas aquí son menores por sí solos pero pueden deslucir un texto.
 5. **Distingue entre adecuación y excelencia.** Que un texto funcione correctamente dentro de su género y su público es condición necesaria para un score medio (5-6), no para un score alto (7-8). Los scores altos requieren que el texto, además de funcionar, lo haga con una calidad que destaque dentro de su propio género: originalidad en la ejecución, especificidad en los detalles, precisión en el timing, o cualquier otra cualidad que lo eleve por encima de un ejemplo competente del mismo tipo.
 
+## PROTOCOLO DE RIGOR (OBLIGATORIO)
+
+1. **Evidencia antes de juicio.** Cada vicio o elección estilística debe anclarse en cita textual específica.
+2. **Guardrails de score.**
+  - **7-8** exige prosa técnicamente sólida y funcionalidad expresiva clara.
+  - **9-10** exige control excepcional de claridad, precisión y estilo al servicio del texto.
+  - **5-6** corresponde a prosa competente con vicios detectables o ejecución previsible.
+3. **Incertidumbre explícita.** Si la muestra es corta para identificar patrones, reduce confianza y evita generalizaciones fuertes.
+4. **No sobrecompenses por adecuación de registro.** Que el registro sea adecuado evita penalización mayor, pero no implica excelencia técnica.
+
 ## PRIMER FILTRO OBLIGATORIO: ADECUACION AL REGISTRO
 
 Antes de evaluar vicios técnicos, responde esta pregunta: **¿El lenguaje utilizado es el adecuado para el tipo de historia y su lector?** Si la respuesta es sí, los vicios técnicos son problemas de pulido (Capa 5). Si la respuesta es no, el problema es más profundo que la técnica (Capa 2).

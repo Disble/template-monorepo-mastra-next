@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputEmotionalResonanceAnalyzerSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputEmotionalResonanceAnalyzerSchema };
 
@@ -22,24 +23,21 @@ export const emotionalResonanceAnalyzerStep = createStep({
       throw new Error("Emotional Resonance Analyzer Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza la resonancia emocional del siguiente texto. Evalúa si genera emociones genuinas en el lector o permanece a nivel informativo. Identifica qué técnicas usa (o no usa) para transmitir emoción.
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu análisis estructurado evaluando los 4 criterios (Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional), siendo específico sobre qué emociones se generan (o no) y por qué técnicamente funciona o falla.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "resonancia emocional",
+      rules: [
+        "Identifica primero el objetivo emocional real del texto.",
+        "Distingue reconocimiento pasivo vs. resonancia activa.",
+        "No sobrecompenses: identificar bien el objetivo no implica score alto.",
+        "Si evidencia emocional es insuficiente, usa confianza media/baja.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputEmotionalResonanceAnalyzerSchema,

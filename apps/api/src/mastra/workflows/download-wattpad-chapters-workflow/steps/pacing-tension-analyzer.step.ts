@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputPacingTensionAnalyzerSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputPacingTensionAnalyzerSchema };
 
@@ -22,24 +23,21 @@ export const pacingTensionAnalyzerStep = createStep({
       throw new Error("Pacing Tension Analyzer Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza el ritmo narrativo y la gestion de tension del siguiente texto. Evalua la distribucion de modalidades temporales (Genette), la gestion de intereses narrativos (Sternberg), y la curva de tension y ritmo (Swain + Freytag).
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu analisis estructurado evaluando los 3 criterios (Distribucion de Modalidades Temporales, Gestion de Intereses Narrativos, Curva de Tension y Ritmo), estimando la distribucion temporal por modalidad, identificando los intereses narrativos activos, y trazando la curva de tension del texto.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "ritmo y tensión",
+      rules: [
+        "Identifica primero el modelo de tensión que realmente opera.",
+        "Evalúa efecto de caídas de tensión según modelo (no por dogma clásico).",
+        "No sobrecompenses por modelo correcto sin ejecución sólida.",
+        "Si el fragmento no permite curva completa, baja confianza.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputPacingTensionAnalyzerSchema,

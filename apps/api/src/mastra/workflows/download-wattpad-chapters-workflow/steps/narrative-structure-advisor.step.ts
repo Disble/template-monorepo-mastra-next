@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputNarrativeStructureAdvisorSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputNarrativeStructureAdvisorSchema };
 
@@ -22,24 +23,21 @@ export const narrativeStructureAdvisorStep = createStep({
       throw new Error("Narrative Structure Analyzer Agent not found");
     }
 
-    const contextoBlock = contextoEditorial
-      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
-      : "";
-
-    const prompt = `Analiza la estructura narrativa del siguiente texto. Identifica qué estructuras utiliza en cada nivel (Macro, Meso, Micro), evalúa los 4 criterios (Identificación Estructural, Implementación Técnica, Efectividad Narrativa, Complejidad Justificada), y determina si aporta o resta a la experiencia narrativa.
-${contextoBlock}
-**TEXTO A ANALIZAR:**
-<story_text>
-\`\`\`markdown
-${content}
-\`\`\`
-</story_text>
-
-Proporciona tu análisis estructurado, enfocándote en si la estructura elegida es la correcta para esta historia y si está bien ejecutada.`;
+    const prompt = buildAnalyzerPrompt({
+      analysisTarget: "estructura narrativa",
+      rules: [
+        "No fuerces clasificación si el encaje es parcial.",
+        "Informa porcentaje de alineación y alternativa cercana cuando aplique.",
+        "Evalúa forma-función: no basta con nombrar estructura.",
+        "Si la muestra es incompleta, baja confianza para cierres macro.",
+      ],
+      contextoEditorial,
+      content,
+    });
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
-        temperature: 0.7,
+        temperature: 0.3,
       },
       structuredOutput: {
         schema: outputNarrativeStructureAdvisorSchema,

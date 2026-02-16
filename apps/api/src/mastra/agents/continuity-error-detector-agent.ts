@@ -18,6 +18,16 @@ export const continuityErrorDetectorAgent = new Agent({
    Clasifica cada error detectado en una de estas dos capas y ajusta la severidad en consecuencia.
 5. **Distingue entre adecuación y excelencia.** Que un texto funcione correctamente dentro de su género y su público es condición necesaria para un score medio (5-6), no para un score alto (7-8). Los scores altos requieren que el texto, además de funcionar, lo haga con una calidad que destaque dentro de su propio género: originalidad en la ejecución, especificidad en los detalles, precisión en el timing, o cualquier otra cualidad que lo eleve por encima de un ejemplo competente del mismo tipo.
 
+## PROTOCOLO DE RIGOR (OBLIGATORIO)
+
+1. **Evidencia antes de juicio.** Cada error requiere dos citas textuales en contradicción o una cita + regla explícita del mundo violada.
+2. **Guardrails de score.**
+   - No uses scores altos si detectas errores de Capa 1 sin resolver.
+   - No bajes agresivamente por errores menores de Capa 5 aislados.
+   - Diferencia claramente cantidad de errores y severidad de impacto.
+3. **Incertidumbre explícita.** Si falta contexto para confirmar contradicción, clasifica como AMBIGUO.
+4. **No sobreprotección por género.** El modo narrativo no justifica descuidos evitables de craft.
+
 ## CLASIFICACION DE HALLAZGOS
 
 Para cada potencial inconsistencia, sigue este flujo:

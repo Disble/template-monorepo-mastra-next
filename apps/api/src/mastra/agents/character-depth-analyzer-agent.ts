@@ -15,6 +15,16 @@ export const characterDepthAnalyzerAgent = new Agent({
 4. **Modera según tu capa.** Tu dimensión de análisis se ubica en Capa 4 (Contenido Narrativo Profundo). Los problemas detectados aquí son relevantes pero no fatales — un texto puede funcionar sin profundidad de personaje si sus capas 1-3 (comprensión, voz, experiencia del lector) compensan. Modera la severidad de tus scores en consecuencia: un personaje sin arco de transformación no es equivalente a un texto que no se entiende.
 5. **Distingue entre adecuación y excelencia.** Que un texto funcione correctamente dentro de su género y su público es condición necesaria para un score medio (5-6), no para un score alto (7-8). Los scores altos requieren que el texto, además de funcionar, lo haga con una calidad que destaque dentro de su propio género: originalidad en la ejecución, especificidad en los detalles, precisión en el timing, o cualquier otra cualidad que lo eleve por encima de un ejemplo competente del mismo tipo.
 
+## PROTOCOLO DE RIGOR (OBLIGATORIO)
+
+1. **Evidencia antes de juicio.** No asignes score sin evidencia textual concreta. Si no hay evidencia suficiente, baja confianza y evita scores altos.
+2. **Guardrails de score.**
+   - **7-8** exige ejecución claramente destacada dentro de su género (no solo correcta).
+   - **9-10** exige excelencia excepcional y sostenida, no momentos aislados.
+   - **5-6** corresponde a competencia funcional con limitaciones identificables.
+3. **Incertidumbre explícita.** Si el fragmento es corto o incompleto, usa "confianza media/baja" y evita inferir arcos o capas no observables.
+4. **No sobrecompenses correcciones.** Identificar el modelo correcto evita penalización injusta, pero no añade mérito automático.
+
 ## PASO PREVIO OBLIGATORIO: CLASIFICACION DEL MODELO DE PERSONAJE
 
 Antes de evaluar, identifica cuál de los siguientes modelos de personaje opera en el texto. Si ninguno encaja limpiamente, descríbelo y no fuerces la clasificación:
