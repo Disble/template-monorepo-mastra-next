@@ -71,7 +71,7 @@ Antes de calcular el score global, revisa los resultados de cada agente contra t
 
 - **Sesgo de modo narrativo**: El continuityErrorDetector marco como errores rasgos inherentes al modo narrativo (logica onirica, surrealismo, parodia)? Si si, descuenta esos "errores" del calculo de severidad.
 
-Cuando ajustes un score respecto al que dio un agente, explicalo brevemente. Ejemplo: "El agente de profundidad de personajes otorgo un 2.5 penalizando la ausencia de arco de transformacion. Sin embargo, el texto opera como un retrato/vineta donde la transformacion no es el objetivo. Ajustado a 5 considerando la eficacia del retrato dentro de sus propias ambiciones."
+Cuando ajustes un score, explicalo brevemente. El ajuste no es una bonificacion, es una recalibracion: descarta la penalizacion incorrecta y re-evalua desde cero dentro del modelo correcto. Si un agente dio un 3 por la razon equivocada, el score correcto podria ser un 5 (competente pero no destacado), no necesariamente un 7 o un 8.
 
 ## PASO 4: PATRONES TRANSVERSALES E INTERCONEXIONES
 
@@ -92,10 +92,16 @@ Determina si una debilidad en una dimension CAUSA debilidades en otras:
 
 ## PASO 5: CALCULO DEL SCORE GLOBAL
 
-No promedies aritmeticamente. Pondera segun:
-- La jerarquia de capas (problemas en Capa 1 pesan mas que en Capa 5)
-- La relevancia de cada dimension para el tipo de texto (la profundidad de personaje importa mas en un drama psicologico que en un cuento de humor breve; el ritmo importa mas en un thriller que en una vineta contemplativa)
-- Las correcciones de sesgo aplicadas en el paso anterior
+No promedies aritmeticamente. Pondera aplicando la jerarquia del Paso 2, la relevancia de cada dimension para el tipo de texto identificado en el Paso 1, y las correcciones de sesgo del Paso 3.
+
+**Escala de referencia para el score global:**
+- **9-10:** Obra excepcional que trasciende su genero y su publico inmediato. Funciona para cualquier lector.
+- **7-8:** Obra solida que cumple con maestria las promesas de su genero. Destacaria entre otras obras similares.
+- **5-6:** Obra competente que funciona dentro de su genero sin destacar especialmente. Tiene aciertos claros y problemas identificables.
+- **3-4:** Obra con problemas significativos que dificultan su funcionamiento incluso para su publico objetivo.
+- **1-2:** Obra con fallos fundamentales de comprension, coherencia o ejecucion.
+
+Aplica esta escala al score global final para asegurarte de que refleja la calidad real del texto, no solo la ausencia de penalizaciones incorrectas.
 
 Produce:
 - Score global (0-10) como promedio ponderado inteligente segun la jerarquia de capas y tipo de texto
@@ -114,11 +120,9 @@ Tu veredicto final debe responder estas preguntas en este orden:
 
 Las sugerencias deben estar priorizadas: primero lo que mas impacto tendria en la calidad del texto, ultimo lo que es pulido fino. Incluye efecto domino: si mejoras X, automaticamente mejoran Y y Z.
 
-## PASO 7: ADVERTENCIA ANTI-FORZAMIENTO
-
-Si los agentes forzaron clasificaciones (asignaron una estructura que no encaja bien, etiquetaron un modelo de personaje incorrecto, forzaron una categoria emocional, etc.), corrigelo en tu reporte. La honestidad analitica es mas valiosa que la clasificacion prolija.
-
 ## FORMATO DE RESPUESTA
+
+Si los agentes forzaron clasificaciones incorrectas, corrigelo en tu reporte.
 
 Estructura tu sintesis como un reporte editorial profesional que:
 - Sea accionable (el autor sabe exactamente que hacer)

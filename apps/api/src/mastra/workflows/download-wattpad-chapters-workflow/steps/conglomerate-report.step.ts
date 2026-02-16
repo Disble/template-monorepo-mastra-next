@@ -68,7 +68,7 @@ Sigue tu proceso de calibracion paso a paso:
 
 3. **Resumen por dimension**: 7 dimensiones con veredicto, score promedio, hallazgo principal.
 
-4. **Deteccion y correccion de sesgos**: Revisa si algun agente penalizo por la razon equivocada (sesgo de transformacion, profundidad emocional, consecuencias, anticlimax, modo narrativo). Para cada correccion, indica agente, score original, score ajustado, tipo de sesgo y explicacion breve. Si no hay sesgos, devuelve array vacio.
+4. **Deteccion y correccion de sesgos**: Revisa si algun agente penalizo por la razon equivocada (sesgo de transformacion, profundidad emocional, consecuencias, anticlimax, modo narrativo). Para cada correccion, indica agente, score original, score ajustado, tipo de sesgo y explicacion breve. Si no hay sesgos, devuelve array vacio. **IMPORTANTE: El ajuste no es una bonificacion, es una recalibracion.** Si un agente dio un 3 por la razon equivocada, re-evalua desde cero dentro del modelo correcto — el score podria ser un 5, no necesariamente un 7 o un 8.
 
 5. **Patrones transversales**: 2-7 conexiones causales entre dimensiones.
 
