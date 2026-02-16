@@ -39,13 +39,26 @@ const criterioSchema = z.object({
 });
 
 export const outputEngamentStoryAdvisorSchema = z.object({
+  fuenteDeEnganche: z.object({
+    fuente: z
+      .string()
+      .describe(
+        "Fuente primaria de enganche: Conflicto, Voz/Estilo, Humor, Curiosidad temática, Asombro/Escalada u otra",
+      ),
+    confianza: z
+      .enum(["ALTA", "MEDIA", "BAJA"])
+      .describe("Confianza en la clasificación"),
+    justificacion: z.string().describe("Por qué se identifica esta fuente"),
+  }),
   diagnostico: z
     .string()
-    .describe("Párrafo explicando si funciona o no la apertura y por qué"),
+    .describe(
+      "Párrafo explicando si funciona o no la apertura, evaluado desde la fuente de enganche identificada",
+    ),
   criterios: z
     .array(criterioSchema)
     .describe(
-      "Los 4 criterios evaluados: Anclaje Emocional, Pregunta Implícita, Ritmo de Inversión, Especificidad Emocional",
+      "Los 4 criterios evaluados: Anclaje del Lector, Pregunta Implícita, Ritmo de Inversión, Especificidad y Efectividad",
     ),
   momentoCritico: z
     .object({
@@ -82,6 +95,14 @@ const criterioEstructuralSchema = z.object({
 const identificacionNivelSchema = z.object({
   nivel: z.enum(["Macro", "Meso", "Micro"]).describe("Nivel estructural"),
   estructura: z.string().describe("Estructura identificada"),
+  porcentajeAlineacion: z
+    .number()
+    .min(0)
+    .max(100)
+    .optional()
+    .describe(
+      "Porcentaje de alineación con la estructura identificada. Si no encaja limpiamente, puede ser bajo",
+    ),
   justificacion: z.string().describe("Breve justificación"),
 });
 
@@ -118,6 +139,11 @@ export const outputNarrativeStructureAdvisorSchema = z.object({
     niveles: z
       .array(identificacionNivelSchema)
       .describe("Los 3 niveles: Macro, Meso, Micro"),
+    encajaLimpiamente: z
+      .enum(["SÍ", "PARCIALMENTE", "NO"])
+      .describe(
+        "Si el texto encaja limpiamente en las estructuras identificadas",
+      ),
     descripcion: z
       .string()
       .describe("Descripción de cómo operan estas estructuras en el texto"),
@@ -167,6 +193,16 @@ const errorContinuidadSchema = z.object({
       "TIEMPOS VERBALES",
     ])
     .describe("Categoría del error"),
+  clasificacion: z
+    .enum(["ERROR DE CRAFT", "RASGO DEL MODO NARRATIVO", "AMBIGUO"])
+    .describe(
+      "Clasificación: error de craft (siempre problema), rasgo del modo narrativo (no penalizar), o ambiguo (señalar sin penalizar)",
+    ),
+  capa: z
+    .enum(["1", "5"])
+    .describe(
+      "Capa afectada: 1 (comprensión básica, grave) o 5 (detalle técnico, menor)",
+    ),
   severidad: z
     .enum(["CRÍTICO", "MODERADO", "MENOR", "AMBIGUO"])
     .describe("Nivel de severidad"),
@@ -256,6 +292,17 @@ const presenciaSensorialSchema = z.object({
 });
 
 export const outputEmotionalResonanceAnalyzerSchema = z.object({
+  objetivoEmocional: z.object({
+    respuesta: z
+      .string()
+      .describe(
+        "Respuesta emocional objetivo del texto: Empatía profunda, Tensión, Humor, Asombro, Nostalgia, Inquietud u otra",
+      ),
+    confianza: z
+      .enum(["ALTA", "MEDIA", "BAJA"])
+      .describe("Confianza en la clasificación"),
+    justificacion: z.string().describe("Por qué se identifica este objetivo"),
+  }),
   diagnosticoEmocional: z.object({
     categoriaLectura: z
       .enum(["VISCERAL", "RESONANTE", "PRESENTE", "INFORMATIVA", "INERTE"])
@@ -333,22 +380,36 @@ const perfilPersonajeSchema = z.object({
     .describe("Deseos en conflicto, brechas entre máscara y self"),
 });
 
-const analisisArcoSchema = z.object({
+const modeloPersonajeSchema = z.object({
+  modelo: z
+    .string()
+    .describe(
+      "Modelo identificado: ARCO, REVELACIÓN, PRUEBA, FUNCIONAL u otro",
+    ),
+  confianza: z
+    .enum(["ALTA", "MEDIA", "BAJA"])
+    .describe("Confianza en la clasificación"),
+  justificacion: z
+    .string()
+    .describe("Por qué se identifica este modelo en el texto"),
+});
+
+const analisisDesarrolloSchema = z.object({
   estadoInicial: z.string().describe("Quién es el personaje al empezar"),
   presionesQueEnfrenta: z
     .array(z.string())
-    .describe("Conflictos/situaciones que podrían provocar cambio"),
-  evidenciaCambio: z
-    .string()
-    .describe("Qué transformación se ha mostrado, si alguna"),
-  trayectoriaProyectada: z
-    .string()
-    .describe("Hacia dónde parece dirigirse el arco"),
-  diagnostico: z
+    .describe("Conflictos/situaciones que actúan sobre el personaje"),
+  evidenciaDesarrollo: z
     .string()
     .describe(
-      "¿Está en camino de transformación real o solo resuelve problemas externos?",
+      "Según el modelo: transformación (arco), revelación de capas (retrato), demostración bajo presión (prueba), o eficacia funcional (vehículo)",
     ),
+  trayectoriaProyectada: z
+    .string()
+    .describe("Hacia dónde parece dirigirse el personaje"),
+  diagnostico: z
+    .string()
+    .describe("Evaluación según el modelo identificado del personaje"),
 });
 
 const personajeSecundarioSchema = z.object({
@@ -371,16 +432,21 @@ const analisisDialogoSchema = z.object({
 });
 
 export const outputCharacterDepthAnalyzerSchema = z.object({
+  modeloPersonaje: modeloPersonajeSchema.describe(
+    "Clasificación del modelo de personaje identificado en el texto",
+  ),
   perfilPersonaje: perfilPersonajeSchema,
   criterios: z
     .array(criterioPersonajeSchema)
     .describe(
-      "Los 4 criterios: Tridimensionalidad, Diseño de Arco, Evidencia de Transformación, Voz Diálogo y Especificidad",
+      "Los 4 criterios: Tridimensionalidad, Construcción y Desarrollo, Coherencia y Credibilidad, Voz Diálogo y Especificidad",
     ),
   momentosReveladores: z
     .array(momentoReveladorSchema)
     .describe("1-6 momentos que revelan profundidad o falta de ella"),
-  analisisArco: analisisArcoSchema,
+  analisisDesarrollo: analisisDesarrolloSchema.describe(
+    "Análisis del desarrollo del personaje según su modelo identificado",
+  ),
   analisisDialogo: analisisDialogoSchema.describe(
     "Evaluación breve de la calidad y función de los diálogos",
   ),
@@ -398,9 +464,9 @@ export const outputCharacterDepthAnalyzerSchema = z.object({
   recomendacionesProfundidad: z
     .array(z.string())
     .describe("2-3 recomendaciones para incrementar profundidad"),
-  recomendacionesArco: z
+  recomendacionesDesarrollo: z
     .array(z.string())
-    .describe("1-2 recomendaciones para potenciar el arco"),
+    .describe("1-2 recomendaciones para potenciar el desarrollo del personaje"),
   notaCritica: z
     .string()
     .describe("La observación más importante sobre este personaje"),
@@ -413,9 +479,19 @@ export const outputCharacterDepthAnalyzerSchema = z.object({
 const ejemploProblemaSchema = z.object({
   cita: z.string().describe("Cita textual del problema"),
   problema: z.string().describe("Descripción del problema"),
+  tipo: z
+    .enum([
+      "VICIO TÉCNICO",
+      "ELECCIÓN ESTILÍSTICA DISCUTIBLE",
+      "ELECCIÓN ESTILÍSTICA EFECTIVA",
+    ])
+    .describe(
+      "Tipo: vicio técnico (siempre perjudica), elección discutible (funciona en género pero limita), elección efectiva (cumple propósito)",
+    ),
   severidad: z
-    .enum(["CRÍTICO", "MODERADO", "MENOR", "ESTILÍSTICO"])
-    .describe("Nivel de severidad"),
+    .enum(["CRÍTICO", "MODERADO", "MENOR"])
+    .optional()
+    .describe("Nivel de severidad (solo para vicios técnicos)"),
   alternativa: z.string().optional().describe("Alternativa sugerida si aplica"),
 });
 
@@ -437,6 +513,21 @@ const repeticionSchema = z.object({
 });
 
 export const outputProseDisciplineAnalyzerSchema = z.object({
+  adecuacionAlRegistro: z.object({
+    esAdecuado: z
+      .enum(["SÍ", "PARCIALMENTE", "NO"])
+      .describe(
+        "¿El lenguaje es adecuado para el tipo de historia y su lector?",
+      ),
+    generoTonoIdentificado: z
+      .string()
+      .describe("Género/tono identificado del texto"),
+    analisis: z
+      .string()
+      .describe(
+        "Si no es adecuado: por qué no. Si sí: los problemas son de pulido técnico, no de registro",
+      ),
+  }),
   resumenEjecutivo: z.object({
     nivelDisciplina: z
       .enum([
@@ -591,9 +682,22 @@ const puntoTensionSchema = z.object({
 });
 
 export const outputPacingTensionAnalyzerSchema = z.object({
+  modeloDeTension: z.object({
+    modelo: z
+      .string()
+      .describe(
+        "Modelo identificado: CLASICA, ESCALADA ABSURDA, ACUMULACION, CONTRASTE u otro",
+      ),
+    confianza: z
+      .enum(["ALTA", "MEDIA", "BAJA"])
+      .describe("Confianza en la clasificacion"),
+    justificacion: z.string().describe("Por que se identifica este modelo"),
+  }),
   diagnostico: z
     .string()
-    .describe("Evaluacion general del sistema ritmico y de tension del texto"),
+    .describe(
+      "Evaluacion general del sistema ritmico y de tension del texto, en funcion del modelo identificado",
+    ),
   criterios: z
     .array(criterioRitmoSchema)
     .describe(
@@ -664,13 +768,62 @@ const itemMejoraSchema = z.object({
     .describe("Que otras areas mejoran si se implementa esta recomendacion"),
 });
 
+const identificacionTextoSchema = z.object({
+  generoYTono: z
+    .string()
+    .describe(
+      "Genero y tono del texto (ficcion literaria, juvenil, humor, horror, parodia, slice of life, etc.)",
+    ),
+  propositoNarrativo: z
+    .string()
+    .describe(
+      "Que intenta lograr (transformar al personaje, retratar un momento, divertir, provocar reflexion, etc.)",
+    ),
+  publicoObjetivo: z.string().describe("A quien va dirigido el texto"),
+  modeloDePersonaje: z
+    .string()
+    .describe("Modelo dominante: arco, revelacion, prueba, funcional u otro"),
+  fuenteDeEnganche: z
+    .string()
+    .describe(
+      "Fuente primaria: conflicto, humor, voz/estilo, asombro, curiosidad tematica u otra",
+    ),
+});
+
+const correccionSesgoSchema = z.object({
+  agente: z.string().describe("Nombre del agente cuyo score se ajusto"),
+  scoreOriginal: z
+    .number()
+    .min(0)
+    .max(10)
+    .describe("Score original dado por el agente"),
+  scoreAjustado: z
+    .number()
+    .min(0)
+    .max(10)
+    .describe("Score ajustado tras la correccion"),
+  tipoSesgo: z
+    .string()
+    .describe(
+      "Tipo de sesgo detectado (transformacion, profundidad emocional, consecuencias, anticlimax, modo narrativo)",
+    ),
+  explicacion: z
+    .string()
+    .describe("Explicacion breve de por que se ajusto el score"),
+});
+
 export const synthesisSchema = z.object({
+  identificacionDelTexto: identificacionTextoSchema.describe(
+    "Clasificacion del texto realizada por el agente de sintesis antes de ponderar resultados",
+  ),
   evaluacionGlobal: z.object({
     scoreGlobal: z
       .number()
       .min(0)
       .max(10)
-      .describe("Score global ponderado inteligente"),
+      .describe(
+        "Score global ponderado por jerarquia de capas y tipo de texto",
+      ),
     categoria: z.string().describe("Categoria de la obra"),
     resumenEjecutivo: z
       .string()
@@ -679,6 +832,11 @@ export const synthesisSchema = z.object({
   resumenPorDimension: z
     .array(resumenDimensionSchema)
     .describe("Resumen de cada una de las 7 dimensiones analizadas"),
+  correccionesDeSesgos: z
+    .array(correccionSesgoSchema)
+    .describe(
+      "Correcciones de sesgo aplicadas a los scores de los agentes individuales. Puede estar vacio si no se detectaron sesgos",
+    ),
   patronesTransversales: z
     .array(patronTransversalSchema)
     .describe("2-7 patrones que conectan multiples dimensiones"),
@@ -693,7 +851,9 @@ export const synthesisSchema = z.object({
     .describe("3-10 items del plan de mejora priorizado por impacto"),
   veredictoEditorial: z
     .string()
-    .describe("Veredicto editorial final, honesto y constructivo"),
+    .describe(
+      "Veredicto editorial final estructurado respondiendo: 1) Se entiende lo que ocurre? 2) Voz, estructura y forma funcionan? 3) Provoca algo en el lector? 4) Hay profundidad? 5) Ejecucion tecnica? 6) Sugerencias priorizadas",
+    ),
 });
 
 export const outputConglomerateReportSchema = z.object({

@@ -3,12 +3,38 @@
 import { Accordion, Chip, Spinner } from "@repo/ui/heroui";
 import { ValidationErrorAlert } from "#components/commons/validation-error-alert";
 import { AnalysisDetailCard } from "../analysis-sections/analysis-detail-card";
+import { BiasCorrections } from "../analysis-sections/bias-corrections";
 import { CrossPatterns } from "../analysis-sections/cross-patterns";
 import { DimensionSummary } from "../analysis-sections/dimension-summary";
 import { ImprovementPlan } from "../analysis-sections/improvement-plan";
 import { StoryTextViewer } from "../analysis-sections/story-text-viewer";
 import { SynthesisOverview } from "../analysis-sections/synthesis-overview";
 import { useStoryAnalyzerResults } from "./story-analyzer-results.hook";
+
+function CalibrationChip({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="text-xs text-foreground/50">{label}:</span>
+      <Chip variant="secondary" size="sm" className="text-xs">
+        {value}
+      </Chip>
+    </div>
+  );
+}
+
+function ConfidenceIndicator({ confianza }: { confianza: string }) {
+  const color =
+    confianza === "ALTA"
+      ? "success"
+      : confianza === "MEDIA"
+        ? "warning"
+        : "danger";
+  return (
+    <Chip variant="soft" color={color} size="sm" className="text-xs">
+      {confianza}
+    </Chip>
+  );
+}
 
 export function StoryAnalyzerResults() {
   const { isLoading, validationError, downloadedContent, conglomerateResult } =
@@ -65,28 +91,32 @@ export function StoryAnalyzerResults() {
       {/* 1. Story Text */}
       {downloadedContent && <StoryTextViewer content={downloadedContent} />}
 
-      {/* 2. Synthesis Overview */}
+      {/* 2. Synthesis Overview (includes text identification + score + verdict) */}
       <SynthesisOverview synthesis={sintesis} />
 
       {/* 3. Dimension Summary */}
       <DimensionSummary resumenPorDimension={sintesis.resumenPorDimension} />
 
-      {/* 4. Cross Patterns */}
+      {/* 4. Bias Corrections */}
+      <BiasCorrections correccionesDeSesgos={sintesis.correccionesDeSesgos} />
+
+      {/* 5. Cross Patterns */}
       <CrossPatterns patronesTransversales={sintesis.patronesTransversales} />
 
-      {/* 5. Strengths, Weaknesses & Improvement Plan */}
+      {/* 6. Strengths, Weaknesses & Improvement Plan */}
       <ImprovementPlan
         planDeMejora={sintesis.planDeMejora}
         fortalezasPrincipales={sintesis.fortalezasPrincipales}
         debilidadesPrincipales={sintesis.debilidadesPrincipales}
       />
 
-      {/* 6. Individual Analysis Details */}
+      {/* 7. Individual Analysis Details */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-foreground">
           Análisis Individuales
         </h3>
         <Accordion variant="surface" allowsMultipleExpanded>
+          {/* Engagement */}
           {analisisIndividuales.engagementStoryAdvisor && (
             <AnalysisDetailCard
               title="Engagement y Apertura"
@@ -99,26 +129,53 @@ export function StoryAnalyzerResults() {
                 analisisIndividuales.engagementStoryAdvisor.recomendaciones
               }
             >
-              <div className="space-y-2">
-                <h5 className="text-sm font-semibold text-foreground">
-                  Momento Crítico
-                </h5>
-                <blockquote className="text-sm text-foreground/70 border-l-2 border-accent pl-3 italic">
+              <div className="space-y-3">
+                {/* Calibration context */}
+                <div className="flex flex-wrap gap-2 items-center">
+                  <CalibrationChip
+                    label="Fuente de enganche"
+                    value={
+                      analisisIndividuales.engagementStoryAdvisor
+                        .fuenteDeEnganche.fuente
+                    }
+                  />
+                  <ConfidenceIndicator
+                    confianza={
+                      analisisIndividuales.engagementStoryAdvisor
+                        .fuenteDeEnganche.confianza
+                    }
+                  />
+                </div>
+                <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.engagementStoryAdvisor.momentoCritico
-                      .cita
-                  }
-                </blockquote>
-                <p className="text-xs text-foreground/60">
-                  {
-                    analisisIndividuales.engagementStoryAdvisor.momentoCritico
-                      .analisis
+                    analisisIndividuales.engagementStoryAdvisor.fuenteDeEnganche
+                      .justificacion
                   }
                 </p>
+
+                {/* Critical moment */}
+                <div>
+                  <h5 className="text-sm font-semibold text-foreground">
+                    Momento Crítico
+                  </h5>
+                  <blockquote className="text-sm text-foreground/70 border-l-2 border-accent pl-3 italic">
+                    {
+                      analisisIndividuales.engagementStoryAdvisor.momentoCritico
+                        .cita
+                    }
+                  </blockquote>
+                  <p className="text-xs text-foreground/60">
+                    {
+                      analisisIndividuales.engagementStoryAdvisor.momentoCritico
+                        .analisis
+                    }
+                  </p>
+                </div>
               </div>
             </AnalysisDetailCard>
           )}
 
+          {/* Narrative Structure */}
           {analisisIndividuales.narrativeStructureAnalyzer && (
             <AnalysisDetailCard
               title="Estructura Narrativa"
@@ -132,17 +189,74 @@ export function StoryAnalyzerResults() {
                 analisisIndividuales.narrativeStructureAnalyzer.recomendaciones
               }
             >
-              <div className="space-y-2">
-                <h5 className="text-sm font-semibold text-foreground">
-                  Temática
-                </h5>
-                <p className="text-sm text-foreground/70">
-                  <strong>Tema central:</strong>{" "}
-                  {
-                    analisisIndividuales.narrativeStructureAnalyzer.tematica
-                      .temaCentral
-                  }
-                </p>
+              <div className="space-y-3">
+                {/* Structural alignment */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs text-foreground/50">
+                    Encaja limpiamente:
+                  </span>
+                  <Chip
+                    variant="soft"
+                    size="sm"
+                    color={
+                      analisisIndividuales.narrativeStructureAnalyzer
+                        .identificacionEstructural.encajaLimpiamente === "SÍ"
+                        ? "success"
+                        : analisisIndividuales.narrativeStructureAnalyzer
+                              .identificacionEstructural.encajaLimpiamente ===
+                            "NO"
+                          ? "danger"
+                          : "warning"
+                    }
+                  >
+                    {
+                      analisisIndividuales.narrativeStructureAnalyzer
+                        .identificacionEstructural.encajaLimpiamente
+                    }
+                  </Chip>
+                </div>
+
+                {/* Structural levels with alignment % */}
+                <div className="space-y-1">
+                  {analisisIndividuales.narrativeStructureAnalyzer.identificacionEstructural.niveles.map(
+                    (nivel) => (
+                      <div
+                        key={nivel.nivel}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        <span className="text-foreground/50 w-12 shrink-0 text-xs">
+                          {nivel.nivel}:
+                        </span>
+                        <span className="text-foreground/80">
+                          {nivel.estructura}
+                        </span>
+                        {nivel.porcentajeAlineacion != null && (
+                          <Chip
+                            variant="secondary"
+                            size="sm"
+                            className="text-xs"
+                          >
+                            {nivel.porcentajeAlineacion}%
+                          </Chip>
+                        )}
+                      </div>
+                    ),
+                  )}
+                </div>
+
+                {/* Theme & diagnosis */}
+                <div>
+                  <h5 className="text-sm font-semibold text-foreground">
+                    Temática
+                  </h5>
+                  <p className="text-sm text-foreground/70">
+                    <strong>Tema central:</strong>{" "}
+                    {
+                      analisisIndividuales.narrativeStructureAnalyzer.tematica
+                        .temaCentral
+                    }
+                  </p>
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-foreground/70">
                     Estructura:
@@ -170,6 +284,7 @@ export function StoryAnalyzerResults() {
             </AnalysisDetailCard>
           )}
 
+          {/* Continuity Errors */}
           {analisisIndividuales.continuityErrorDetector && (
             <AnalysisDetailCard
               title="Errores de Continuidad"
@@ -179,7 +294,8 @@ export function StoryAnalyzerResults() {
                   .resumen
               }
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
+                {/* Error counts */}
                 <div className="flex gap-2 flex-wrap">
                   <Chip color="danger" variant="soft" size="sm">
                     Críticos:{" "}
@@ -203,6 +319,53 @@ export function StoryAnalyzerResults() {
                     }
                   </Chip>
                 </div>
+
+                {/* Error classification breakdown */}
+                {analisisIndividuales.continuityErrorDetector.erroresDetectados
+                  .length > 0 && (
+                  <div>
+                    <h5 className="text-sm font-semibold text-foreground mb-2">
+                      Clasificación de Errores
+                    </h5>
+                    <div className="space-y-2">
+                      {analisisIndividuales.continuityErrorDetector.erroresDetectados.map(
+                        (error) => (
+                          <div
+                            key={error.numero}
+                            className="flex items-start gap-2 text-xs"
+                          >
+                            <Chip
+                              size="sm"
+                              variant="soft"
+                              color={
+                                error.clasificacion === "ERROR DE CRAFT"
+                                  ? "danger"
+                                  : error.clasificacion === "AMBIGUO"
+                                    ? "warning"
+                                    : "default"
+                              }
+                              className="shrink-0 text-xs"
+                            >
+                              {error.clasificacion}
+                            </Chip>
+                            <Chip
+                              size="sm"
+                              variant="secondary"
+                              className="shrink-0 text-xs"
+                            >
+                              Capa {error.capa}
+                            </Chip>
+                            <span className="text-foreground/70">
+                              {error.categoria}: {error.analisis}
+                            </span>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Correction priorities */}
                 {analisisIndividuales.continuityErrorDetector
                   .prioridadesCorreccion.length > 0 && (
                   <div>
@@ -230,6 +393,7 @@ export function StoryAnalyzerResults() {
             </AnalysisDetailCard>
           )}
 
+          {/* Emotional Resonance */}
           {analisisIndividuales.emotionalResonanceAnalyzer && (
             <AnalysisDetailCard
               title="Resonancia Emocional"
@@ -243,7 +407,31 @@ export function StoryAnalyzerResults() {
                 analisisIndividuales.emotionalResonanceAnalyzer.recomendaciones
               }
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
+                {/* Calibration context: emotional objective */}
+                <div className="flex flex-wrap gap-2 items-center">
+                  <CalibrationChip
+                    label="Objetivo emocional"
+                    value={
+                      analisisIndividuales.emotionalResonanceAnalyzer
+                        .objetivoEmocional.respuesta
+                    }
+                  />
+                  <ConfidenceIndicator
+                    confianza={
+                      analisisIndividuales.emotionalResonanceAnalyzer
+                        .objetivoEmocional.confianza
+                    }
+                  />
+                </div>
+                <p className="text-xs text-foreground/50">
+                  {
+                    analisisIndividuales.emotionalResonanceAnalyzer
+                      .objetivoEmocional.justificacion
+                  }
+                </p>
+
+                {/* Reading category */}
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-foreground/70">Categoría:</span>
                   <Chip variant="soft" size="sm" color="accent">
@@ -260,6 +448,7 @@ export function StoryAnalyzerResults() {
             </AnalysisDetailCard>
           )}
 
+          {/* Character Depth */}
           {analisisIndividuales.characterDepthAnalyzer && (
             <AnalysisDetailCard
               title="Profundidad de Personajes"
@@ -269,24 +458,51 @@ export function StoryAnalyzerResults() {
                 ...(analisisIndividuales.characterDepthAnalyzer
                   .recomendacionesProfundidad ?? []),
                 ...(analisisIndividuales.characterDepthAnalyzer
-                  .recomendacionesArco ?? []),
+                  .recomendacionesDesarrollo ?? []),
               ]}
             >
-              <div className="space-y-2">
-                <h5 className="text-sm font-semibold text-foreground">
-                  Perfil:{" "}
+              <div className="space-y-3">
+                {/* Calibration context: character model */}
+                <div className="flex flex-wrap gap-2 items-center">
+                  <CalibrationChip
+                    label="Modelo de personaje"
+                    value={
+                      analisisIndividuales.characterDepthAnalyzer
+                        .modeloPersonaje.modelo
+                    }
+                  />
+                  <ConfidenceIndicator
+                    confianza={
+                      analisisIndividuales.characterDepthAnalyzer
+                        .modeloPersonaje.confianza
+                    }
+                  />
+                </div>
+                <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.characterDepthAnalyzer.perfilPersonaje
-                      .nombre
+                    analisisIndividuales.characterDepthAnalyzer.modeloPersonaje
+                      .justificacion
                   }
-                </h5>
-                <p className="text-xs text-foreground/60">
-                  {analisisIndividuales.characterDepthAnalyzer.notaCritica}
                 </p>
+
+                {/* Character profile */}
+                <div>
+                  <h5 className="text-sm font-semibold text-foreground">
+                    Perfil:{" "}
+                    {
+                      analisisIndividuales.characterDepthAnalyzer
+                        .perfilPersonaje.nombre
+                    }
+                  </h5>
+                  <p className="text-xs text-foreground/60">
+                    {analisisIndividuales.characterDepthAnalyzer.notaCritica}
+                  </p>
+                </div>
               </div>
             </AnalysisDetailCard>
           )}
 
+          {/* Prose Discipline */}
           {analisisIndividuales.proseDisciplineAnalyzer && (
             <AnalysisDetailCard
               title="Disciplina de Prosa"
@@ -300,7 +516,45 @@ export function StoryAnalyzerResults() {
                   .recomendacionesGenerales
               }
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
+                {/* Register adequacy */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs text-foreground/50">
+                    Registro adecuado:
+                  </span>
+                  <Chip
+                    variant="soft"
+                    size="sm"
+                    color={
+                      analisisIndividuales.proseDisciplineAnalyzer
+                        .adecuacionAlRegistro.esAdecuado === "SÍ"
+                        ? "success"
+                        : analisisIndividuales.proseDisciplineAnalyzer
+                              .adecuacionAlRegistro.esAdecuado === "NO"
+                          ? "danger"
+                          : "warning"
+                    }
+                  >
+                    {
+                      analisisIndividuales.proseDisciplineAnalyzer
+                        .adecuacionAlRegistro.esAdecuado
+                    }
+                  </Chip>
+                  <Chip variant="secondary" size="sm" className="text-xs">
+                    {
+                      analisisIndividuales.proseDisciplineAnalyzer
+                        .adecuacionAlRegistro.generoTonoIdentificado
+                    }
+                  </Chip>
+                </div>
+                <p className="text-xs text-foreground/50">
+                  {
+                    analisisIndividuales.proseDisciplineAnalyzer
+                      .adecuacionAlRegistro.analisis
+                  }
+                </p>
+
+                {/* Discipline level */}
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-foreground/70">Nivel:</span>
                   <Chip variant="secondary" size="sm">
@@ -310,6 +564,8 @@ export function StoryAnalyzerResults() {
                     }
                   </Chip>
                 </div>
+
+                {/* Correction priorities */}
                 {analisisIndividuales.proseDisciplineAnalyzer
                   .prioridadesCorreccion.length > 0 && (
                   <div>
@@ -337,6 +593,7 @@ export function StoryAnalyzerResults() {
             </AnalysisDetailCard>
           )}
 
+          {/* Pacing & Tension */}
           {analisisIndividuales.pacingTensionAnalyzer && (
             <AnalysisDetailCard
               title="Ritmo y Tensión"
@@ -349,52 +606,79 @@ export function StoryAnalyzerResults() {
                 analisisIndividuales.pacingTensionAnalyzer.recomendaciones
               }
             >
-              <div className="space-y-2">
-                <h5 className="text-sm font-semibold text-foreground">
-                  Distribución Temporal
-                </h5>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-                  <div className="p-2 rounded-lg bg-default-100">
-                    <div className="text-lg font-bold text-foreground">
-                      {
-                        analisisIndividuales.pacingTensionAnalyzer
-                          .distribucionTemporal.escena
-                      }
-                      %
+              <div className="space-y-3">
+                {/* Calibration context: tension model */}
+                <div className="flex flex-wrap gap-2 items-center">
+                  <CalibrationChip
+                    label="Modelo de tensión"
+                    value={
+                      analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                        .modelo
+                    }
+                  />
+                  <ConfidenceIndicator
+                    confianza={
+                      analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                        .confianza
+                    }
+                  />
+                </div>
+                <p className="text-xs text-foreground/50">
+                  {
+                    analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                      .justificacion
+                  }
+                </p>
+
+                {/* Temporal distribution */}
+                <div>
+                  <h5 className="text-sm font-semibold text-foreground">
+                    Distribución Temporal
+                  </h5>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                    <div className="p-2 rounded-lg bg-default-100">
+                      <div className="text-lg font-bold text-foreground">
+                        {
+                          analisisIndividuales.pacingTensionAnalyzer
+                            .distribucionTemporal.escena
+                        }
+                        %
+                      </div>
+                      <div className="text-xs text-foreground/60">Escena</div>
                     </div>
-                    <div className="text-xs text-foreground/60">Escena</div>
-                  </div>
-                  <div className="p-2 rounded-lg bg-default-100">
-                    <div className="text-lg font-bold text-foreground">
-                      {
-                        analisisIndividuales.pacingTensionAnalyzer
-                          .distribucionTemporal.sumario
-                      }
-                      %
+                    <div className="p-2 rounded-lg bg-default-100">
+                      <div className="text-lg font-bold text-foreground">
+                        {
+                          analisisIndividuales.pacingTensionAnalyzer
+                            .distribucionTemporal.sumario
+                        }
+                        %
+                      </div>
+                      <div className="text-xs text-foreground/60">Sumario</div>
                     </div>
-                    <div className="text-xs text-foreground/60">Sumario</div>
-                  </div>
-                  <div className="p-2 rounded-lg bg-default-100">
-                    <div className="text-lg font-bold text-foreground">
-                      {
-                        analisisIndividuales.pacingTensionAnalyzer
-                          .distribucionTemporal.pausa
-                      }
-                      %
+                    <div className="p-2 rounded-lg bg-default-100">
+                      <div className="text-lg font-bold text-foreground">
+                        {
+                          analisisIndividuales.pacingTensionAnalyzer
+                            .distribucionTemporal.pausa
+                        }
+                        %
+                      </div>
+                      <div className="text-xs text-foreground/60">Pausa</div>
                     </div>
-                    <div className="text-xs text-foreground/60">Pausa</div>
-                  </div>
-                  <div className="p-2 rounded-lg bg-default-100">
-                    <div className="text-lg font-bold text-foreground">
-                      {
-                        analisisIndividuales.pacingTensionAnalyzer
-                          .distribucionTemporal.elipsis
-                      }
-                      %
+                    <div className="p-2 rounded-lg bg-default-100">
+                      <div className="text-lg font-bold text-foreground">
+                        {
+                          analisisIndividuales.pacingTensionAnalyzer
+                            .distribucionTemporal.elipsis
+                        }
+                        %
+                      </div>
+                      <div className="text-xs text-foreground/60">Elipsis</div>
                     </div>
-                    <div className="text-xs text-foreground/60">Elipsis</div>
                   </div>
                 </div>
+
                 <p className="text-xs text-foreground/60">
                   {analisisIndividuales.pacingTensionAnalyzer.notaCritica}
                 </p>

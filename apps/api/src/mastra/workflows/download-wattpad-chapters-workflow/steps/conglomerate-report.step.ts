@@ -53,21 +53,30 @@ export const sendReportToUserStep = createStep({
       throw new Error("Literary Synthesis Agent not found");
     }
 
-    const prompt = `Sintetiza los siguientes 7 analisis literarios especializados en una evaluacion global coherente. NO re-analices el texto original. Tu trabajo es encontrar patrones transversales, conexiones causales entre dimensiones, y producir un plan de mejora priorizado por impacto.
+    const prompt = `Sintetiza los siguientes 7 analisis literarios especializados en una evaluacion global coherente. NO re-analices el texto original. Tu trabajo es interpretar, ponderar, detectar sesgos y producir una sintesis inteligente.
 
 **ANALISIS RECIBIDOS:**
 <analisis_json>
 ${JSON.stringify(analisisIndividuales, null, 2)}
 </analisis_json>
 
-Produce una sintesis que incluya:
-1. Evaluacion global (score 0-10 ponderado inteligente, categoria, resumen ejecutivo)
-2. Resumen por dimension (7 dimensiones con veredicto, score promedio, hallazgo principal)
-3. Patrones transversales (2-7 conexiones entre dimensiones)
-4. Fortalezas principales (1-5)
-5. Debilidades principales (1-5)
-6. Plan de mejora priorizado por impacto (3-10 items, priorizados por efecto domino)
-7. Veredicto editorial final`;
+Sigue tu proceso de calibracion paso a paso:
+
+1. **Identificacion del texto**: Clasifica el texto (genero, tono, proposito, modelo de personaje, fuente de enganche) ANTES de procesar los scores.
+
+2. **Evaluacion global**: Score 0-10 ponderado por jerarquia de capas (Capa 1: comprension > Capa 2: voz/forma > Capa 3: experiencia lector > Capa 4: contenido profundo > Capa 5: ejecucion tecnica) y por relevancia de cada dimension para el tipo de texto. Categoria y resumen ejecutivo.
+
+3. **Resumen por dimension**: 7 dimensiones con veredicto, score promedio, hallazgo principal.
+
+4. **Deteccion y correccion de sesgos**: Revisa si algun agente penalizo por la razon equivocada (sesgo de transformacion, profundidad emocional, consecuencias, anticlimax, modo narrativo). Para cada correccion, indica agente, score original, score ajustado, tipo de sesgo y explicacion breve. Si no hay sesgos, devuelve array vacio.
+
+5. **Patrones transversales**: 2-7 conexiones causales entre dimensiones.
+
+6. **Fortalezas y debilidades principales**: 1-5 de cada una.
+
+7. **Plan de mejora priorizado**: 3-10 items priorizados por efecto domino.
+
+8. **Veredicto editorial estructurado**: Responde en orden: Se entiende lo que ocurre? Las decisiones de voz/estructura/forma funcionan? Provoca algo en el lector? Hay profundidad? Ejecucion tecnica? Sugerencias priorizadas.`;
 
     const stream = await agent.stream(prompt, {
       modelSettings: {
