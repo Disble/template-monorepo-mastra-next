@@ -3,6 +3,7 @@ import {
   inputYoutubeWorkflow,
   youtubeCaptionsSchema,
 } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import { logger } from "../../../logger";
 import { downloadCaptionsWithYouTubeAPI } from "./download-by-yt-key";
 
 export const downloadCaptionsStep = createStep({
@@ -15,14 +16,14 @@ export const downloadCaptionsStep = createStep({
     }
 
     const { url, userId, type } = inputData;
-    console.log("🎬 Downloading captions for video:", url);
+    logger.info({ url }, "Downloading captions for video");
 
     setState({ type });
 
     const srt = await downloadCaptionsWithYouTubeAPI(url, userId);
-    console.log(
-      "✅ Captions downloaded successfully using YouTube API, length:",
-      srt.length,
+    logger.info(
+      { length: srt.length },
+      "Captions downloaded successfully using YouTube API",
     );
 
     if (!srt || srt.trim().length === 0) {

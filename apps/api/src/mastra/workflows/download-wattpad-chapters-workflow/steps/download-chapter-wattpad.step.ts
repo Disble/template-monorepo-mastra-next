@@ -10,6 +10,7 @@ import {
   inputDownloadWattpadChapterSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { logger } from "../../../logger";
 import { getContentPage } from "../../../tools/get-content-page/get-content-page-wattpad";
 
 export {
@@ -35,7 +36,7 @@ export const downloadWattpadChapterStep = createStep({
       return { content: story.text, contextoEditorial };
     }
 
-    console.log("🔴 Story not found, downloading content...");
+    logger.info({ url, pages }, "Story not found, downloading content");
 
     const responseContentPage = await getContentPage(url, pages);
 
@@ -55,7 +56,7 @@ export const downloadWattpadChapterStep = createStep({
       });
     }
 
-    console.log("✅ Content downloaded successfully");
+    logger.info({ url, pages }, "Content downloaded successfully");
 
     return { ...responseContentPage, contextoEditorial };
   },

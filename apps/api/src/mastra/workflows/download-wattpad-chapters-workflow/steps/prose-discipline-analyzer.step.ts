@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputProseDisciplineAnalyzerSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputProseDisciplineAnalyzerSchema };
@@ -47,7 +48,7 @@ export const proseDisciplineAnalyzerStep = createStep({
 
     // Stream with logging
     for await (const chunk of stream.textStream) {
-      console.log(chunk);
+      logger.debug({ chunk }, "prose-discipline-analyzer stream chunk");
     }
 
     // Get structured object from stream

@@ -2,6 +2,7 @@ import type { Readable } from "node:stream";
 import googleapis from "@googleapis/youtube";
 import { getGoogleTokens } from "@repo/db";
 import { google } from "googleapis";
+import { logger } from "../../../logger";
 
 /**
  * Extracts the video ID from various YouTube URL formats
@@ -55,10 +56,7 @@ export async function downloadCaptionsWithYouTubeAPI(
 ): Promise<string> {
   const tokens = await getGoogleTokens(userId);
 
-  console.log(
-    "🎬 Starting download of captions using YouTube API for URL:",
-    url,
-  );
+  logger.info({ url }, "Starting download of captions using YouTube API");
 
   const langCode = "es"; // Spanish language code
 
@@ -77,7 +75,7 @@ export async function downloadCaptionsWithYouTubeAPI(
 
   try {
     const videoID = extractVideoID(url);
-    console.log("⏩ Video ID extracted:", videoID);
+    logger.debug({ videoID }, "Video ID extracted");
 
     // Configure OAuth2 client
     const oauth2Client = new google.auth.OAuth2(
@@ -99,7 +97,7 @@ export async function downloadCaptionsWithYouTubeAPI(
     });
 
     // List available captions for the video
-    console.log("📋 Fetching available captions...");
+    logger.debug({ videoID }, "Fetching available captions");
     const captionsListResponse = await youtubeClient.captions.list({
       part: ["snippet", "id"],
       videoId: videoID,
@@ -116,8 +114,12 @@ export async function downloadCaptionsWithYouTubeAPI(
     );
 
     if (!captionTrack) {
-      console.log(
-        `⚠️  Caption in '${langCode}' not found, using first available: ${captionItems[0]?.snippet?.language}`,
+      logger.warn(
+        {
+          requestedLanguage: langCode,
+          fallbackLanguage: captionItems[0]?.snippet?.language,
+        },
+        "Requested caption language not found, using first available",
       );
       captionTrack = captionItems[0];
     }
@@ -128,12 +130,16 @@ export async function downloadCaptionsWithYouTubeAPI(
 
     const captionId = captionTrack.id;
 
-    console.log(
-      `✅ Found caption track: ${captionTrack.snippet?.language} (${captionTrack.snippet?.name})`,
+    logger.info(
+      {
+        language: captionTrack.snippet?.language,
+        trackName: captionTrack.snippet?.name,
+      },
+      "Found caption track",
     );
 
     // Download caption in SRT format
-    console.log("⬇️  Downloading caption content...");
+    logger.debug({ captionId }, "Downloading caption content");
     const captionResponse = await youtubeClient.captions.download(
       {
         id: captionId,
@@ -147,18 +153,24 @@ export async function downloadCaptionsWithYouTubeAPI(
     // Read the stream content
     const srtContent = await streamToString(captionResponse.data as Readable);
 
-    console.log("📝 Caption content downloaded, length:", srtContent.length);
-    console.log("📝 First 200 characters:", srtContent.substring(0, 200));
+    logger.info({ length: srtContent.length }, "Caption content downloaded");
+    logger.debug(
+      { preview: srtContent.substring(0, 200) },
+      "First 200 characters of SRT content",
+    );
 
     if (!srtContent || srtContent.trim().length === 0) {
       throw new Error("SRT content is empty");
     }
 
-    console.log("✅ Successfully downloaded SRT captions");
+    logger.info("Successfully downloaded SRT captions");
 
     return srtContent;
   } catch (error) {
-    console.error("💥 Error downloading captions with YouTube API:", error);
+    logger.error(
+      { err: error, url, userId },
+      "Error downloading captions with YouTube API",
+    );
     throw new Error(
       `Failed to download captions: ${error instanceof Error ? error.message : "Unknown error"}`,
     );

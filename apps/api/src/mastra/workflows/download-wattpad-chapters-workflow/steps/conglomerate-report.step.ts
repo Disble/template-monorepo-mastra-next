@@ -11,6 +11,7 @@ import {
   synthesisSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 import { z } from "zod";
+import { logger } from "../../../logger";
 
 export { outputConglomerateReportSchema };
 
@@ -99,7 +100,7 @@ Sigue tu proceso de calibracion paso a paso:
 
     // Stream with logging
     for await (const chunk of stream.textStream) {
-      console.log(chunk);
+      logger.debug({ chunk }, "conglomerate-report stream chunk");
     }
 
     // Get structured object from stream

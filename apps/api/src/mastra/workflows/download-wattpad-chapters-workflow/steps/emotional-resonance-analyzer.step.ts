@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputEmotionalResonanceAnalyzerSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputEmotionalResonanceAnalyzerSchema };
@@ -51,7 +52,7 @@ export const emotionalResonanceAnalyzerStep = createStep({
 
     // Stream with logging
     for await (const chunk of stream.textStream) {
-      console.log(chunk);
+      logger.debug({ chunk }, "emotional-resonance-analyzer stream chunk");
     }
 
     // Get structured object from stream

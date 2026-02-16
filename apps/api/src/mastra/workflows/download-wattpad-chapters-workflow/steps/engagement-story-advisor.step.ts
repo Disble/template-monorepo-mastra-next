@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputEngamentStoryAdvisorSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputEngamentStoryAdvisorSchema };
@@ -48,7 +49,7 @@ export const engagementStoryAdvisorStep = createStep({
 
     // Stream with logging
     for await (const chunk of stream.textStream) {
-      console.log(chunk);
+      logger.debug({ chunk }, "engagement-story-advisor stream chunk");
     }
 
     // Get structured object from stream

@@ -3,6 +3,7 @@ import {
   outputCharacterDepthAnalyzerSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
 export { outputCharacterDepthAnalyzerSchema };
@@ -47,7 +48,7 @@ export const characterDepthAnalyzerStep = createStep({
 
     // Stream with logging
     for await (const chunk of stream.textStream) {
-      console.log(chunk);
+      logger.debug({ chunk }, "character-depth-analyzer stream chunk");
     }
 
     // Get structured object from stream

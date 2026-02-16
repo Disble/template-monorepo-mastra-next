@@ -3,6 +3,7 @@ import {
   outputChapters,
   youtubeCaptionsSchema,
 } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.schema";
+import { logger } from "../../../logger";
 import { stateStepsSchema } from "../schemas/state-steps.schema";
 
 export const generateVideoChaptersStep = createStep({
@@ -84,8 +85,8 @@ export const generateVideoChaptersStep = createStep({
       },
     );
 
-    console.log("🔴 Token usage", usage);
-    console.log("🔍 Texto generado:", object);
+    logger.info({ usage }, "Token usage");
+    logger.debug({ generatedChapters: object }, "Texto generado");
 
     if (!object) {
       throw new Error("No chapters generated");

@@ -1,4 +1,5 @@
 import { Stagehand } from "@browserbasehq/stagehand";
+import { logger } from "../../logger";
 
 /**
  * Extracts the page number from a Wattpad URL
@@ -20,15 +21,15 @@ function extractPageNumber(url: string): number | null {
  * @param url - The Wattpad story URL to fetch content from
  * @param pages - The target page number to scroll to and extract content from
  * @returns Promise resolving to an object containing the extracted content string
- * @throws Logs errors to console if extraction or navigation fails
+ * @throws Logs errors with pino if extraction or navigation fails
  *
  * @example
  * const result = await getContentPage('https://www.wattpad.com/story/123456/page/1', 5);
- * console.log(result.content); // Extracted markdown content
+ * logger.info({ content: result.content }, "Extracted markdown content");
  */
 export async function getContentPage(url: string, pages: number) {
   try {
-    console.log("👋👋👋 Reset mastra tool 👋👋👋");
+    logger.info("Reset mastra tool");
     const stagehand = new Stagehand({
       env: "LOCAL",
       model: {
@@ -40,7 +41,7 @@ export async function getContentPage(url: string, pages: number) {
 
     await stagehand.init();
 
-    console.log(`👑Stagehand Session Started👑`);
+    logger.info("Stagehand session started");
 
     const page = stagehand.context.pages()[0];
 
@@ -50,7 +51,7 @@ export async function getContentPage(url: string, pages: number) {
 
     await page.goto(url);
 
-    console.log(`🧡 Navigated to ${url}`);
+    logger.info({ url }, "Navigated to URL");
 
     let currentPage = extractPageNumber(url) ?? 1;
 
@@ -64,8 +65,13 @@ export async function getContentPage(url: string, pages: number) {
       const currentUrl = page.url();
       currentPage = extractPageNumber(currentUrl) ?? 1;
 
-      console.log(
-        `📍 Intento ${scrollAttempts + 1}: Página actual = ${currentPage}, Página destino = ${pages}`,
+      logger.debug(
+        {
+          attempt: scrollAttempts + 1,
+          currentPage,
+          targetPage: pages,
+        },
+        "Scrolling to target page",
       );
 
       scrollAttempts++;
@@ -85,7 +91,7 @@ export async function getContentPage(url: string, pages: number) {
     await stagehand.close();
 
     if (!contentPage.extraction) {
-      console.log("🔴 Content not found");
+      logger.warn({ url, pages }, "Content not found");
       return { content: "" };
     }
 
@@ -96,15 +102,13 @@ export async function getContentPage(url: string, pages: number) {
     const firstLines = lines.slice(0, 5).join("\n");
     const lastLines = lines.slice(-5).join("\n");
 
-    console.log("First 5 lines of extraction:");
-    console.log(firstLines);
+    logger.debug({ firstLines }, "First 5 lines of extraction");
 
-    console.log("\n\nLast 5 lines of extraction:");
-    console.log(lastLines);
+    logger.debug({ lastLines }, "Last 5 lines of extraction");
 
     return { content: extraction };
   } catch (error) {
-    console.error("🔴 Error in getContentPage 🔴:", error);
+    logger.error({ err: error, url, pages }, "Error in getContentPage");
     return { content: "" };
   }
 }
