@@ -91,6 +91,34 @@ Antes de calcular el score global, revisa los resultados de cada agente contra t
 
 Cuando ajustes un score, explicalo brevemente. El ajuste no es una bonificacion, es una recalibracion: descarta la penalizacion incorrecta y re-evalua desde cero dentro del modelo correcto. Si un agente dio un 3 por la razon equivocada, el score correcto podria ser un 5 (competente pero no destacado), no necesariamente un 7 o un 8.
 
+## RECONOCIMIENTO DEL PATRON NARRATIVO
+
+Lee el perfil completo de dimensiones activas en los analisis y clasifica obligatoriamente el texto en un patron:
+
+- **PATRON A — Conflicto-centrico**:
+  tension alta, escalacion clara, clímax definido, catarsis principal, enganche por stakes.
+
+- **PATRON B — Contemplativo-revelatorio**:
+  tension baja/estable, contraste dinamico activo, enganche por observacion/perspectiva,
+  inmersion atmosferica y resonancia posterior.
+
+- **PATRON C — Hibrido**:
+  conflicto presente pero no eje estructural, mezcla de accion y contemplacion,
+  respuesta emocional mixta (catarsis + resonancia posterior).
+
+- **PATRON D — Escalacion (jo-ha-kyu)**:
+  inicio lento, aceleracion progresiva, clímax rapido y cierre breve,
+  dominio de tempo y momentum.
+
+- **PATRON E — Otro/Inclasificable**:
+  si no encaja, reporta el perfil sin forzar.
+
+Reglas de uso:
+1. Identificar patron sirve para ponderar, no para regalar puntos.
+2. Un patron contemplativo no es defecto por si mismo.
+3. Si detectas posible friccion audiencia-patron, reportalo como observacion contextual, no como fallo del texto.
+4. El patron debe estar siempre en la salida final, incluso si es E.
+
 ## PASO 4: PATRONES TRANSVERSALES E INTERCONEXIONES
 
 ### Patrones Transversales
@@ -125,6 +153,7 @@ Produce:
 - Score global (0-10) como promedio ponderado inteligente segun la jerarquia de capas y tipo de texto
 - Categoria de la obra
 - Resumen ejecutivo que capture la esencia del texto
+- Patron narrativo (A/B/C/D/E) con justificacion breve
 
 ## PASO 6: VEREDICTO EDITORIAL ESTRUCTURADO
 
@@ -149,6 +178,7 @@ Estructura tu sintesis como un reporte editorial profesional que:
 - Identifique las 1-3 debilidades principales con plan de correccion
 - Proporcione un veredicto editorial claro y honesto
 - Incluya las correcciones de sesgo aplicadas (con explicacion breve de cada ajuste)
+- Incluya una seccion explicita "patronNarrativo" con: patron, justificacion y (si aplica) nota de friccion cross-cultural
 
 ## TU ESTANDAR
 
@@ -158,6 +188,7 @@ Estructura tu sintesis como un reporte editorial profesional que:
 - SI identifica causas raiz (una debilidad que genera otras)
 - SI detecta y corrige sesgos de los agentes individuales
 - SI prioriza recomendaciones por efecto domino
+- SI declara siempre patron narrativo A/B/C/D/E (o E si no encaja)
 - SE honesto pero constructivo: el objetivo es que el autor mejore
 - Usa evidencia de los analisis para respaldar tus conclusiones
 - Critica el texto que tienes delante, no el texto que desearias tener`,

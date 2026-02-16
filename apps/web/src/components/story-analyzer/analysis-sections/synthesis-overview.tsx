@@ -14,8 +14,12 @@ interface SynthesisOverviewProps {
 }
 
 export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
-  const { identificacionDelTexto, evaluacionGlobal, veredictoEditorial } =
-    synthesis;
+  const {
+    identificacionDelTexto,
+    evaluacionGlobal,
+    patronNarrativo,
+    veredictoEditorial,
+  } = synthesis;
 
   return (
     <div className="space-y-4">
@@ -64,6 +68,24 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
             <p className="text-sm text-foreground/80">
               {identificacionDelTexto.fuenteDeEnganche}
             </p>
+          </div>
+          <div>
+            <span className="text-xs text-foreground/50 uppercase tracking-wide">
+              Patrón Narrativo
+            </span>
+            <div className="mt-1 flex items-center gap-2">
+              <Chip variant="soft" size="sm" color="default">
+                {patronNarrativo.patron}
+              </Chip>
+              <p className="text-sm text-foreground/80">
+                {patronNarrativo.justificacion}
+              </p>
+            </div>
+            {patronNarrativo.notaFriccionAudiencia && (
+              <p className="text-xs text-foreground/60 mt-1">
+                {patronNarrativo.notaFriccionAudiencia}
+              </p>
+            )}
           </div>
         </div>
       </Card>

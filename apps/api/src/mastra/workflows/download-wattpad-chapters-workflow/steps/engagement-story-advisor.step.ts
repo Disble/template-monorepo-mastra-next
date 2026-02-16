@@ -27,6 +27,8 @@ export const engagementStoryAdvisorStep = createStep({
       analysisTarget: "enganche de apertura",
       rules: [
         "Identifica primero la fuente primaria de enganche.",
+        "Considera explícitamente el enganche por observación/perspectiva, no solo por conflicto o stakes.",
+        "Identifica la pregunta implícita real del lector antes de evaluar su efectividad.",
         "Evalúa efectividad temprana según esa fuente (no contra otro paradigma).",
         "No sobrecompenses por clasificación correcta sin ejecución destacada.",
         "Si la muestra no representa una apertura suficiente, baja confianza.",

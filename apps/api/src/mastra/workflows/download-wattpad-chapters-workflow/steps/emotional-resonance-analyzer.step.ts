@@ -28,6 +28,11 @@ export const emotionalResonanceAnalyzerStep = createStep({
       rules: [
         "Identifica primero el objetivo emocional real del texto.",
         "Distingue reconocimiento pasivo vs. resonancia activa.",
+        "Mide resonancia posterior (yoin), inmersión atmosférica (kūkikan) y emoción de comprensión cuando aparezcan.",
+        "Si una dimensión no está activa, repórtala inactiva sin penalización automática.",
+        "Devuelve EXCLUSIVAMENTE un objeto estructurado (sin XML, sin markdown, sin texto libre) con TODAS las claves requeridas: objetivoEmocional, diagnosticoEmocional, criterios, momentosEmocionalesClave, presenciaSensorial, lectorIdeal, patronesEmocionales, veredicto, recomendaciones, notaClave.",
+        "Usa enums exactos y en mayúsculas: categoriaLectura ∈ [VISCERAL, RESONANTE, PRESENTE, INFORMATIVA, INERTE] y veredicto ∈ [EMOCIONALMENTE EFECTIVO, NECESITA PROFUNDIZAR, EMOCIONALMENTE PLANO].",
+        "Si no tienes evidencia suficiente, completa igualmente todos los campos con valores conservadores válidos para el schema en vez de omitirlos.",
         "No sobrecompenses: identificar bien el objetivo no implica score alto.",
         "Si evidencia emocional es insuficiente, usa confianza media/baja.",
       ],

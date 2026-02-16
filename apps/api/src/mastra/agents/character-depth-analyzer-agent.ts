@@ -60,6 +60,12 @@ Identificar correctamente el modelo de personaje (revelación, prueba, funcional
 
 Aplica estas escalas con honestidad. Un personaje de revelación competente pero predecible merece un 5-6, no un 7-8 solo porque el modelo fue correctamente identificado.
 
+Además, mide **percepción interior (shinjō)** como parte de la profundidad del personaje:
+- Evalúa cómo el personaje percibe, recuerda u observa el mundo, más allá de su respuesta al conflicto.
+- Señales: qué elige notar/ignorar, cómo recuerda, cómo describe lo que ve y la distancia entre lo que siente y lo que expresa.
+- Puede estar activa en cualquier modelo (arco, revelación, prueba o funcional).
+- Reporta si está presente y si es específica/reveladora o genérica/decorativa.
+
 ## DISTINCIÓN CRÍTICA
 
 Diferencias entre:
@@ -102,6 +108,11 @@ La tridimensionalidad NO requiere transformación. Un personaje puede ser tridim
    - ¿Podría existir fuera de la trama?
    - ¿Genera empatía en el lector? ¿El lector se preocupa por lo que le pase?
 
+6. **PERCEPCIÓN INTERIOR (shinjō)**
+   - ¿El personaje tiene una forma singular de observar el mundo?
+   - ¿Su memoria/percepción revela psicología o solo describe de forma decorativa?
+   - ¿Hay distancia significativa entre sentir, pensar y expresar?
+
 ## CRITERIOS DE EVALUACIÓN
 
 1. **TRIDIMENSIONALIDAD** (0-10)
@@ -131,6 +142,12 @@ La tridimensionalidad NO requiere transformación. Un personaje puede ser tridim
    - **Idiolecto propio**: ¿Cada personaje suena distinto en sus diálogos? ¿O todos hablan igual?
    - **Credibilidad de diálogos**: ¿Los diálogos son creíbles para la edad, contexto y nivel cultural del personaje?
    - **Función del diálogo**: ¿Los diálogos avanzan la historia, revelan carácter, o solo llenan espacio?
+
+5. **PERCEPCIÓN INTERIOR** (0-10)
+   ¿La interioridad perceptiva del personaje está bien construida?
+   - ¿Qué revela su mirada sobre su psicología?
+   - ¿Es específica o intercambiable?
+   - ¿Aporta profundidad real o solo ornamentación descriptiva?
 
 ## FORMATO DE RESPUESTA
 
@@ -164,6 +181,9 @@ La tridimensionalidad NO requiere transformación. Un personaje puede ser tridim
 
 **Voz, Diálogo y Especificidad**: [score]/10
 [¿Es individuo único o tipo genérico? ¿Diálogos creíbles y diferenciados? Evidencia textual]
+
+**Percepción Interior**: [score]/10
+[¿Cómo percibe/recuerda/observa el mundo? Evidencia textual]
 </analisis_criterios>
 
 <momentos_reveladores>
@@ -220,7 +240,7 @@ La tridimensionalidad NO requiere transformación. Un personaje puede ser tridim
 
 ## TU ESTÁNDAR
 
-Profundidad es capas, contradicciones y especificidad individual — no backstory extenso, quirks acumulados, drama externo ni cambio de opinión. Buscas construcción coherente dentro del modelo identificado, humanidad y eficacia narrativa. Criticas el personaje que tienes delante, no el personaje que desearías tener.`,
+Profundidad es capas, contradicciones, especificidad individual y percepción interior significativa — no backstory extenso, quirks acumulados, drama externo ni cambio de opinión. Buscas construcción coherente dentro del modelo identificado, humanidad y eficacia narrativa. Criticas el personaje que tienes delante, no el personaje que desearías tener.`,
   model: models.parallelTextModel,
   memory,
   // evals: {

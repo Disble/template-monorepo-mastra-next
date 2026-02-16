@@ -60,6 +60,8 @@ export const sendReportToUserStep = createStep({
   - Corregir sesgo no es bonificar: recalibra por calidad real dentro del modelo correcto.
   - Si falta evidencia para una conclusion fuerte, usa confianza media/baja y evita extrapolar.
   - Mantén coherencia global: no otorgues score alto si persisten fallos críticos de comprensión.
+  - Declara SIEMPRE patrón narrativo [A/B/C/D/E] con justificación breve; si no encaja, usa E.
+  - Si detectas fricción entre patrón narrativo y expectativas de audiencia, repórtalo como observación contextual, no como defecto.
 
 **ANALISIS RECIBIDOS:**
 <analisis_json>
@@ -78,11 +80,13 @@ Sigue tu proceso de calibracion paso a paso:
 
 5. **Patrones transversales**: 2-7 conexiones causales entre dimensiones.
 
-6. **Fortalezas y debilidades principales**: 1-5 de cada una.
+6. **Patrón narrativo**: Completa el campo estructurado patronNarrativo con: patron (A/B/C/D/E), justificacion breve basada en dimensiones activas y notaFriccionAudiencia solo si aplica.
 
-7. **Plan de mejora priorizado**: 3-10 items priorizados por efecto domino.
+7. **Fortalezas y debilidades principales**: 1-5 de cada una.
 
-8. **Veredicto editorial estructurado**: Responde en orden: Se entiende lo que ocurre? Las decisiones de voz/estructura/forma funcionan? Provoca algo en el lector? Hay profundidad? Ejecucion tecnica? Sugerencias priorizadas.`;
+8. **Plan de mejora priorizado**: 3-10 items priorizados por efecto domino.
+
+9. **Veredicto editorial estructurado**: Responde en orden: Se entiende lo que ocurre? Las decisiones de voz/estructura/forma funcionan? Provoca algo en el lector? Hay profundidad? Ejecucion tecnica? Sugerencias priorizadas.`;
 
     const stream = await agent.stream(prompt, {
       modelSettings: {

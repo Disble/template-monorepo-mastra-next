@@ -759,6 +759,23 @@ const patronTransversalSchema = z.object({
     .describe("Explicacion de la conexion causal entre dimensiones"),
 });
 
+const patronNarrativoSchema = z.object({
+  patron: z
+    .enum(["A", "B", "C", "D", "E"])
+    .describe("Patron narrativo identificado: A, B, C, D o E"),
+  justificacion: z
+    .string()
+    .describe(
+      "Justificacion breve del patron narrativo segun dimensiones activas",
+    ),
+  notaFriccionAudiencia: z
+    .string()
+    .optional()
+    .describe(
+      "Observacion contextual opcional sobre friccion entre patron y expectativas de audiencia",
+    ),
+});
+
 const itemMejoraSchema = z.object({
   prioridad: z.number().min(1).max(10).describe("Prioridad del 1 al 10"),
   area: z.string().describe("Area de mejora"),
@@ -840,6 +857,9 @@ export const synthesisSchema = z.object({
   patronesTransversales: z
     .array(patronTransversalSchema)
     .describe("2-7 patrones que conectan multiples dimensiones"),
+  patronNarrativo: patronNarrativoSchema.describe(
+    "Patron narrativo principal del texto con justificacion y posible nota de friccion",
+  ),
   fortalezasPrincipales: z
     .array(z.string())
     .describe("1-5 fortalezas principales de la obra"),

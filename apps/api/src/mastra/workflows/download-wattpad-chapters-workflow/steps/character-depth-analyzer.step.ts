@@ -28,6 +28,7 @@ export const characterDepthAnalyzerStep = createStep({
       rules: [
         "Prioriza evidencia textual concreta sobre inferencias.",
         "No fuerces modelo de personaje si la evidencia es parcial.",
+        "Incluye percepción interior (shinjō) cuando esté activa; si no, repórtala como inactiva sin penalizar.",
         "No sobrecompenses: identificar el modelo correcto no otorga score alto por sí solo.",
         "Si la muestra no permite concluir algo con seguridad, marca confianza media/baja.",
       ],

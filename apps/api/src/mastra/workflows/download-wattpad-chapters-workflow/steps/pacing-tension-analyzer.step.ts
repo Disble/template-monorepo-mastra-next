@@ -28,6 +28,8 @@ export const pacingTensionAnalyzerStep = createStep({
       rules: [
         "Identifica primero el modelo de tensión que realmente opera.",
         "Evalúa efecto de caídas de tensión según modelo (no por dogma clásico).",
+        "Mide también contraste dinámico (merihari), flujo de lectura (tempo) y punto estructural alto.",
+        "No asumas que el pico de tensión es siempre el momento estructural más importante.",
         "No sobrecompenses por modelo correcto sin ejecución sólida.",
         "Si el fragmento no permite curva completa, baja confianza.",
       ],

@@ -28,6 +28,8 @@ export const narrativeStructureAdvisorStep = createStep({
       rules: [
         "No fuerces clasificación si el encaje es parcial.",
         "Informa porcentaje de alineación y alternativa cercana cuando aplique.",
+        "Distingue principio organizador de la historia vs. elementos presentes (incluido conflicto si existe).",
+        "No asumas que tener conflicto implica estar estructurado alrededor del conflicto.",
         "Evalúa forma-función: no basta con nombrar estructura.",
         "Si la muestra es incompleta, baja confianza para cierres macro.",
       ],

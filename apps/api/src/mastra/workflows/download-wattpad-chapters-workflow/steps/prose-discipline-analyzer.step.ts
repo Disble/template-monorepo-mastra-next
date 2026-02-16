@@ -28,6 +28,7 @@ export const proseDisciplineAnalyzerStep = createStep({
       rules: [
         "Aplica primero el filtro de adecuación al registro.",
         "Distingue siempre entre VICIO TÉCNICO, ELECCIÓN DISCUTIBLE y ELECCIÓN EFECTIVA.",
+        "Evalúa el silencio narrativo: distingue recurso deliberado de evasión técnica.",
         "Penaliza solo vicios técnicos; no confundas voz de género con error automático.",
         "Si la muestra es insuficiente para detectar patrones, usa confianza media/baja.",
       ],

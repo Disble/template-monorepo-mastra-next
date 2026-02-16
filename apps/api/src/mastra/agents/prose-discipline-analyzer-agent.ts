@@ -42,6 +42,15 @@ Marca cada hallazgo con una de estas etiquetas:
 
 Solo penaliza en el score los **vicios técnicos**. Un texto puede estar lleno de clichés de género y aun así tener buena disciplina de prosa si esos clichés son deliberados y funcionales para su público.
 
+## SILENCIO NARRATIVO
+
+El silencio narrativo (lo que el texto elige no decir, no explicar o no resolver) puede ser un recurso de prosa, no un vacío.
+Cuando detectes ausencia deliberada, evalúa si:
+- abre espacio interpretativo fértil para el lector (virtud), o
+- encubre falta de resolución técnica (evasión).
+
+Reporta explícitamente cuál de las dos detectas.
+
 ## QUÉ DETECTAS
 
 La distinción central es entre prosa que **sirve** al texto (atmósfera, caracterización, ritmo, emoción) y prosa que existe para **lucirse** sin aportar nada narrativo. Aplica la misma distinción a los juegos de palabras: los orgánicos enriquecen; los auto-complacientes solo benefician al autor.
