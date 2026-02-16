@@ -8,10 +8,22 @@ export const inputDownloadWattpadChapterSchema = z.object({
   url: z.url(),
   pages: z.number().min(1).max(100).default(1),
   redownload: z.boolean().default(false),
+  contextoEditorial: z
+    .string()
+    .optional()
+    .describe(
+      "Contexto adicional para el análisis: género, público objetivo, si es primer capítulo o capítulo intermedio, oneshot, etc.",
+    ),
 });
 
 export const outputDownloadWattpadChapterSchema = z.object({
   content: z.string(),
+  contextoEditorial: z
+    .string()
+    .optional()
+    .describe(
+      "Contexto editorial proporcionado por el usuario para calibrar el análisis",
+    ),
 });
 
 // ============================================================================

@@ -14,7 +14,7 @@ export const pacingTensionAnalyzerStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("pacingTensionAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const pacingTensionAnalyzerStep = createStep({
       throw new Error("Pacing Tension Analyzer Agent not found");
     }
 
-    const prompt = `Analiza el ritmo narrativo y la gestion de tension del siguiente texto. Evalua la distribucion de modalidades temporales (Genette), la gestion de intereses narrativos (Sternberg), y la curva de tension y ritmo (Swain + Freytag).
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza el ritmo narrativo y la gestion de tension del siguiente texto. Evalua la distribucion de modalidades temporales (Genette), la gestion de intereses narrativos (Sternberg), y la curva de tension y ritmo (Swain + Freytag).
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

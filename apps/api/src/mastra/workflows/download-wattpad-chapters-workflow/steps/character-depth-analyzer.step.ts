@@ -14,7 +14,7 @@ export const characterDepthAnalyzerStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("characterDepthAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const characterDepthAnalyzerStep = createStep({
       throw new Error("Character Depth Analyzer Agent not found");
     }
 
-    const prompt = `Analiza la profundidad y capacidad de transformación de los personajes en el siguiente texto. Evalúa si son tridimensionales, tienen capas, y si están en situaciones que permitan cambio interior genuino.
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza la profundidad y capacidad de transformación de los personajes en el siguiente texto. Evalúa si son tridimensionales, tienen capas, y si están en situaciones que permitan cambio interior genuino.
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

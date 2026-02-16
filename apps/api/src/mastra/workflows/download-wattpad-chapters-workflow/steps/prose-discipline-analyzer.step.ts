@@ -14,7 +14,7 @@ export const proseDisciplineAnalyzerStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("proseDisciplineAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const proseDisciplineAnalyzerStep = createStep({
       throw new Error("Prose Discipline Analyzer Agent not found");
     }
 
-    const prompt = `Analiza la disciplina de prosa del siguiente texto. Detecta engolosinamiento, prosa ornamental sin función, y malos hábitos técnicos de escritura. Sé específico con ejemplos textuales.
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza la disciplina de prosa del siguiente texto. Detecta engolosinamiento, prosa ornamental sin función, y malos hábitos técnicos de escritura. Sé específico con ejemplos textuales.
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

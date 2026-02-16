@@ -14,7 +14,7 @@ export const continuityErrorDetectorStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("continuityErrorDetectorAgent");
 
@@ -22,8 +22,12 @@ export const continuityErrorDetectorStep = createStep({
       throw new Error("Continuity Error Detector Agent not found");
     }
 
-    const prompt = `Analiza el siguiente texto en busca de errores de continuidad, contradicciones internas e inconsistencias. Rastrea todos los elementos establecidos y verifica que se mantengan coherentes a lo largo del texto.
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza el siguiente texto en busca de errores de continuidad, contradicciones internas e inconsistencias. Rastrea todos los elementos establecidos y verifica que se mantengan coherentes a lo largo del texto.
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

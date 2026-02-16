@@ -14,7 +14,7 @@ export const narrativeStructureAdvisorStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("narrativeStructureAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const narrativeStructureAdvisorStep = createStep({
       throw new Error("Narrative Structure Analyzer Agent not found");
     }
 
-    const prompt = `Analiza la estructura narrativa del siguiente texto. Identifica qué estructuras utiliza en cada nivel (Macro, Meso, Micro), evalúa los 4 criterios (Identificación Estructural, Implementación Técnica, Efectividad Narrativa, Complejidad Justificada), y determina si aporta o resta a la experiencia narrativa.
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza la estructura narrativa del siguiente texto. Identifica qué estructuras utiliza en cada nivel (Macro, Meso, Micro), evalúa los 4 criterios (Identificación Estructural, Implementación Técnica, Efectividad Narrativa, Complejidad Justificada), y determina si aporta o resta a la experiencia narrativa.
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

@@ -7,6 +7,7 @@ export async function submitStoryAnalyzerForm({
   url,
   pages,
   redownload,
+  contextoEditorial,
 }: InputDownloadWattpadChapter) {
   try {
     const run = await wattpadChapterDownloadWorkflow.createRun();
@@ -15,6 +16,7 @@ export async function submitStoryAnalyzerForm({
         url,
         pages,
         redownload,
+        contextoEditorial: contextoEditorial || undefined,
       },
     });
 

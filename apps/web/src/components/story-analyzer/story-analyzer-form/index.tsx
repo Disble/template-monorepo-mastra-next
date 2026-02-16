@@ -9,6 +9,7 @@ import {
   Input,
   Label,
   NumberField,
+  TextArea,
   TextField,
 } from "@repo/ui/heroui";
 import { useQueryStates } from "nuqs";
@@ -21,6 +22,7 @@ const formSchema = z.object({
   url: z.url("Ingresa una URL válida de Wattpad"),
   pages: z.number().min(1).max(100),
   redownload: z.boolean(),
+  contextoEditorial: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -41,6 +43,7 @@ export function StoryAnalyzerForm({ onSubmitSuccess }: StoryAnalyzerFormProps) {
       url: "",
       pages: 1,
       redownload: false,
+      contextoEditorial: "",
     },
     mode: "onChange",
   });
@@ -90,6 +93,24 @@ export function StoryAnalyzerForm({ onSubmitSuccess }: StoryAnalyzerFormProps) {
             <Input id="pages" />
             {errors.pages && <FieldError>{errors.pages.message}</FieldError>}
           </NumberField>
+        )}
+      />
+
+      <Controller
+        name="contextoEditorial"
+        control={control}
+        render={({ field }) => (
+          <TextField>
+            <Label htmlFor="contextoEditorial">
+              Contexto editorial (opcional)
+            </Label>
+            <TextArea
+              {...field}
+              id="contextoEditorial"
+              placeholder="Ej: Es el primer capítulo de una novela de fantasía juvenil para lectores de 14-18 años. El worldbuilding se desarrolla en capítulos posteriores. El género es romance paranormal con elementos de horror."
+              rows={4}
+            />
+          </TextField>
         )}
       />
 

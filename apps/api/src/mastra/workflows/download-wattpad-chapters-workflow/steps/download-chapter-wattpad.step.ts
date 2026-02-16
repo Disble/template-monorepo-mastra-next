@@ -25,14 +25,14 @@ export const downloadWattpadChapterStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { url, pages, redownload } = inputData;
+    const { url, pages, redownload, contextoEditorial } = inputData;
 
     const db = createDbClient(env.DATABASE_URL);
 
     const story = await findStoryByUrl(db, url);
 
     if (story && !redownload) {
-      return { content: story.text };
+      return { content: story.text, contextoEditorial };
     }
 
     console.log("🔴 Story not found, downloading content...");
@@ -57,6 +57,6 @@ export const downloadWattpadChapterStep = createStep({
 
     console.log("✅ Content downloaded successfully");
 
-    return responseContentPage;
+    return { ...responseContentPage, contextoEditorial };
   },
 });

@@ -14,7 +14,7 @@ export const emotionalResonanceAnalyzerStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("emotionalResonanceAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const emotionalResonanceAnalyzerStep = createStep({
       throw new Error("Emotional Resonance Analyzer Agent not found");
     }
 
-    const prompt = `Analiza la resonancia emocional del siguiente texto. Evalúa si genera emociones genuinas en el lector o permanece a nivel informativo. Identifica qué técnicas usa (o no usa) para transmitir emoción.
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza la resonancia emocional del siguiente texto. Evalúa si genera emociones genuinas en el lector o permanece a nivel informativo. Identifica qué técnicas usa (o no usa) para transmitir emoción.
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown

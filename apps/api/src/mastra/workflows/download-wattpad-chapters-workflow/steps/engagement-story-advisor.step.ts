@@ -14,7 +14,7 @@ export const engagementStoryAdvisorStep = createStep({
     if (!inputData) {
       throw new Error("Input data not found");
     }
-    const { content } = inputData;
+    const { content, contextoEditorial } = inputData;
 
     const agent = mastra.getAgent("openingHookAnalyzerAgent");
 
@@ -22,8 +22,12 @@ export const engagementStoryAdvisorStep = createStep({
       throw new Error("Engagement Story Advisor Agent not found");
     }
 
-    const prompt = `Analiza la efectividad emocional de la apertura del siguiente manuscrito. Evalúa las primeras escenas completas (no solo párrafos iniciales).
+    const contextoBlock = contextoEditorial
+      ? `\n**CONTEXTO EDITORIAL (ten en cuenta para calibrar tu análisis):**\n<contexto_editorial>\n${contextoEditorial}\n</contexto_editorial>\n`
+      : "";
 
+    const prompt = `Analiza la efectividad emocional de la apertura del siguiente manuscrito. Evalúa las primeras escenas completas (no solo párrafos iniciales).
+${contextoBlock}
 **TEXTO A ANALIZAR:**
 <story_text>
 \`\`\`markdown
