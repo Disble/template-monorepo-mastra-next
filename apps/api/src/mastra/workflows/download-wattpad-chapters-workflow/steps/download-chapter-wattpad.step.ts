@@ -10,6 +10,7 @@ import {
   inputDownloadWattpadChapterSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { scorers } from "../../../constants/models.constant";
 import { logger } from "../../../logger";
 import { getContentPage } from "../../../tools/get-content-page/get-content-page-wattpad";
 
@@ -60,4 +61,5 @@ export const downloadWattpadChapterStep = createStep({
 
     return { ...responseContentPage, contextoEditorial };
   },
+  scorers,
 });

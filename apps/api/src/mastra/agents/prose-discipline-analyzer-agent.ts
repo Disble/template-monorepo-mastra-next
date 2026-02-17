@@ -1,6 +1,6 @@
 import { Agent } from "@mastra/core/agent";
+import { models } from "../constants/models.constant";
 import { memory } from "../memory/memory";
-import { models } from "../memory/models";
 
 export const proseDisciplineAnalyzerAgent = new Agent({
   id: "prose-discipline-analyzer",

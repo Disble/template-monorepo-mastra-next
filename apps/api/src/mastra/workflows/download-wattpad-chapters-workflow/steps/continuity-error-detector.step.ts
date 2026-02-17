@@ -3,6 +3,7 @@ import {
   outputContinuityErrorDetectorSchema,
   outputDownloadWattpadChapterSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { scorers } from "../../../constants/models.constant";
 import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
@@ -59,4 +60,5 @@ export const continuityErrorDetectorStep = createStep({
 
     return object;
   },
+  scorers,
 });

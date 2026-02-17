@@ -3,6 +3,7 @@ import {
   outputDownloadWattpadChapterSchema,
   outputProseDisciplineAnalyzerSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
+import { scorers } from "../../../constants/models.constant";
 import { logger } from "../../../logger";
 import { buildAnalyzerPrompt } from "./prompt-utils";
 
@@ -60,4 +61,5 @@ export const proseDisciplineAnalyzerStep = createStep({
 
     return object;
   },
+  scorers,
 });

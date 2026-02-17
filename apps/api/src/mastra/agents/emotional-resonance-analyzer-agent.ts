@@ -1,6 +1,6 @@
 import { Agent } from "@mastra/core/agent";
+import { models } from "../constants/models.constant";
 import { memory } from "../memory/memory";
-import { models } from "../memory/models";
 
 export const emotionalResonanceAnalyzerAgent = new Agent({
   id: "emotional-resonance-analyzer",

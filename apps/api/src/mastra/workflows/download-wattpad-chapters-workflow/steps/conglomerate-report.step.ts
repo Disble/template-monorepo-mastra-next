@@ -11,6 +11,7 @@ import {
   synthesisSchema,
 } from "@repo/shared-types/mastra/validations/wattpad/wattpad-workflow.schema";
 import { z } from "zod";
+import { scorers } from "../../../constants/models.constant";
 import { logger } from "../../../logger";
 
 export { outputConglomerateReportSchema };
@@ -115,4 +116,5 @@ Sigue tu proceso de calibracion paso a paso:
       sintesis,
     };
   },
+  scorers,
 });
