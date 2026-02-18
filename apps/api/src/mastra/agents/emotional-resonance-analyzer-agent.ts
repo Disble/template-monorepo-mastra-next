@@ -147,88 +147,52 @@ Clasifica el texto en este espectro:
 
 ## FORMATO DE RESPUESTA
 
-<objetivo_emocional>
-**Respuesta emocional objetivo del texto**: [Empatía profunda / Tensión / Humor / Asombro / Nostalgia / Inquietud / Otro: describir]
-**Confianza en la clasificación**: [ALTA / MEDIA / BAJA]
-**Justificación**: [Por qué se identifica este objetivo]
-</objetivo_emocional>
+IMPORTANTE: Tu respuesta será parseada como JSON estructurado. No uses XML, markdown ni texto libre. Produce un objeto con EXACTAMENTE las siguientes claves de nivel raíz:
 
-<diagnostico_emocional>
-**Categoría de lectura**: [VISCERAL / RESONANTE / PRESENTE / INFORMATIVA / INERTE]
+**objetivoEmocional** (objeto obligatorio):
+  - respuesta: string — "Empatía profunda", "Tensión", "Humor", "Asombro", "Nostalgia", "Inquietud" u otra descripción
+  - confianza: "ALTA" | "MEDIA" | "BAJA"
+  - justificacion: string — por qué se identifica este objetivo
 
-[Párrafo: ¿Qué se siente al leer este texto? ¿Genera la emoción que busca? ¿Cuál es la experiencia emocional real del lector?]
-</diagnostico_emocional>
+**diagnosticoEmocional** (objeto obligatorio):
+  - categoriaLectura: "VISCERAL" | "RESONANTE" | "PRESENTE" | "INFORMATIVA" | "INERTE"
+  - descripcion: string — qué se siente al leer este texto, experiencia emocional dominante
 
-<analisis_criterios>
-**Intensidad Emocional**: [score]/10
-[¿Qué tan fuerte es la respuesta? Evidencia textual específica]
+**criterios** (array obligatorio de 5 objetos, uno por cada criterio):
+  Cada objeto tiene: { nombre: string, score: number 0-10, explicacion: string con evidencia textual }
+  Los 5 criterios en orden:
+  1. "Intensidad Emocional" — fuerza de la respuesta emocional generada
+  2. "Variedad Emocional" — rango emocional y matices
+  3. "Autenticidad Emocional" — genuinidad vs. sentimentalismo/manipulación
+  4. "Técnica Emocional" — mostrar vs. decir, detalle sensorial, subtexto, ritmo
+  5. "Resonancia Diferida y Atmosférica" — yoin, kūkikan, emoción de comprensión
 
-**Variedad Emocional**: [score]/10
-[¿Qué rango emocional cubre? Evidencia textual específica]
+**momentosEmocionalesClave** (array obligatorio de 2-6 objetos):
+  Cada objeto tiene:
+  - tipo: "FUNCIONA" | "FALLA"
+  - cita: string — cita breve del momento
+  - analisis: string — por qué genera o no genera emoción
+  - emocion: string — qué emoción genera o qué oportunidad se pierde
 
-**Autenticidad Emocional**: [score]/10
-[¿Se siente genuino o manufacturado? Evidencia textual específica]
+**presenciaSensorial** (objeto obligatorio):
+  - sentidosPresentes: array de strings — sentidos que el texto activa
+  - sentidosAusentes: array de strings — sentidos ausentes que enriquecerían la experiencia
+  - analisis: string — cómo la presencia/ausencia sensorial afecta la inmersión
 
-**Técnica Emocional**: [score]/10
-[¿Qué técnicas usa bien o mal? Evidencia textual específica]
+**lectorIdeal** (string obligatorio):
+  Perfil breve del lector que más conectaría con este texto (emocional/experiencial, no comercial)
 
-**Resonancia Diferida y Atmosférica**: [score]/10
-[¿Hay yoin, kūkikan o emoción de comprensión? Evidencia textual específica]
-</analisis_criterios>
+**patronesEmocionales** (array obligatorio de 1-5 strings):
+  Patrones generales identificados: ¿dice vs. muestra?, ¿abstracción vs. concreción?, ¿miedo a vulnerabilidad?, ¿confunde acción con emoción?, ¿técnicas ausentes?
 
-<momentos_emocionales_clave>
-[Identifica 2-3 momentos donde la emoción funciona MÁS y 2-3 donde falla o es inerte]
+**veredicto** (string obligatorio, EXACTAMENTE uno de estos valores):
+  "EMOCIONALMENTE EFECTIVO" | "NECESITA PROFUNDIZAR" | "EMOCIONALMENTE PLANO"
 
-**FUNCIONA:**
-- **Momento 1**: "[Cita breve]"
-  → Por qué genera emoción: [análisis técnico]
-  → Qué emoción genera: [específica]
+**recomendaciones** (array obligatorio de 2-3 strings):
+  Acciones concretas y específicas para incrementar resonancia emocional
 
-[Repetir para otros momentos exitosos]
-
-**FALLA O ES INERTE:**
-- **Momento 1**: "[Cita breve]"
-  → Por qué no genera emoción: [análisis técnico]
-  → Qué oportunidad emocional se pierde: [específica]
-
-[Repetir para otros momentos fallidos]
-</momentos_emocionales_clave>
-
-<presencia_sensorial>
-**Sentidos presentes**: [Lista de sentidos que el texto activa efectivamente]
-**Sentidos ausentes**: [Lista de sentidos que están ausentes y enriquecerían la experiencia]
-**Análisis**: [Breve evaluación de cómo la presencia/ausencia sensorial afecta la inmersión emocional]
-</presencia_sensorial>
-
-<resonancia_diferida>
-**Resonancia posterior (yoin)**: [ALTA / MEDIA / BAJA / INACTIVA — con evidencia]
-**Inmersión atmosférica (kūkikan)**: [ALTA / MEDIA / BAJA / INACTIVA — con evidencia]
-**Emoción de comprensión**: [PRESENTE / AUSENTE — con evidencia]
-</resonancia_diferida>
-
-<lector_ideal>
-[Describe brevemente al lector que más conectaría con este texto — no como público objetivo comercial, sino como perfil emocional/experiencial]
-</lector_ideal>
-
-<patrones_emocionales>
-[Identifica patrones generales:]
-- ¿Tiende a decir emociones en vez de mostrarlas?
-- ¿Usa abstracción cuando necesita concreción?
-- ¿Hay miedo a la vulnerabilidad emocional?
-- ¿Confunde acción con emoción?
-- ¿Qué técnicas emocionales están ausentes que harían falta?
-</patrones_emocionales>
-
-<recomendacion_editorial>
-**VEREDICTO**: [EMOCIONALMENTE EFECTIVO / NECESITA PROFUNDIZAR / EMOCIONALMENTE PLANO]
-
-**Acciones específicas para incrementar resonancia emocional**:
-1. [Recomendación concreta con ejemplo si es posible]
-2. [Recomendación concreta con ejemplo si es posible]
-3. [Recomendación concreta con ejemplo si es posible]
-
-**Nota clave**: [La observación más importante sobre la emocionalidad de este texto]
-</recomendacion_editorial>
+**notaClave** (string obligatorio):
+  La observación más importante sobre la emocionalidad de este texto
 
 ## TU ESTÁNDAR
 

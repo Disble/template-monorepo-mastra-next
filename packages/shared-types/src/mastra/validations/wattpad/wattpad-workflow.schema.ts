@@ -316,7 +316,7 @@ export const outputEmotionalResonanceAnalyzerSchema = z.object({
   criterios: z
     .array(criterioEmocionalSchema)
     .describe(
-      "Los 4 criterios: Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional",
+      "Los 5 criterios: Intensidad Emocional, Variedad Emocional, Autenticidad Emocional, Técnica Emocional, Resonancia Diferida y Atmosférica",
     ),
   momentosEmocionalesClave: z
     .array(momentoEmocionalSchema)
