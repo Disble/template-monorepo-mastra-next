@@ -70,9 +70,9 @@ export function AnalysisDetailCard({
                   Recomendaciones
                 </h5>
                 <ul className="space-y-1">
-                  {recomendaciones.map((r, i) => (
+                  {recomendaciones.map((r) => (
                     <li
-                      key={i}
+                      key={r}
                       className="text-sm text-foreground/70 flex items-start gap-2"
                     >
                       <span className="text-accent shrink-0 mt-0.5">-</span>

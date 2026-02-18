@@ -15,10 +15,10 @@ interface SynthesisOverviewProps {
 
 export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
   const {
-    identificacionDelTexto,
-    evaluacionGlobal,
-    patronNarrativo,
-    veredictoEditorial,
+    identificacionDelTexto: textIdentification,
+    evaluacionGlobal: globalEvaluation,
+    patronNarrativo: narrativePattern,
+    veredictoEditorial: editorialVerdict,
   } = synthesis;
 
   return (
@@ -34,7 +34,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
               Género / Tono
             </span>
             <p className="text-sm text-foreground/80">
-              {identificacionDelTexto.generoYTono}
+              {textIdentification.generoYTono}
             </p>
           </div>
           <div>
@@ -42,7 +42,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
               Propósito Narrativo
             </span>
             <p className="text-sm text-foreground/80">
-              {identificacionDelTexto.propositoNarrativo}
+              {textIdentification.propositoNarrativo}
             </p>
           </div>
           <div>
@@ -50,7 +50,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
               Público Objetivo
             </span>
             <p className="text-sm text-foreground/80">
-              {identificacionDelTexto.publicoObjetivo}
+              {textIdentification.publicoObjetivo}
             </p>
           </div>
           <div>
@@ -58,7 +58,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
               Modelo de Personaje
             </span>
             <p className="text-sm text-foreground/80">
-              {identificacionDelTexto.modeloDePersonaje}
+              {textIdentification.modeloDePersonaje}
             </p>
           </div>
           <div>
@@ -66,7 +66,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
               Fuente de Enganche
             </span>
             <p className="text-sm text-foreground/80">
-              {identificacionDelTexto.fuenteDeEnganche}
+              {textIdentification.fuenteDeEnganche}
             </p>
           </div>
           <div>
@@ -75,15 +75,15 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
             </span>
             <div className="mt-1 flex items-center gap-2">
               <Chip variant="soft" size="sm" color="default">
-                {patronNarrativo.patron}
+                {narrativePattern.patron}
               </Chip>
               <p className="text-sm text-foreground/80">
-                {patronNarrativo.justificacion}
+                {narrativePattern.justificacion}
               </p>
             </div>
-            {patronNarrativo.notaFriccionAudiencia && (
+            {narrativePattern.notaFriccionAudiencia && (
               <p className="text-xs text-foreground/60 mt-1">
-                {patronNarrativo.notaFriccionAudiencia}
+                {narrativePattern.notaFriccionAudiencia}
               </p>
             )}
           </div>
@@ -97,23 +97,23 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
           <div className="flex flex-col items-center gap-2 shrink-0">
             <div
               className={`w-24 h-24 rounded-full border-4 flex items-center justify-center ${
-                evaluacionGlobal.scoreGlobal >= 7
+                globalEvaluation.scoreGlobal >= 7
                   ? "border-success text-success"
-                  : evaluacionGlobal.scoreGlobal >= 4
+                  : globalEvaluation.scoreGlobal >= 4
                     ? "border-warning text-warning"
                     : "border-danger text-danger"
               }`}
             >
               <span className="text-3xl font-bold">
-                {evaluacionGlobal.scoreGlobal.toFixed(1)}
+                {globalEvaluation.scoreGlobal.toFixed(1)}
               </span>
             </div>
             <Chip
-              color={getScoreColor(evaluacionGlobal.scoreGlobal)}
+              color={getScoreColor(globalEvaluation.scoreGlobal)}
               variant="soft"
               size="sm"
             >
-              {evaluacionGlobal.categoria}
+              {globalEvaluation.categoria}
             </Chip>
           </div>
 
@@ -124,7 +124,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
                 Resumen Ejecutivo
               </h3>
               <p className="text-sm text-foreground/80 leading-relaxed">
-                {evaluacionGlobal.resumenEjecutivo}
+                {globalEvaluation.resumenEjecutivo}
               </p>
             </div>
           </div>
@@ -137,7 +137,7 @@ export function SynthesisOverview({ synthesis }: SynthesisOverviewProps) {
           Veredicto Editorial
         </h3>
         <div className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
-          {veredictoEditorial}
+          {editorialVerdict}
         </div>
       </Card>
     </div>

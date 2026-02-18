@@ -96,19 +96,6 @@ export function formatStepLabel(stepId: string): string {
 }
 
 /**
- * Calculates duration in seconds
- */
-export function calculateDuration(
-  startedAt?: number,
-  endedAt?: number,
-): string {
-  if (typeof startedAt !== "number") return "";
-  const end = typeof endedAt === "number" ? endedAt : Date.now();
-  const duration = Math.max(0, (end - startedAt) / 1000);
-  return `${duration.toFixed(1)}s`;
-}
-
-/**
  * Gets status icon and color based on step status
  */
 export function getStatusDisplay(status: string): StatusDisplay {

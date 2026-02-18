@@ -128,24 +128,34 @@ CREATE DATABASE hus_analyzer;
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
 
+If you use the local Electric + Postgres Docker stack, this project expects PostgreSQL on port `54321` and database `electric`.
+
 ### 3. Configure environment variables
 
 **`apps/api/.env`**
 
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/hus_analyzer
+DATABASE_URL=postgresql://postgres:password@localhost:54321/electric
 GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key
 ```
 
 **`apps/web/.env`**
 
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/hus_analyzer
+DATABASE_URL=postgresql://postgres:password@localhost:54321/electric
 BETTER_AUTH_URL=http://localhost:4000
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 NEXT_PUBLIC_MASTRA_BASE_URL=http://localhost:4111
 ```
+
+**`packages/db/.env`**
+
+```env
+DATABASE_URL=postgresql://postgres:password@localhost:54321/electric
+```
+
+Security note: values above are local development examples. Do not commit production credentials. Prefer secret managers or local untracked env files.
 
 ### 4. Push the database schema
 
@@ -153,6 +163,22 @@ NEXT_PUBLIC_MASTRA_BASE_URL=http://localhost:4111
 cd packages/db
 bun run push
 ```
+
+For migration-based workflows (recommended), run:
+
+```bash
+cd packages/db
+bun run migrate
+```
+
+Preflight check before migrating:
+
+```bash
+# PowerShell
+Test-NetConnection localhost -Port 54321
+```
+
+If this fails, PostgreSQL is not reachable and new tables will not be created.
 
 ### 5. Start development
 

@@ -1,13 +1,16 @@
 "use client";
 
 import { Button } from "@repo/ui/heroui";
+import { useRouter } from "next/navigation";
 import { useQueryStates } from "nuqs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { runIdSearchParams } from "#app/search-params";
 import { WorkflowMonitor } from "#components/commons/workflow-monitor";
 import { ContentForm } from "#components/youtube-srt/content-form";
 import { YoutubeVideoCaptions } from "#components/youtube-srt/youtube-video-captions";
 import { YoutubeVideoChapters } from "#components/youtube-srt/youtube-video-chapters";
+import { useYoutubeChaptersGeneratorStore } from "./youtube-chapters-generator.store";
+import { getYoutubeRunByRunId } from "./youtube-runs.action";
 
 type ActiveView = "form" | "status";
 
@@ -107,38 +110,94 @@ const FormIcon = (
 );
 
 export function YoutubeChaptersGenerator() {
+  const router = useRouter();
   const [query] = useQueryStates(runIdSearchParams);
   const hasRunId = query.runId.length > 0;
-  const [activeView, setActiveView] = useState<ActiveView>(
-    hasRunId ? "status" : "form",
-  );
+
+  const { hydratedFormInput, setHydratedFormInput } =
+    useYoutubeChaptersGeneratorStore();
+
+  const [userToggledToForm, setUserToggledToForm] = useState(false);
+  const activeView: ActiveView =
+    !hasRunId || userToggledToForm ? "form" : "status";
+
+  useEffect(() => {
+    if (!query.runId || activeView !== "form") {
+      return;
+    }
+
+    let isMounted = true;
+
+    const hydrateFromRun = async () => {
+      const response = await getYoutubeRunByRunId(query.runId);
+
+      if (!isMounted || !response.success || !response.run) {
+        return;
+      }
+
+      const formInput = response.run.formInput;
+
+      setHydratedFormInput({
+        url: typeof formInput.url === "string" ? formInput.url : "",
+        type: formInput.type === "reading" ? "reading" : "podcast",
+      });
+    };
+
+    void hydrateFromRun();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeView, query.runId, setHydratedFormInput]);
 
   const toggleView = useCallback(() => {
-    setActiveView((prev) => (prev === "form" ? "status" : "form"));
+    setUserToggledToForm((prev) => !prev);
   }, []);
+
+  const onSubmitSuccess = useCallback(() => {
+    setUserToggledToForm(false);
+    setHydratedFormInput(null);
+  }, [setHydratedFormInput]);
+
+  const leftPanelTitle =
+    activeView === "form" ? "Formulario" : "Estado del Workflow";
+
+  const leftPanelActions = (
+    <div className="flex items-center gap-2">
+      <Button
+        size="sm"
+        variant="ghost"
+        className="text-xs"
+        onPress={() => router.push("/dashboard/youtube-captions")}
+      >
+        Ir al historial
+      </Button>
+      {hasRunId && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-xs"
+          onPress={toggleView}
+        >
+          {activeView === "form" ? "Ver estado" : "Volver al formulario"}
+        </Button>
+      )}
+    </div>
+  );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[minmax(320px,1fr)_minmax(0,1.5fr)_minmax(0,1.5fr)] gap-4 lg:gap-6">
       {/* Left column: Form / Workflow Status */}
       <div className="rounded-xl border border-default-200 bg-content1 p-5 md:col-span-2 xl:col-span-1">
-        <PanelHeader
-          title={activeView === "form" ? "Formulario" : "Estado del Workflow"}
-          icon={FormIcon}
-        >
-          {hasRunId && (
-            <Button
-              size="sm"
-              variant="ghost"
-              className="text-xs"
-              onPress={toggleView}
-            >
-              {activeView === "form" ? "Ver estado" : "Volver al formulario"}
-            </Button>
-          )}
+        <PanelHeader title={leftPanelTitle} icon={FormIcon}>
+          {leftPanelActions}
         </PanelHeader>
 
         {activeView === "form" ? (
-          <ContentForm onSubmitSuccess={() => setActiveView("status")} />
+          <ContentForm
+            initialValues={hydratedFormInput}
+            onSubmitSuccess={onSubmitSuccess}
+          />
         ) : (
           hasRunId && (
             <WorkflowMonitor

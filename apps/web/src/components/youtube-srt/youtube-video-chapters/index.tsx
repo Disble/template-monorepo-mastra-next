@@ -69,7 +69,7 @@ export function YoutubeVideoChapters() {
       <div className="flex-1 space-y-2 max-h-[55vh] overflow-y-auto pr-1 -mr-1">
         {normalizedChapters.map((chapter, index) => (
           <div
-            key={`${chapter.timestamp}-${index}`}
+            key={chapter.timestamp}
             className="rounded-lg border border-default-200 p-3 hover:bg-content2 transition-colors"
           >
             <div className="flex items-center justify-between gap-3">

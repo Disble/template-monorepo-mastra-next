@@ -1,9 +1,9 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { YoutubeChaptersGenerator } from "#components/youtube-srt/youtube-chapters-generator";
+import { YoutubeHistory } from "#components/youtube-srt/youtube-history";
 import { auth } from "#lib/auth";
 
-export default async function DashboardPage() {
+export default async function YoutubeCaptionsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -17,10 +17,10 @@ export default async function DashboardPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight">YouTube Tool</h1>
         <p className="text-sm text-foreground/60 mt-1">
-          Genera capítulos y extrae subtítulos de videos de YouTube.
+          Historial de ejecuciones de YouTube.
         </p>
       </div>
-      <YoutubeChaptersGenerator />
+      <YoutubeHistory />
     </div>
   );
 }

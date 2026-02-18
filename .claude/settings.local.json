@@ -6,7 +6,10 @@
       "WebFetch(domain:khaledgarbaya.net)",
       "Bash(bun run:*)",
       "Bash(turbo build:*)",
-      "Bash(bunx turbo build:*)"
+      "Bash(bunx turbo build:*)",
+      "WebFetch(domain:v3.heroui.com)",
+      "WebFetch(domain:nuqs.dev)",
+      "Bash(ls:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

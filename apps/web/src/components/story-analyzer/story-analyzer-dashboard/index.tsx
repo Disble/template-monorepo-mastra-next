@@ -1,12 +1,15 @@
 "use client";
 
 import { Button } from "@repo/ui/heroui";
+import { useRouter } from "next/navigation";
 import { useQueryStates } from "nuqs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { runIdSearchParams } from "#app/search-params";
 import { WorkflowMonitor } from "#components/commons/workflow-monitor";
 import { StoryAnalyzerForm } from "#components/story-analyzer/story-analyzer-form";
 import { StoryAnalyzerResults } from "#components/story-analyzer/story-analyzer-results";
+import { useStoryAnalyzerDashboardStore } from "./story-analyzer-dashboard.store";
+import { getStoryAnalyzerRunByRunId } from "./story-analyzer-runs.action";
 
 type ActiveView = "form" | "status";
 
@@ -91,38 +94,104 @@ const ResultsIcon = (
 );
 
 export function StoryAnalyzerDashboard() {
+  const router = useRouter();
   const [query] = useQueryStates(runIdSearchParams);
   const hasRunId = query.runId.length > 0;
-  const [activeView, setActiveView] = useState<ActiveView>(
-    hasRunId ? "status" : "form",
-  );
+
+  const { hydratedFormInput, setHydratedFormInput } =
+    useStoryAnalyzerDashboardStore();
+
+  const [userToggledToForm, setUserToggledToForm] = useState(false);
+  const activeView: ActiveView =
+    !hasRunId || userToggledToForm ? "form" : "status";
+
+  useEffect(() => {
+    if (!query.runId || activeView !== "form") {
+      return;
+    }
+
+    let isMounted = true;
+
+    const hydrateFromRun = async () => {
+      const response = await getStoryAnalyzerRunByRunId(query.runId);
+
+      if (!isMounted || !response.success || !response.run) {
+        return;
+      }
+
+      const formInput = response.run.formInput;
+
+      setHydratedFormInput({
+        url: typeof formInput.url === "string" ? formInput.url : "",
+        pages: typeof formInput.pages === "number" ? formInput.pages : 1,
+        redownload:
+          typeof formInput.redownload === "boolean"
+            ? formInput.redownload
+            : false,
+        editorialContext:
+          typeof formInput.contextoEditorial === "string"
+            ? formInput.contextoEditorial
+            : "",
+      });
+    };
+
+    void hydrateFromRun();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeView, query.runId, setHydratedFormInput]);
 
   const toggleView = useCallback(() => {
-    setActiveView((prev) => (prev === "form" ? "status" : "form"));
+    setUserToggledToForm((prev) => !prev);
   }, []);
+
+  const onSubmitSuccess = useCallback(() => {
+    setUserToggledToForm(false);
+    setHydratedFormInput(null);
+  }, [setHydratedFormInput]);
+
+  const leftPanelTitle =
+    activeView === "form" ? "Formulario" : "Estado del Workflow";
+
+  const leftPanelIcon = FormIcon;
+
+  const leftPanelActions = (
+    <div className="flex items-center gap-2">
+      <Button
+        size="sm"
+        variant="ghost"
+        className="text-xs"
+        onPress={() => router.push("/dashboard/story-analyzer")}
+      >
+        Ir al historial
+      </Button>
+      {hasRunId && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-xs"
+          onPress={toggleView}
+        >
+          {activeView === "form" ? "Ver estado" : "Volver al formulario"}
+        </Button>
+      )}
+    </div>
+  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,380px)_minmax(0,1fr)] gap-4 lg:gap-6">
       {/* Left column: Form / Workflow Status */}
       <div className="rounded-xl border border-default-200 bg-content1 p-5">
-        <PanelHeader
-          title={activeView === "form" ? "Formulario" : "Estado del Workflow"}
-          icon={FormIcon}
-        >
-          {hasRunId && (
-            <Button
-              size="sm"
-              variant="ghost"
-              className="text-xs"
-              onPress={toggleView}
-            >
-              {activeView === "form" ? "Ver estado" : "Volver al formulario"}
-            </Button>
-          )}
+        <PanelHeader title={leftPanelTitle} icon={leftPanelIcon}>
+          {leftPanelActions}
         </PanelHeader>
 
         {activeView === "form" ? (
-          <StoryAnalyzerForm onSubmitSuccess={() => setActiveView("status")} />
+          <StoryAnalyzerForm
+            initialValues={hydratedFormInput}
+            onSubmitSuccess={onSubmitSuccess}
+          />
         ) : (
           hasRunId && (
             <WorkflowMonitor

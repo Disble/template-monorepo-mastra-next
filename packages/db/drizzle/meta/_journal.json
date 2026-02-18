@@ -22,6 +22,20 @@
       "when": 1770243067182,
       "tag": "0002_sleepy_xavin",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771349991542,
+      "tag": "0003_spicy_chronomancer",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771362135799,
+      "tag": "0004_lame_magneto",
+      "breakpoints": true
     }
   ]
 }

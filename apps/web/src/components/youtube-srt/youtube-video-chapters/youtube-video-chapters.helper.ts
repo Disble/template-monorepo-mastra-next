@@ -3,7 +3,7 @@ import type { Chapter } from "./youtube-video-chapters.type";
 /**
  * Convert timestamp to seconds
  */
-export const timestampToSeconds = (timestamp: string): number | null => {
+const timestampToSeconds = (timestamp: string): number | null => {
   const parts = timestamp.split(":").map(Number);
 
   if (parts.length === 3) {

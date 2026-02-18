@@ -14,6 +14,7 @@ import {
   TextField,
 } from "@repo/ui/heroui";
 import { useQueryStates } from "nuqs";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { runIdSearchParams } from "#app/search-params";
@@ -39,20 +40,24 @@ const formSchema = inputYoutubeWorkflow.omit({ userId: true }).extend({
   }),
 });
 
-type FormData = Omit<InputYoutubeWorkflow, "userId">;
+export type YoutubeContentFormData = Omit<InputYoutubeWorkflow, "userId">;
 
 interface ContentFormProps {
   onSubmitSuccess?: () => void;
+  initialValues?: Partial<YoutubeContentFormData> | null;
 }
 
-export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
-  const [query, setQuery] = useQueryStates(runIdSearchParams);
-  console.log("🥒 runId:", query.runId);
+export function ContentForm({
+  onSubmitSuccess,
+  initialValues,
+}: ContentFormProps) {
+  const [, setQuery] = useQueryStates(runIdSearchParams);
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
-  } = useForm<FormData>({
+  } = useForm<YoutubeContentFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       url: "",
@@ -61,14 +66,25 @@ export function ContentForm({ onSubmitSuccess }: ContentFormProps) {
     mode: "onChange",
   });
 
-  const onSubmit = async (data: FormData) => {
-    console.log("Form data:", data);
-    // Aquí puedes implementar la lógica de envío
+  useEffect(() => {
+    if (!initialValues) return;
 
+    reset({
+      url: initialValues.url ?? "",
+      type: initialValues.type ?? "podcast",
+    });
+  }, [initialValues, reset]);
+
+  const onSubmit = async (data: YoutubeContentFormData) => {
     const response = await submitContentForm({
       url: data.url,
       type: data.type,
     });
+
+    if (!response.success) {
+      return;
+    }
+
     setQuery({
       runId: response.runId,
     });

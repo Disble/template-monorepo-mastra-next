@@ -34,6 +34,18 @@ bun run push       # Push schema to database
 bun run studio     # Open Drizzle Studio
 ```
 
+### Database preflight (important)
+
+- Local Docker setup in this repo typically uses: `postgresql://postgres:password@localhost:54321/electric`
+- Before `bun run migrate`, verify connectivity to PostgreSQL:
+
+```powershell
+Test-NetConnection localhost -Port 54321
+```
+
+- If connectivity fails, migrations will not be applied (tables will not appear), even if migration files were generated.
+- Keep credentials in local `.env` files only; never commit production secrets.
+
 ## Architecture
 
 This is a Turborepo monorepo with:

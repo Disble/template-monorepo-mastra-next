@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { StoryAnalyzerDashboard } from "#components/story-analyzer/story-analyzer-dashboard";
+import { StoryAnalyzerHistory } from "#components/story-analyzer/story-analyzer-history";
 import { auth } from "#lib/auth";
 
 export default async function StoryAnalyzerPage() {
@@ -19,10 +19,10 @@ export default async function StoryAnalyzerPage() {
           Analizador de Historias
         </h1>
         <p className="text-sm text-foreground/60 mt-1">
-          Analiza capítulos de Wattpad con 7 agentes literarios especializados.
+          Historial de análisis realizados.
         </p>
       </div>
-      <StoryAnalyzerDashboard />
+      <StoryAnalyzerHistory />
     </div>
   );
 }

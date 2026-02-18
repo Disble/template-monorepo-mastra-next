@@ -13,6 +13,7 @@ import {
   TextField,
 } from "@repo/ui/heroui";
 import { useQueryStates } from "nuqs";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { runIdSearchParams } from "#app/search-params";
@@ -22,33 +23,49 @@ const formSchema = z.object({
   url: z.url("Ingresa una URL válida de Wattpad"),
   pages: z.number().min(1).max(100),
   redownload: z.boolean(),
-  contextoEditorial: z.string().optional(),
+  editorialContext: z.string().optional(),
 });
 
-type FormData = z.infer<typeof formSchema>;
+export type StoryAnalyzerFormData = z.infer<typeof formSchema>;
 
 interface StoryAnalyzerFormProps {
   onSubmitSuccess?: () => void;
+  initialValues?: Partial<StoryAnalyzerFormData> | null;
 }
 
-export function StoryAnalyzerForm({ onSubmitSuccess }: StoryAnalyzerFormProps) {
+export function StoryAnalyzerForm({
+  onSubmitSuccess,
+  initialValues,
+}: StoryAnalyzerFormProps) {
   const [, setQuery] = useQueryStates(runIdSearchParams);
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<FormData>({
+  } = useForm<StoryAnalyzerFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       url: "",
       pages: 1,
       redownload: false,
-      contextoEditorial: "",
+      editorialContext: "",
     },
     mode: "onChange",
   });
 
-  const onSubmit = async (data: FormData) => {
+  useEffect(() => {
+    if (!initialValues) return;
+
+    reset({
+      url: initialValues.url ?? "",
+      pages: initialValues.pages ?? 1,
+      redownload: initialValues.redownload ?? false,
+      editorialContext: initialValues.editorialContext ?? "",
+    });
+  }, [initialValues, reset]);
+
+  const onSubmit = async (data: StoryAnalyzerFormData) => {
     const response = await submitStoryAnalyzerForm(data);
     if (response.success) {
       setQuery({ runId: response.runId });
@@ -97,16 +114,16 @@ export function StoryAnalyzerForm({ onSubmitSuccess }: StoryAnalyzerFormProps) {
       />
 
       <Controller
-        name="contextoEditorial"
+        name="editorialContext"
         control={control}
         render={({ field }) => (
           <TextField>
-            <Label htmlFor="contextoEditorial">
+            <Label htmlFor="editorialContext">
               Contexto editorial (opcional)
             </Label>
             <TextArea
               {...field}
-              id="contextoEditorial"
+              id="editorialContext"
               placeholder="Ej: Es el primer capítulo de una novela de fantasía juvenil para lectores de 14-18 años. El worldbuilding se desarrolla en capítulos posteriores. El género es romance paranormal con elementos de horror."
               rows={4}
             />

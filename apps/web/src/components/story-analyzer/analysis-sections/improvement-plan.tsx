@@ -4,15 +4,15 @@ import type { Synthesis } from "@repo/shared-types/mastra/validations/wattpad/wa
 import { Card, Chip } from "@repo/ui/heroui";
 
 interface ImprovementPlanProps {
-  planDeMejora: Synthesis["planDeMejora"];
-  fortalezasPrincipales: Synthesis["fortalezasPrincipales"];
-  debilidadesPrincipales: Synthesis["debilidadesPrincipales"];
+  improvementPlan: Synthesis["planDeMejora"];
+  mainStrengths: Synthesis["fortalezasPrincipales"];
+  mainWeaknesses: Synthesis["debilidadesPrincipales"];
 }
 
 export function ImprovementPlan({
-  planDeMejora,
-  fortalezasPrincipales,
-  debilidadesPrincipales,
+  improvementPlan,
+  mainStrengths,
+  mainWeaknesses,
 }: ImprovementPlanProps) {
   return (
     <div className="space-y-6">
@@ -21,9 +21,9 @@ export function ImprovementPlan({
         <Card className="p-4 space-y-3">
           <h4 className="text-sm font-semibold text-success">Fortalezas</h4>
           <ul className="space-y-2">
-            {fortalezasPrincipales.map((f, i) => (
+            {mainStrengths.map((f) => (
               <li
-                key={i}
+                key={f}
                 className="text-sm text-foreground/80 flex items-start gap-2"
               >
                 <span className="text-success shrink-0 mt-0.5">+</span>
@@ -35,9 +35,9 @@ export function ImprovementPlan({
         <Card className="p-4 space-y-3">
           <h4 className="text-sm font-semibold text-danger">Debilidades</h4>
           <ul className="space-y-2">
-            {debilidadesPrincipales.map((d, i) => (
+            {mainWeaknesses.map((d) => (
               <li
-                key={i}
+                key={d}
                 className="text-sm text-foreground/80 flex items-start gap-2"
               >
                 <span className="text-danger shrink-0 mt-0.5">-</span>
@@ -54,10 +54,10 @@ export function ImprovementPlan({
           Plan de Mejora
         </h3>
         <div className="space-y-2">
-          {planDeMejora
+          {improvementPlan
             .sort((a, b) => a.prioridad - b.prioridad)
-            .map((item, index) => (
-              <Card key={index} className="p-4">
+            .map((item) => (
+              <Card key={item.prioridad} className="p-4">
                 <div className="flex items-start gap-3">
                   <Chip
                     color="accent"

@@ -10,13 +10,13 @@ function getScoreColor(score: number): "success" | "warning" | "danger" {
 }
 
 interface BiasCorrectionsProps {
-  correccionesDeSesgos: Synthesis["correccionesDeSesgos"];
+  calibrationCorrections: Synthesis["correccionesDeSesgos"];
 }
 
 export function BiasCorrections({
-  correccionesDeSesgos,
+  calibrationCorrections,
 }: BiasCorrectionsProps) {
-  if (correccionesDeSesgos.length === 0) return null;
+  if (calibrationCorrections.length === 0) return null;
 
   return (
     <div className="space-y-3">
@@ -28,8 +28,8 @@ export function BiasCorrections({
         el tipo de texto analizado.
       </p>
       <div className="space-y-2">
-        {correccionesDeSesgos.map((correccion, index) => (
-          <Card key={index} className="p-4">
+        {calibrationCorrections.map((correccion) => (
+          <Card key={correccion.agente} className="p-4">
             <div className="flex items-start gap-3">
               <div className="flex flex-col items-center gap-1 shrink-0 min-w-16">
                 <span className="text-xs text-foreground/50 line-through tabular-nums">

@@ -10,18 +10,18 @@ function getImpactColor(impacto: string): "danger" | "warning" | "default" {
 }
 
 interface CrossPatternsProps {
-  patronesTransversales: Synthesis["patronesTransversales"];
+  crossPatterns: Synthesis["patronesTransversales"];
 }
 
-export function CrossPatterns({ patronesTransversales }: CrossPatternsProps) {
+export function CrossPatterns({ crossPatterns }: CrossPatternsProps) {
   return (
     <div className="space-y-3">
       <h3 className="text-lg font-semibold text-foreground">
         Patrones Transversales
       </h3>
       <div className="space-y-3">
-        {patronesTransversales.map((patron, index) => (
-          <Card key={index} className="p-4">
+        {crossPatterns.map((patron) => (
+          <Card key={patron.patron} className="p-4">
             <div className="flex items-start gap-3">
               <Chip
                 color={getImpactColor(patron.impacto)}

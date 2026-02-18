@@ -1,5 +1,6 @@
 "use server";
 
+import { createWorkflowRunDirectoryEntry, db } from "@repo/db";
 import type { InputYoutubeWorkflow } from "@repo/shared-types/mastra/validations/youtube/youtube-workflow.type";
 import { headers } from "next/headers";
 import { auth } from "#lib/auth";
@@ -21,22 +22,34 @@ export async function submitContentForm({
     const userId = session.user.id;
 
     const run = await chaptersVideosWorkflow.createRun();
-    const { message } = await run.start({
+
+    await createWorkflowRunDirectoryEntry(db, {
+      runId: run.runId,
+      workflowKey: "chapters-videos-workflow",
+      workflowVersion: "v1",
+      displayValue: url,
+      formInput: {
+        url,
+        type,
+      },
+      ownerUserId: userId,
+    });
+
+    await run.start({
       inputData: {
         url,
         type,
         userId,
       },
     });
-    console.log("🥝 message: ", message);
     return {
-      success: true,
+      success: true as const,
       runId: run.runId,
     };
   } catch (error) {
     console.error("Server Action Error:", error);
     return {
-      success: false,
+      success: false as const,
       error: "Internal server error",
     };
   }

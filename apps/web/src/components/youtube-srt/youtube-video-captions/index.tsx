@@ -58,9 +58,9 @@ export function YoutubeVideoCaptions() {
     <div className="flex flex-col h-full">
       {/* Scrollable caption list */}
       <div className="flex-1 space-y-1 max-h-[55vh] overflow-y-auto pr-1 -mr-1">
-        {captions.map((caption, index) => (
+        {captions.map((caption) => (
           <div
-            key={`${caption.start}-${index}`}
+            key={caption.start}
             className="flex items-start gap-3 px-2 py-1.5 rounded-md hover:bg-content2 transition-colors"
           >
             <Chip

@@ -57,19 +57,17 @@ function DimensionCard({ dim }: DimensionCardProps) {
 }
 
 interface DimensionSummaryProps {
-  resumenPorDimension: Synthesis["resumenPorDimension"];
+  dimensionSummary: Synthesis["resumenPorDimension"];
 }
 
-export function DimensionSummary({
-  resumenPorDimension,
-}: DimensionSummaryProps) {
+export function DimensionSummary({ dimensionSummary }: DimensionSummaryProps) {
   return (
     <div className="space-y-3">
       <h3 className="text-lg font-semibold text-foreground">
         Resumen por Dimensión
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
-        {resumenPorDimension.map((dim) => (
+        {dimensionSummary.map((dim) => (
           <DimensionCard key={dim.dimension} dim={dim} />
         ))}
       </div>

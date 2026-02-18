@@ -84,7 +84,8 @@ export function StoryAnalyzerResults() {
     );
   }
 
-  const { sintesis, analisisIndividuales } = conglomerateResult;
+  const { sintesis: synthesis, analisisIndividuales: individualAnalyses } =
+    conglomerateResult;
 
   return (
     <div className="space-y-6">
@@ -92,22 +93,24 @@ export function StoryAnalyzerResults() {
       {downloadedContent && <StoryTextViewer content={downloadedContent} />}
 
       {/* 2. Synthesis Overview (includes text identification + score + verdict) */}
-      <SynthesisOverview synthesis={sintesis} />
+      <SynthesisOverview synthesis={synthesis} />
 
       {/* 3. Dimension Summary */}
-      <DimensionSummary resumenPorDimension={sintesis.resumenPorDimension} />
+      <DimensionSummary dimensionSummary={synthesis.resumenPorDimension} />
 
       {/* 4. Bias Corrections */}
-      <BiasCorrections correccionesDeSesgos={sintesis.correccionesDeSesgos} />
+      <BiasCorrections
+        calibrationCorrections={synthesis.correccionesDeSesgos}
+      />
 
       {/* 5. Cross Patterns */}
-      <CrossPatterns patronesTransversales={sintesis.patronesTransversales} />
+      <CrossPatterns crossPatterns={synthesis.patronesTransversales} />
 
       {/* 6. Strengths, Weaknesses & Improvement Plan */}
       <ImprovementPlan
-        planDeMejora={sintesis.planDeMejora}
-        fortalezasPrincipales={sintesis.fortalezasPrincipales}
-        debilidadesPrincipales={sintesis.debilidadesPrincipales}
+        improvementPlan={synthesis.planDeMejora}
+        mainStrengths={synthesis.fortalezasPrincipales}
+        mainWeaknesses={synthesis.debilidadesPrincipales}
       />
 
       {/* 7. Individual Analysis Details */}
@@ -117,16 +120,16 @@ export function StoryAnalyzerResults() {
         </h3>
         <Accordion variant="surface" allowsMultipleExpanded>
           {/* Engagement */}
-          {analisisIndividuales.engagementStoryAdvisor && (
+          {individualAnalyses.engagementStoryAdvisor && (
             <AnalysisDetailCard
               title="Engagement y Apertura"
-              veredicto={analisisIndividuales.engagementStoryAdvisor.veredicto}
-              criterios={analisisIndividuales.engagementStoryAdvisor.criterios}
+              veredicto={individualAnalyses.engagementStoryAdvisor.veredicto}
+              criterios={individualAnalyses.engagementStoryAdvisor.criterios}
               diagnostico={
-                analisisIndividuales.engagementStoryAdvisor.diagnostico
+                individualAnalyses.engagementStoryAdvisor.diagnostico
               }
               recomendaciones={
-                analisisIndividuales.engagementStoryAdvisor.recomendaciones
+                individualAnalyses.engagementStoryAdvisor.recomendaciones
               }
             >
               <div className="space-y-3">
@@ -135,20 +138,20 @@ export function StoryAnalyzerResults() {
                   <CalibrationChip
                     label="Fuente de enganche"
                     value={
-                      analisisIndividuales.engagementStoryAdvisor
-                        .fuenteDeEnganche.fuente
+                      individualAnalyses.engagementStoryAdvisor.fuenteDeEnganche
+                        .fuente
                     }
                   />
                   <ConfidenceIndicator
                     confianza={
-                      analisisIndividuales.engagementStoryAdvisor
-                        .fuenteDeEnganche.confianza
+                      individualAnalyses.engagementStoryAdvisor.fuenteDeEnganche
+                        .confianza
                     }
                   />
                 </div>
                 <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.engagementStoryAdvisor.fuenteDeEnganche
+                    individualAnalyses.engagementStoryAdvisor.fuenteDeEnganche
                       .justificacion
                   }
                 </p>
@@ -160,13 +163,13 @@ export function StoryAnalyzerResults() {
                   </h5>
                   <blockquote className="text-sm text-foreground/70 border-l-2 border-accent pl-3 italic">
                     {
-                      analisisIndividuales.engagementStoryAdvisor.momentoCritico
+                      individualAnalyses.engagementStoryAdvisor.momentoCritico
                         .cita
                     }
                   </blockquote>
                   <p className="text-xs text-foreground/60">
                     {
-                      analisisIndividuales.engagementStoryAdvisor.momentoCritico
+                      individualAnalyses.engagementStoryAdvisor.momentoCritico
                         .analisis
                     }
                   </p>
@@ -176,17 +179,17 @@ export function StoryAnalyzerResults() {
           )}
 
           {/* Narrative Structure */}
-          {analisisIndividuales.narrativeStructureAnalyzer && (
+          {individualAnalyses.narrativeStructureAnalyzer && (
             <AnalysisDetailCard
               title="Estructura Narrativa"
               veredicto={
-                analisisIndividuales.narrativeStructureAnalyzer.veredicto
+                individualAnalyses.narrativeStructureAnalyzer.veredicto
               }
               criterios={
-                analisisIndividuales.narrativeStructureAnalyzer.criterios
+                individualAnalyses.narrativeStructureAnalyzer.criterios
               }
               recomendaciones={
-                analisisIndividuales.narrativeStructureAnalyzer.recomendaciones
+                individualAnalyses.narrativeStructureAnalyzer.recomendaciones
               }
             >
               <div className="space-y-3">
@@ -199,10 +202,10 @@ export function StoryAnalyzerResults() {
                     variant="soft"
                     size="sm"
                     color={
-                      analisisIndividuales.narrativeStructureAnalyzer
+                      individualAnalyses.narrativeStructureAnalyzer
                         .identificacionEstructural.encajaLimpiamente === "SÍ"
                         ? "success"
-                        : analisisIndividuales.narrativeStructureAnalyzer
+                        : individualAnalyses.narrativeStructureAnalyzer
                               .identificacionEstructural.encajaLimpiamente ===
                             "NO"
                           ? "danger"
@@ -210,7 +213,7 @@ export function StoryAnalyzerResults() {
                     }
                   >
                     {
-                      analisisIndividuales.narrativeStructureAnalyzer
+                      individualAnalyses.narrativeStructureAnalyzer
                         .identificacionEstructural.encajaLimpiamente
                     }
                   </Chip>
@@ -218,7 +221,7 @@ export function StoryAnalyzerResults() {
 
                 {/* Structural levels with alignment % */}
                 <div className="space-y-1">
-                  {analisisIndividuales.narrativeStructureAnalyzer.identificacionEstructural.niveles.map(
+                  {individualAnalyses.narrativeStructureAnalyzer.identificacionEstructural.niveles.map(
                     (nivel) => (
                       <div
                         key={nivel.nivel}
@@ -252,7 +255,7 @@ export function StoryAnalyzerResults() {
                   <p className="text-sm text-foreground/70">
                     <strong>Tema central:</strong>{" "}
                     {
-                      analisisIndividuales.narrativeStructureAnalyzer.tematica
+                      individualAnalyses.narrativeStructureAnalyzer.tematica
                         .temaCentral
                     }
                   </p>
@@ -265,18 +268,18 @@ export function StoryAnalyzerResults() {
                     variant="soft"
                     size="sm"
                     color={
-                      analisisIndividuales.narrativeStructureAnalyzer
-                        .diagnostico.aportaOResta === "APORTA"
+                      individualAnalyses.narrativeStructureAnalyzer.diagnostico
+                        .aportaOResta === "APORTA"
                         ? "success"
-                        : analisisIndividuales.narrativeStructureAnalyzer
+                        : individualAnalyses.narrativeStructureAnalyzer
                               .diagnostico.aportaOResta === "RESTA"
                           ? "danger"
                           : "warning"
                     }
                   >
                     {
-                      analisisIndividuales.narrativeStructureAnalyzer
-                        .diagnostico.aportaOResta
+                      individualAnalyses.narrativeStructureAnalyzer.diagnostico
+                        .aportaOResta
                     }
                   </Chip>
                 </div>
@@ -285,12 +288,12 @@ export function StoryAnalyzerResults() {
           )}
 
           {/* Continuity Errors */}
-          {analisisIndividuales.continuityErrorDetector && (
+          {individualAnalyses.continuityErrorDetector && (
             <AnalysisDetailCard
               title="Errores de Continuidad"
-              veredicto={analisisIndividuales.continuityErrorDetector.veredicto}
+              veredicto={individualAnalyses.continuityErrorDetector.veredicto}
               diagnostico={
-                analisisIndividuales.continuityErrorDetector.resumenEjecutivo
+                individualAnalyses.continuityErrorDetector.resumenEjecutivo
                   .resumen
               }
             >
@@ -300,35 +303,35 @@ export function StoryAnalyzerResults() {
                   <Chip color="danger" variant="soft" size="sm">
                     Críticos:{" "}
                     {
-                      analisisIndividuales.continuityErrorDetector
+                      individualAnalyses.continuityErrorDetector
                         .resumenEjecutivo.criticos
                     }
                   </Chip>
                   <Chip color="warning" variant="soft" size="sm">
                     Moderados:{" "}
                     {
-                      analisisIndividuales.continuityErrorDetector
+                      individualAnalyses.continuityErrorDetector
                         .resumenEjecutivo.moderados
                     }
                   </Chip>
                   <Chip color="default" variant="soft" size="sm">
                     Menores:{" "}
                     {
-                      analisisIndividuales.continuityErrorDetector
+                      individualAnalyses.continuityErrorDetector
                         .resumenEjecutivo.menores
                     }
                   </Chip>
                 </div>
 
                 {/* Error classification breakdown */}
-                {analisisIndividuales.continuityErrorDetector.erroresDetectados
+                {individualAnalyses.continuityErrorDetector.erroresDetectados
                   .length > 0 && (
                   <div>
                     <h5 className="text-sm font-semibold text-foreground mb-2">
                       Clasificación de Errores
                     </h5>
                     <div className="space-y-2">
-                      {analisisIndividuales.continuityErrorDetector.erroresDetectados.map(
+                      {individualAnalyses.continuityErrorDetector.erroresDetectados.map(
                         (error) => (
                           <div
                             key={error.numero}
@@ -366,17 +369,17 @@ export function StoryAnalyzerResults() {
                 )}
 
                 {/* Correction priorities */}
-                {analisisIndividuales.continuityErrorDetector
+                {individualAnalyses.continuityErrorDetector
                   .prioridadesCorreccion.length > 0 && (
                   <div>
                     <h5 className="text-sm font-semibold text-foreground mb-1">
                       Prioridades de Corrección
                     </h5>
                     <ul className="space-y-1">
-                      {analisisIndividuales.continuityErrorDetector.prioridadesCorreccion.map(
-                        (p, i) => (
+                      {individualAnalyses.continuityErrorDetector.prioridadesCorreccion.map(
+                        (p) => (
                           <li
-                            key={i}
+                            key={p}
                             className="text-sm text-foreground/70 flex items-start gap-2"
                           >
                             <span className="text-warning shrink-0 mt-0.5">
@@ -394,17 +397,17 @@ export function StoryAnalyzerResults() {
           )}
 
           {/* Emotional Resonance */}
-          {analisisIndividuales.emotionalResonanceAnalyzer && (
+          {individualAnalyses.emotionalResonanceAnalyzer && (
             <AnalysisDetailCard
               title="Resonancia Emocional"
               veredicto={
-                analisisIndividuales.emotionalResonanceAnalyzer.veredicto
+                individualAnalyses.emotionalResonanceAnalyzer.veredicto
               }
               criterios={
-                analisisIndividuales.emotionalResonanceAnalyzer.criterios
+                individualAnalyses.emotionalResonanceAnalyzer.criterios
               }
               recomendaciones={
-                analisisIndividuales.emotionalResonanceAnalyzer.recomendaciones
+                individualAnalyses.emotionalResonanceAnalyzer.recomendaciones
               }
             >
               <div className="space-y-3">
@@ -413,20 +416,20 @@ export function StoryAnalyzerResults() {
                   <CalibrationChip
                     label="Objetivo emocional"
                     value={
-                      analisisIndividuales.emotionalResonanceAnalyzer
+                      individualAnalyses.emotionalResonanceAnalyzer
                         .objetivoEmocional.respuesta
                     }
                   />
                   <ConfidenceIndicator
                     confianza={
-                      analisisIndividuales.emotionalResonanceAnalyzer
+                      individualAnalyses.emotionalResonanceAnalyzer
                         .objetivoEmocional.confianza
                     }
                   />
                 </div>
                 <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.emotionalResonanceAnalyzer
+                    individualAnalyses.emotionalResonanceAnalyzer
                       .objetivoEmocional.justificacion
                   }
                 </p>
@@ -436,28 +439,28 @@ export function StoryAnalyzerResults() {
                   <span className="text-sm text-foreground/70">Categoría:</span>
                   <Chip variant="soft" size="sm" color="accent">
                     {
-                      analisisIndividuales.emotionalResonanceAnalyzer
+                      individualAnalyses.emotionalResonanceAnalyzer
                         .diagnosticoEmocional.categoriaLectura
                     }
                   </Chip>
                 </div>
                 <p className="text-xs text-foreground/60">
-                  {analisisIndividuales.emotionalResonanceAnalyzer.notaClave}
+                  {individualAnalyses.emotionalResonanceAnalyzer.notaClave}
                 </p>
               </div>
             </AnalysisDetailCard>
           )}
 
           {/* Character Depth */}
-          {analisisIndividuales.characterDepthAnalyzer && (
+          {individualAnalyses.characterDepthAnalyzer && (
             <AnalysisDetailCard
               title="Profundidad de Personajes"
-              veredicto={analisisIndividuales.characterDepthAnalyzer.veredicto}
-              criterios={analisisIndividuales.characterDepthAnalyzer.criterios}
+              veredicto={individualAnalyses.characterDepthAnalyzer.veredicto}
+              criterios={individualAnalyses.characterDepthAnalyzer.criterios}
               recomendaciones={[
-                ...(analisisIndividuales.characterDepthAnalyzer
+                ...(individualAnalyses.characterDepthAnalyzer
                   .recomendacionesProfundidad ?? []),
-                ...(analisisIndividuales.characterDepthAnalyzer
+                ...(individualAnalyses.characterDepthAnalyzer
                   .recomendacionesDesarrollo ?? []),
               ]}
             >
@@ -467,20 +470,20 @@ export function StoryAnalyzerResults() {
                   <CalibrationChip
                     label="Modelo de personaje"
                     value={
-                      analisisIndividuales.characterDepthAnalyzer
-                        .modeloPersonaje.modelo
+                      individualAnalyses.characterDepthAnalyzer.modeloPersonaje
+                        .modelo
                     }
                   />
                   <ConfidenceIndicator
                     confianza={
-                      analisisIndividuales.characterDepthAnalyzer
-                        .modeloPersonaje.confianza
+                      individualAnalyses.characterDepthAnalyzer.modeloPersonaje
+                        .confianza
                     }
                   />
                 </div>
                 <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.characterDepthAnalyzer.modeloPersonaje
+                    individualAnalyses.characterDepthAnalyzer.modeloPersonaje
                       .justificacion
                   }
                 </p>
@@ -490,12 +493,12 @@ export function StoryAnalyzerResults() {
                   <h5 className="text-sm font-semibold text-foreground">
                     Perfil:{" "}
                     {
-                      analisisIndividuales.characterDepthAnalyzer
-                        .perfilPersonaje.nombre
+                      individualAnalyses.characterDepthAnalyzer.perfilPersonaje
+                        .nombre
                     }
                   </h5>
                   <p className="text-xs text-foreground/60">
-                    {analisisIndividuales.characterDepthAnalyzer.notaCritica}
+                    {individualAnalyses.characterDepthAnalyzer.notaCritica}
                   </p>
                 </div>
               </div>
@@ -503,16 +506,16 @@ export function StoryAnalyzerResults() {
           )}
 
           {/* Prose Discipline */}
-          {analisisIndividuales.proseDisciplineAnalyzer && (
+          {individualAnalyses.proseDisciplineAnalyzer && (
             <AnalysisDetailCard
               title="Disciplina de Prosa"
-              veredicto={analisisIndividuales.proseDisciplineAnalyzer.veredicto}
+              veredicto={individualAnalyses.proseDisciplineAnalyzer.veredicto}
               diagnostico={
-                analisisIndividuales.proseDisciplineAnalyzer.resumenEjecutivo
+                individualAnalyses.proseDisciplineAnalyzer.resumenEjecutivo
                   .descripcion
               }
               recomendaciones={
-                analisisIndividuales.proseDisciplineAnalyzer
+                individualAnalyses.proseDisciplineAnalyzer
                   .recomendacionesGenerales
               }
             >
@@ -526,30 +529,30 @@ export function StoryAnalyzerResults() {
                     variant="soft"
                     size="sm"
                     color={
-                      analisisIndividuales.proseDisciplineAnalyzer
+                      individualAnalyses.proseDisciplineAnalyzer
                         .adecuacionAlRegistro.esAdecuado === "SÍ"
                         ? "success"
-                        : analisisIndividuales.proseDisciplineAnalyzer
+                        : individualAnalyses.proseDisciplineAnalyzer
                               .adecuacionAlRegistro.esAdecuado === "NO"
                           ? "danger"
                           : "warning"
                     }
                   >
                     {
-                      analisisIndividuales.proseDisciplineAnalyzer
+                      individualAnalyses.proseDisciplineAnalyzer
                         .adecuacionAlRegistro.esAdecuado
                     }
                   </Chip>
                   <Chip variant="secondary" size="sm" className="text-xs">
                     {
-                      analisisIndividuales.proseDisciplineAnalyzer
+                      individualAnalyses.proseDisciplineAnalyzer
                         .adecuacionAlRegistro.generoTonoIdentificado
                     }
                   </Chip>
                 </div>
                 <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.proseDisciplineAnalyzer
+                    individualAnalyses.proseDisciplineAnalyzer
                       .adecuacionAlRegistro.analisis
                   }
                 </p>
@@ -559,24 +562,24 @@ export function StoryAnalyzerResults() {
                   <span className="text-sm text-foreground/70">Nivel:</span>
                   <Chip variant="secondary" size="sm">
                     {
-                      analisisIndividuales.proseDisciplineAnalyzer
+                      individualAnalyses.proseDisciplineAnalyzer
                         .resumenEjecutivo.nivelDisciplina
                     }
                   </Chip>
                 </div>
 
                 {/* Correction priorities */}
-                {analisisIndividuales.proseDisciplineAnalyzer
+                {individualAnalyses.proseDisciplineAnalyzer
                   .prioridadesCorreccion.length > 0 && (
                   <div>
                     <h5 className="text-sm font-semibold text-foreground mb-1">
                       Prioridades
                     </h5>
                     <ul className="space-y-1">
-                      {analisisIndividuales.proseDisciplineAnalyzer.prioridadesCorreccion.map(
-                        (p, i) => (
+                      {individualAnalyses.proseDisciplineAnalyzer.prioridadesCorreccion.map(
+                        (p) => (
                           <li
-                            key={i}
+                            key={p}
                             className="text-sm text-foreground/70 flex items-start gap-2"
                           >
                             <span className="text-warning shrink-0 mt-0.5">
@@ -594,16 +597,14 @@ export function StoryAnalyzerResults() {
           )}
 
           {/* Pacing & Tension */}
-          {analisisIndividuales.pacingTensionAnalyzer && (
+          {individualAnalyses.pacingTensionAnalyzer && (
             <AnalysisDetailCard
               title="Ritmo y Tensión"
-              veredicto={analisisIndividuales.pacingTensionAnalyzer.veredicto}
-              criterios={analisisIndividuales.pacingTensionAnalyzer.criterios}
-              diagnostico={
-                analisisIndividuales.pacingTensionAnalyzer.diagnostico
-              }
+              veredicto={individualAnalyses.pacingTensionAnalyzer.veredicto}
+              criterios={individualAnalyses.pacingTensionAnalyzer.criterios}
+              diagnostico={individualAnalyses.pacingTensionAnalyzer.diagnostico}
               recomendaciones={
-                analisisIndividuales.pacingTensionAnalyzer.recomendaciones
+                individualAnalyses.pacingTensionAnalyzer.recomendaciones
               }
             >
               <div className="space-y-3">
@@ -612,20 +613,20 @@ export function StoryAnalyzerResults() {
                   <CalibrationChip
                     label="Modelo de tensión"
                     value={
-                      analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                      individualAnalyses.pacingTensionAnalyzer.modeloDeTension
                         .modelo
                     }
                   />
                   <ConfidenceIndicator
                     confianza={
-                      analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                      individualAnalyses.pacingTensionAnalyzer.modeloDeTension
                         .confianza
                     }
                   />
                 </div>
                 <p className="text-xs text-foreground/50">
                   {
-                    analisisIndividuales.pacingTensionAnalyzer.modeloDeTension
+                    individualAnalyses.pacingTensionAnalyzer.modeloDeTension
                       .justificacion
                   }
                 </p>
@@ -639,7 +640,7 @@ export function StoryAnalyzerResults() {
                     <div className="p-2 rounded-lg bg-default-100">
                       <div className="text-lg font-bold text-foreground">
                         {
-                          analisisIndividuales.pacingTensionAnalyzer
+                          individualAnalyses.pacingTensionAnalyzer
                             .distribucionTemporal.escena
                         }
                         %
@@ -649,7 +650,7 @@ export function StoryAnalyzerResults() {
                     <div className="p-2 rounded-lg bg-default-100">
                       <div className="text-lg font-bold text-foreground">
                         {
-                          analisisIndividuales.pacingTensionAnalyzer
+                          individualAnalyses.pacingTensionAnalyzer
                             .distribucionTemporal.sumario
                         }
                         %
@@ -659,7 +660,7 @@ export function StoryAnalyzerResults() {
                     <div className="p-2 rounded-lg bg-default-100">
                       <div className="text-lg font-bold text-foreground">
                         {
-                          analisisIndividuales.pacingTensionAnalyzer
+                          individualAnalyses.pacingTensionAnalyzer
                             .distribucionTemporal.pausa
                         }
                         %
@@ -669,7 +670,7 @@ export function StoryAnalyzerResults() {
                     <div className="p-2 rounded-lg bg-default-100">
                       <div className="text-lg font-bold text-foreground">
                         {
-                          analisisIndividuales.pacingTensionAnalyzer
+                          individualAnalyses.pacingTensionAnalyzer
                             .distribucionTemporal.elipsis
                         }
                         %
@@ -680,7 +681,7 @@ export function StoryAnalyzerResults() {
                 </div>
 
                 <p className="text-xs text-foreground/60">
-                  {analisisIndividuales.pacingTensionAnalyzer.notaCritica}
+                  {individualAnalyses.pacingTensionAnalyzer.notaCritica}
                 </p>
               </div>
             </AnalysisDetailCard>

@@ -68,6 +68,27 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    key: "history",
+    label: "Historial",
+    href: "/dashboard/history",
+    icon: (
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <title>History Icon</title>
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M12 8v4l3 3m6-3a9 9 0 11-3.192-6.904M21 3v6h-6"
+        />
+      </svg>
+    ),
+  },
 ];
 
 interface SidebarProps {
@@ -107,7 +128,11 @@ export function Sidebar({ className = "" }: SidebarProps) {
               textValue={item.label}
               href={item.href}
               className={`px-3 py-2 rounded-lg data-[hover=true]:bg-default-100 ${
-                pathname === item.href
+                (
+                  item.href === "/dashboard"
+                    ? pathname === item.href
+                    : pathname.startsWith(item.href)
+                )
                   ? "bg-primary/10 text-primary font-medium"
                   : "text-default-600"
               }`}
