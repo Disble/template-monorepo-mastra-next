@@ -1,4 +1,4 @@
-import { createAnswerRelevancyScorer } from "@mastra/evals/scorers/prebuilt";
+// import { createAnswerRelevancyScorer } from "@mastra/evals/scorers/prebuilt";
 import { ollama } from "ollama-ai-provider-v2";
 
 export const models = {
@@ -25,16 +25,16 @@ export const models = {
  *   Uses the same 'qwen3:14b' model via Ollama for hallucination detection.
  */
 export const scorers = {
-  /**
-   * Relevancy scorer to evaluate if the answer is relevant to the question or context.
-   */
-  relevancy: {
-    scorer: createAnswerRelevancyScorer({
-      model: ollama("qwen3:14b"),
-    }),
-    // Optionally use sampling to adjust the ratio of scored responses:
-    // sampling: { type: 'ratio', rate: 0.5 }
-  },
+  // /**
+  //  * Relevancy scorer to evaluate if the answer is relevant to the question or context.
+  //  */
+  // relevancy: {
+  //   scorer: createAnswerRelevancyScorer({
+  //     model: ollama("qwen3:14b"),
+  //   }),
+  //   // Optionally use sampling to adjust the ratio of scored responses:
+  //   // sampling: { type: 'ratio', rate: 0.5 }
+  // },
   // /**
   //  * Hallucination scorer to detect fabricated or non-factual content in responses.
   //  */
