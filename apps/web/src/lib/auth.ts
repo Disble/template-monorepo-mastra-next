@@ -18,6 +18,10 @@ export const auth = betterAuth({
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       accessType: "offline",
       prompt: "select_account consent",
+      scope: [
+        "https://www.googleapis.com/auth/youtube.force-ssl",
+        "https://www.googleapis.com/auth/youtube.readonly",
+      ],
     },
   },
   plugins: [

@@ -8,6 +8,7 @@ export async function getGoogleTokens(userId: string) {
       accessToken: account.accessToken,
       refreshToken: account.refreshToken,
       expiresAt: account.accessTokenExpiresAt,
+      scope: account.scope,
     })
     .from(account)
     .where(and(eq(account.userId, userId), eq(account.providerId, "google")))

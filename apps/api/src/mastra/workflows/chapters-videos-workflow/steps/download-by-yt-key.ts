@@ -73,6 +73,18 @@ export async function downloadCaptionsWithYouTubeAPI(
     );
   }
 
+  // Validate that the stored token includes the required YouTube scopes
+  const requiredScope = "https://www.googleapis.com/auth/youtube.force-ssl";
+  if (tokens.scope && !tokens.scope.includes(requiredScope)) {
+    logger.warn(
+      { currentScopes: tokens.scope, requiredScope },
+      "Stored token is missing YouTube captions scope. User needs to re-authenticate with updated scopes.",
+    );
+    throw new Error(
+      "YouTube captions scope not granted. Please sign out and sign in again to grant the required YouTube permissions.",
+    );
+  }
+
   try {
     const videoID = extractVideoID(url);
     logger.debug({ videoID }, "Video ID extracted");
