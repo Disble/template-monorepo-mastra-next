@@ -32,11 +32,6 @@ export async function getContentPage(url: string, pages: number) {
     logger.info("Reset mastra tool");
     const stagehand = new Stagehand({
       env: "LOCAL",
-      model: {
-        // modelName: "google/gemini-2.0-flash",
-        // apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-        modelName: "ollama/maternion/fara:latest",
-      },
     });
 
     await stagehand.init();
